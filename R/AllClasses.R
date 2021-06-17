@@ -5,7 +5,7 @@
   "poplin",
   slots = c(
     missing = "list",
-    imputation = "DataFrame"
+    poplinData = "DataFrame"
     ## missing_flag = "matrix"
   ),
   contains = "SummarizedExperiment"
@@ -14,7 +14,7 @@
 ##' @export
 ##' @import methods
 ##' @importFrom SummarizedExperiment SummarizedExperiment
-poplin <- function(intensity,  ..., poplin_impute = list()) {
+poplin <- function(intensity,  ..., imputedData = list()) {
   se <- SummarizedExperiment(list(raw = intensity), ...)
   if(!is(se, "SummarizedExperiment")) {
     se <- as(se, "SummarizedExperiment")
@@ -22,7 +22,7 @@ poplin <- function(intensity,  ..., poplin_impute = list()) {
   ## ints <- SummarizedExperiment::assay(se)
   ## missing_flag <- apply(ints, c(1, 2), function(a) ifelse(is.na(a), 1, 0))
   ## .poplin(se, missing_flag = missing_flag)
-  .se_to_poplin(se, poplin_impute = poplin_impute)
+  .se_to_poplin(se, imputedData = imputedData)
 }
 
 .get_missing_count <- function(x) {
@@ -37,7 +37,7 @@ poplin <- function(intensity,  ..., poplin_impute = list()) {
 ##' @importFrom methods new
 ##' @importFrom BiocGenerics nrow ncol
 ##' @importMethodsFrom SummarizedExperiment assay
-.se_to_poplin <- function(se, poplin_impute = list()) {
+.se_to_poplin <- function(se, imputedData = list()) {
   old_validity <- S4Vectors:::disableValidity()
   if (!isTRUE(old_validity)) {
     ## Temporarily disable validity check and restore original setting upon the
@@ -48,10 +48,9 @@ poplin <- function(intensity,  ..., poplin_impute = list()) {
   out <- new(
     "poplin",
     se,
-    imputation = new("DFrame", nrows = nrow(se))
+    poplinData = new("DFrame", nrows = nrow(se))
   )
   out@missing <- .get_missing_count(assay(se))
-  ## imputation(out)@poplin_impute <- poplin_impute
   out
 }
 

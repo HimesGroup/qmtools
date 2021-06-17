@@ -1,24 +1,30 @@
 ##' @export
-setGeneric("imputation", function(x) standardGeneric("imputation"))
+setGeneric("poplinData", function(x) standardGeneric("poplinData"))
 
 ##' @export
-setGeneric("imputation<-", function(x, value) standardGeneric("imputation<-"))
+setGeneric("poplinData<-", function(x, value) standardGeneric("poplinData<-"))
+
+##' @export
+setGeneric("poplinReducedData", function(x) standardGeneric("poplinReducedData"))
+
+##' @export
+setGeneric("poplinReducedData<-", function(x, value) standardGeneric("poplinReducedData<-"))
 
 
 ##' @export
-setGeneric("poplin_impute", function(x, type, ...) standardGeneric("poplin_impute"))
+setGeneric("imputedData", function(x, type, ...) standardGeneric("imputedData"))
 
 ##' @export
-setGeneric("poplin_impute<-", function(x, type, withDimnames=TRUE, ..., value) standardGeneric("poplin_impute<-"))
+setGeneric("imputedData<-", function(x, type, check_dimnames=TRUE, ..., value) standardGeneric("imputedData<-"))
 
 ##' @export
-setGeneric("poplin_impute_names", function(x) standardGeneric("poplin_impute_names"))
+setGeneric("imputedDataNames", function(x) standardGeneric("imputedDataNames"))
 
 ##' @export
-setGeneric("poplin_impute_names<-", function(x, value) standardGeneric("poplin_impute_names<-"))
+setGeneric("imputedDataNames<-", function(x, value) standardGeneric("imputedDataNames<-"))
 
 ##' @export
-setGeneric("poplin_impute", function(x, ...) standardGeneric("poplin_impute"))
+setGeneric("imputedData", function(x, ...) standardGeneric("imputedData"))
 
 ##' @export
-setGeneric("poplin_impute<-", function(x, withDimnames=TRUE, ..., value) standardGeneric("poplin_impute<-"))
+setGeneric("imputedData<-", function(x, check_dimnames=TRUE, ..., value) standardGeneric("imputedData<-"))

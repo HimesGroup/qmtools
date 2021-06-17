@@ -4,9 +4,8 @@
 .poplin <- setClass(
   "poplin",
   slots = c(
-    missing = "list",
+    missingCount = "list",
     poplinData = "DataFrame"
-    ## missing_flag = "matrix"
   ),
   contains = "SummarizedExperiment"
 )
@@ -19,9 +18,6 @@ poplin <- function(intensity,  ..., imputedData = list()) {
   if(!is(se, "SummarizedExperiment")) {
     se <- as(se, "SummarizedExperiment")
   }
-  ## ints <- SummarizedExperiment::assay(se)
-  ## missing_flag <- apply(ints, c(1, 2), function(a) ifelse(is.na(a), 1, 0))
-  ## .poplin(se, missing_flag = missing_flag)
   .se_to_poplin(se, imputedData = imputedData)
 }
 
@@ -50,7 +46,7 @@ poplin <- function(intensity,  ..., imputedData = list()) {
     se,
     poplinData = new("DFrame", nrows = nrow(se))
   )
-  out@missing <- .get_missing_count(assay(se))
+  out@missingCount <- .get_missing_count(assay(se))
   out
 }
 

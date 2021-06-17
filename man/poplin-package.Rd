@@ -4,12 +4,12 @@
 \name{poplin-package}
 \alias{poplin}
 \alias{poplin-package}
-\title{poplin: What the Package Does (One Line, Title Case)}
+\title{poplin: pass}
 \description{
-What the package does (one paragraph).
+pass
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Jaehyun Joo \email{jaehyunjoo@outlook.com}
 
 }
 \keyword{internal}

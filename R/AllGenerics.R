@@ -1,4 +1,10 @@
 ##' @export
+setGeneric("missingCount", function(x) standardGeneric("missingCount"))
+
+##' @export
+setGeneric("missingCount<-", function(x, value) standardGeneric("missingCount<-"))
+
+##' @export
 setGeneric("poplinData", function(x) standardGeneric("poplinData"))
 
 ##' @export

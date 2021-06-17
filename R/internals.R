@@ -6,3 +6,4 @@ setReplaceMethod("poplinData", "poplin", function(x, value) {
   x@poplinData <- value
   x
 })
+

@@ -27,3 +27,18 @@ setReplaceMethod("imputedData", "poplin",
   )
 
 })
+
+#' @export
+setMethod("imputedDataNames", "poplin", function(x) {
+  .get_poplin_names(x, get_slot= poplinData, element = "imputedData")
+})
+
+#' @export
+setReplaceMethod("imputedDataNames", c("poplin", "character"),
+                 function(x, value) {
+  .set_poplin_names(x, value,
+                    get_slot = poplinData,
+                    set_element_fun = `poplinData<-`,
+                    element = "imputedData",
+                    name_pattern = "imputed")
+})

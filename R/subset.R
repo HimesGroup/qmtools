@@ -1,6 +1,6 @@
 ## ##' @export
 setMethod("[", c("poplin", "ANY", "ANY"), function(x, i, j, ..., drop=TRUE) {
-  x <- updateObject(x)
+  ## x <- updateObject(x)
   if (!missing(i)) {
     ii <- .get_subset_index(i, rownames(x))
     ## poplinData(x) <- poplinData(x)[ii, , drop=FALSE]
@@ -17,7 +17,7 @@ setMethod("[", c("poplin", "ANY", "ANY"), function(x, i, j, ..., drop=TRUE) {
 #' @importFrom methods as
 #' @importFrom S4Vectors DataFrame I mcols mcols<- metadata metadata<- 
 .set_internal_all <- function(x, value, getfun, setfun, key, convertfun, xdimfun, vdimfun, funstr, xdimstr, vdimstr) {
-    x <- updateObject(x)
+    ## x <- updateObject(x)
 
     if (length(value) == 0L) {
         collected <- getfun(x)[, 0]

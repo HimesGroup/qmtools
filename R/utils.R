@@ -1,9 +1,24 @@
 ##' @importClassesFrom S4Vectors SimpleList
 ##' @export
 .get_poplin_element <- function(x, get_slot, element) {
-  x <- updateObject(x)
+  ## x <- updateObject(x) # internal update for obsolete class but not necessary
   as(get_slot(x)[[element]], "SimpleList")
 }
+
+.get_poplin_names <- function(x, get_slot, element) {
+  colnames(get_slot(x)[[element]])
+}
+
+.set_poplin_names <- function(x, value, get_slot, set_element_fun,
+                              element, name_pattern) {
+  poplin_slot <- get_slot(x)
+  N <- ncol(poplin_slot[[element]])
+  value <- .replace_empty_names(value, N, msg = "value",
+                                name_pattern = name_pattern)
+  colnames(poplin_slot[[element]]) <- value
+  set_element_fun(x, poplin_slot)
+}
+
 
 ##' @export
 ##' @importFrom methods as
@@ -11,7 +26,7 @@
 .set_poplin_element <- function(x, value, get_slot, set_element_fun, element,
                                 funstr, name_pattern
                                 ) {
-  x <- updateObject(x)
+  ## x <- updateObject(x)
 
   if (length(value) == 0L) {
     collected <- get_slot(x)[, 0] # DataFrame with 0 column
@@ -43,7 +58,7 @@
       c(lapply(value, I), list(row.names=NULL, check.names=FALSE))
     )
 
-    ## Transfer metadata 
+    ## Transfer metadata
     if (is(original, "Annotated")) {
       metadata(collected) <- metadata(original)
     }
@@ -60,7 +75,6 @@
 
 .replace_empty_names <- function(names, N, msg, name_pattern) {
   if (is.null(names) && N > 0) {
-    ## warning("'", msg, "' is NULL, replacing with 'unnamed'")
     warning("'", msg, "' is NULL, replacing with '", name_pattern, "'")
     names <- paste0(name_pattern, seq_len(N))
   } else if (any(empty <- names=="")) {

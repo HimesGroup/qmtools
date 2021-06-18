@@ -4,7 +4,7 @@
 \name{poplin-package}
 \alias{poplin}
 \alias{poplin-package}
-\title{poplin: pass}
+\title{poplin: Reproducible analysis of metabolomics data}
 \description{
 pass
 }

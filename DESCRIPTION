@@ -1,5 +1,5 @@
 Package: poplin
-Title: pass
+Title: Reproducible analysis of metabolomics data
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Jaehyun",

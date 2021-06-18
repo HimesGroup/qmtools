@@ -19,6 +19,118 @@
   set_element_fun(x, poplin_slot)
 }
 
+##' @export
+.get_poplin_integer <- function(x, index, get_slot, element, funstr) {
+  ## x <- updateObject(x)
+  tmp <- get_slot(x)[[element]]
+
+  tryCatch({
+    tmp[, index]
+  }, error = function(e) {
+    stop("invalid subscript 'type' in '", funstr,
+         "(<", class(x), ">, type=\"numeric\", ...)':\n  ",
+         conditionMessage(e))
+  })
+
+}
+
+##' @export
+.get_poplin_character <- function(x, index, get_slot, element, funstr, namestr) {
+  ## x <- updateObject(x)
+  tmp <- get_slot(x)[[element]]
+
+  tryCatch({
+    tmp[, index]
+  }, error = function(e) {
+    stop("invalid subscript 'type' in '", funstr,
+         "(<", class(x), ">, type=\"character\", ...)':\n  ",
+         "'", index, "' not in '", namestr, "(<", class(x), ">)'")
+  })
+  
+}
+
+##' @export
+.get_poplin_missing <- function(x, base_fun, name_fun, funstr, ...) {
+  if (identical(length(name_fun(x)), 0L)) {
+    stop("no available entries for '", funstr, "(<", class(x), ">, ...)'")
+  }
+  base_fun(x, 1L, ...) # fallback to numeric type; retrieve the first data
+}
+
+##' @export
+.set_poplin_integer <- function(x, type, value, get_slot, set_element_fun,
+                                element, funstr) {
+  ## x <- updateObject(x)
+
+  if (length(type) != 1L) {
+    stop("attempt to replace more than one element")
+  }
+
+  if (!is.null(value)) {
+    ## This dim assertion may be redundant as we pre-check dimnames
+    if (!identical(nrow(value), nrow(x))) {
+      stop("invalid 'value' in '", funstr, "(<", class(x), ">, type=\"numeric\") <- value':\n  ",
+           "'value' should have number of rows equal to 'nrow(x)'")
+    }
+    if (!identical(ncol(value), ncol(x))) {
+      stop("invalid 'value' in '", funstr, "(<", class(x), ">, type=\"numeric\") <- value':\n  ",
+           "'value' should have number of columns equal to 'ncol(x)'")
+    }
+  }
+
+  tmp <- get_slot(x)
+  if (type > ncol(tmp[[element]])) {
+    stop("'type' out of bounds in '", funstr,
+         "(<", class(x), ">, type='numeric')")
+  }
+
+  tmp[[element]][[type]] <- value
+  set_element_fun(x, tmp)
+
+}
+
+
+##' @export
+.set_poplin_character <- function(x, type, value, get_slot, set_element_fun,
+                                element, funstr) {
+  ## x <- updateObject(x)
+
+  if (length(type) != 1L) {
+    stop("attempt to replace more than one element")
+  }
+
+  if (!is.null(value)) {
+    ## This dim assertion may be redundant as we pre-check dimnames
+    if (!identical(nrow(value), nrow(x))) {
+      stop("invalid 'value' in '", funstr, "(<", class(x), ">, type=\"character\") <- value':\n  ",
+           "'value' should have number of rows equal to 'nrow(x)'")
+    }
+    if (!identical(ncol(value), ncol(x))) {
+      stop("invalid 'value' in '", funstr, "(<", class(x), ">, type=\"character\") <- value':\n  ",
+           "'value' should have number of columns equal to 'ncol(x)'")
+    }
+  }
+
+  tmp <- get_slot(x)
+  tmp[[element]][[type]] <- value
+  set_element_fun(x, tmp)
+
+}
+
+
+##' @export
+.set_poplin_missing <- function(x, value, ..., base_fun, name_fun,
+                                name_pattern) {
+  if (length(name_fun(x))) {
+    ## replace the first entries
+    type <- 1L
+  } else {
+    ## if no data is available, set it to the first
+    type <- paste0(name_pattern, 1L)
+  }
+  base_fun(x, type, ..., value = value)
+}
+
 
 ##' @export
 ##' @importFrom methods as
@@ -28,7 +140,7 @@
                                 ) {
   ## x <- updateObject(x)
 
-  if (length(value) == 0L) {
+  if (identical(length(value), 0L)) {
     collected <- get_slot(x)[, 0] # DataFrame with 0 column
   } else {
     original <- value
@@ -98,6 +210,15 @@
           fun
         )
       }
+    } else {
+      tryCatch({
+        rownames(incoming) <- rownames_reference
+      }, error = function(e) {
+        stop(
+          "'value' should have number of rows equal to 'nrow(x)'",
+          call. = FALSE
+        )
+      })
     }
     if (!is.null(colnames_incoming)) {
       if (!identical(colnames_incoming, colnames_reference)) {
@@ -106,6 +227,15 @@
           fun
         )
       }
+    } else {
+      tryCatch({
+        colnames(incoming) <- colnames_reference
+      }, error = function(e) {
+        stop(
+          "'value' should have number of columns equal to 'ncol(x)'",
+          call. = FALSE
+        )
+      })
     }
   }
   incoming

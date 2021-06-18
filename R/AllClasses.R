@@ -13,12 +13,12 @@
 ##' @export
 ##' @import methods
 ##' @importFrom SummarizedExperiment SummarizedExperiment
-poplin <- function(intensity,  ..., imputedData = list()) {
+poplin <- function(intensity,  ..., imputedDataList = list()) {
   se <- SummarizedExperiment(list(raw = intensity), ...)
   if(!is(se, "SummarizedExperiment")) {
     se <- as(se, "SummarizedExperiment")
   }
-  .se_to_poplin(se, imputedData = imputedData)
+  .se_to_poplin(se, imputedDataList = imputedDataList)
 }
 
 .get_missing_count <- function(x) {
@@ -33,7 +33,7 @@ poplin <- function(intensity,  ..., imputedData = list()) {
 ##' @importFrom methods new
 ##' @importFrom BiocGenerics nrow ncol
 ##' @importMethodsFrom SummarizedExperiment assay
-.se_to_poplin <- function(se, imputedData = list()) {
+.se_to_poplin <- function(se, imputedDataList = list()) {
   old_validity <- S4Vectors:::disableValidity()
   if (!isTRUE(old_validity)) {
     ## Temporarily disable validity check and restore original setting upon the
@@ -46,7 +46,8 @@ poplin <- function(intensity,  ..., imputedData = list()) {
     se,
     poplinData = new("DFrame", nrows = nrow(se))
   )
-  out@missingCount <- .get_missing_count(assay(se))
+  imputedDataList(out) <- imputedDataList
+  missingCount(out) <- .get_missing_count(assay(se))
   out
 }
 

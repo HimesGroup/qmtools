@@ -73,3 +73,40 @@ setGeneric(
   "imputedData<-",
   function(x, type, check_dimnames = TRUE, ..., value) standardGeneric("imputedData<-")
 )
+
+
+##' @export
+setGeneric(
+  "normalizedDataList",
+  function(x, ...) standardGeneric("normalizedDataList")
+)
+
+##' @export
+setGeneric(
+  "normalizedDataList<-",
+  function(x, check_dimnames = TRUE, ..., value) standardGeneric("normalizedDataList<-")
+)
+
+##' @export
+setGeneric(
+  "normalizedDataNames",
+  function(x) standardGeneric("normalizedDataNames")
+)
+
+##' @export
+setGeneric(
+  "normalizedDataNames<-",
+  function(x, value) standardGeneric("normalizedDataNames<-")
+)
+
+##' @export
+setGeneric(
+  "normalizedData",
+  function(x, type, ...) standardGeneric("normalizedData")
+)
+
+##' @export
+setGeneric(
+  "normalizedData<-",
+  function(x, type, check_dimnames = TRUE, ..., value) standardGeneric("normalizedData<-")
+)

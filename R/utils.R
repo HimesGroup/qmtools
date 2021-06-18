@@ -1,15 +1,15 @@
 ##' @importClassesFrom S4Vectors SimpleList
 ##' @export
-.get_poplin_element <- function(x, get_slot, element) {
+.get_poplinData_datalist <- function(x, get_slot, element) {
   ## x <- updateObject(x) # internal update for obsolete class but not necessary
   as(get_slot(x)[[element]], "SimpleList")
 }
 
-.get_poplin_names <- function(x, get_slot, element) {
+.get_poplinData_names <- function(x, get_slot, element) {
   colnames(get_slot(x)[[element]])
 }
 
-.set_poplin_names <- function(x, value, get_slot, set_element_fun,
+.set_poplinData_names <- function(x, value, get_slot, set_element_fun,
                               element, name_pattern) {
   poplin_slot <- get_slot(x)
   N <- ncol(poplin_slot[[element]])
@@ -20,7 +20,7 @@
 }
 
 ##' @export
-.get_poplin_integer <- function(x, index, get_slot, element, funstr) {
+.get_poplinData_data_integer <- function(x, index, get_slot, element, funstr) {
   ## x <- updateObject(x)
   tmp <- get_slot(x)[[element]]
 
@@ -35,7 +35,8 @@
 }
 
 ##' @export
-.get_poplin_character <- function(x, index, get_slot, element, funstr, namestr) {
+.get_poplinData_data_character <- function(x, index, get_slot, element,
+                                           funstr, namestr) {
   ## x <- updateObject(x)
   tmp <- get_slot(x)[[element]]
 
@@ -50,7 +51,7 @@
 }
 
 ##' @export
-.get_poplin_missing <- function(x, base_fun, name_fun, funstr, ...) {
+.get_poplinData_data_missing <- function(x, base_fun, name_fun, funstr, ...) {
   if (identical(length(name_fun(x)), 0L)) {
     stop("no available entries for '", funstr, "(<", class(x), ">, ...)'")
   }
@@ -58,7 +59,7 @@
 }
 
 ##' @export
-.set_poplin_integer <- function(x, type, value, get_slot, set_element_fun,
+.set_poplinData_data_integer <- function(x, type, value, get_slot, set_element_fun,
                                 element, funstr) {
   ## x <- updateObject(x)
 
@@ -69,11 +70,13 @@
   if (!is.null(value)) {
     ## This dim assertion may be redundant as we pre-check dimnames
     if (!identical(nrow(value), nrow(x))) {
-      stop("invalid 'value' in '", funstr, "(<", class(x), ">, type=\"numeric\") <- value':\n  ",
+      stop("invalid 'value' in '",
+           funstr, "(<", class(x), ">, type=\"numeric\") <- value':\n  ",
            "'value' should have number of rows equal to 'nrow(x)'")
     }
     if (!identical(ncol(value), ncol(x))) {
-      stop("invalid 'value' in '", funstr, "(<", class(x), ">, type=\"numeric\") <- value':\n  ",
+      stop("invalid 'value' in '",
+           funstr, "(<", class(x), ">, type=\"numeric\") <- value':\n  ",
            "'value' should have number of columns equal to 'ncol(x)'")
     }
   }
@@ -91,8 +94,8 @@
 
 
 ##' @export
-.set_poplin_character <- function(x, type, value, get_slot, set_element_fun,
-                                element, funstr) {
+.set_poplinData_data_character <- function(x, type, value, get_slot,
+                                           set_element_fun, element, funstr) {
   ## x <- updateObject(x)
 
   if (length(type) != 1L) {
@@ -102,11 +105,13 @@
   if (!is.null(value)) {
     ## This dim assertion may be redundant as we pre-check dimnames
     if (!identical(nrow(value), nrow(x))) {
-      stop("invalid 'value' in '", funstr, "(<", class(x), ">, type=\"character\") <- value':\n  ",
+      stop("invalid 'value' in '",
+           funstr, "(<", class(x), ">, type=\"character\") <- value':\n  ",
            "'value' should have number of rows equal to 'nrow(x)'")
     }
     if (!identical(ncol(value), ncol(x))) {
-      stop("invalid 'value' in '", funstr, "(<", class(x), ">, type=\"character\") <- value':\n  ",
+      stop("invalid 'value' in '",
+           funstr, "(<", class(x), ">, type=\"character\") <- value':\n  ",
            "'value' should have number of columns equal to 'ncol(x)'")
     }
   }
@@ -119,8 +124,8 @@
 
 
 ##' @export
-.set_poplin_missing <- function(x, value, ..., base_fun, name_fun,
-                                name_pattern) {
+.set_poplinData_data_missing <- function(x, value, ..., base_fun, name_fun,
+                                         name_pattern) {
   if (length(name_fun(x))) {
     ## replace the first entries
     type <- 1L
@@ -135,9 +140,8 @@
 ##' @export
 ##' @importFrom methods as
 ##' @importFrom S4Vectors DataFrame I mcols mcols<- metadata metadata<-
-.set_poplin_element <- function(x, value, get_slot, set_element_fun, element,
-                                funstr, name_pattern
-                                ) {
+.set_poplinData_datalist <- function(x, value, get_slot, set_element_fun,
+                                     element, funstr, name_pattern) {
   ## x <- updateObject(x)
 
   if (identical(length(value), 0L)) {
@@ -183,7 +187,6 @@
   tmp[[element]] <- collected
   set_element_fun(x, tmp)
 }
-
 
 .replace_empty_names <- function(names, N, msg, name_pattern) {
   if (is.null(names) && N > 0) {
@@ -240,9 +243,6 @@
   }
   incoming
 }
-
-
-
 
 ## See SummarizedExperiment vignettes (enabling subsetting operations)
 .get_subset_index <- function(subset, names) {

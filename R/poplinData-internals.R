@@ -47,7 +47,7 @@
          "(<", class(x), ">, type=\"character\", ...)':\n  ",
          "'", index, "' not in '", namestr, "(<", class(x), ">)'")
   })
-  
+
 }
 
 ##' @export

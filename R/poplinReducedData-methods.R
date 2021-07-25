@@ -63,3 +63,89 @@ setReplaceMethod(
   }
 )
 
+
+
+#' @export
+setMethod(
+  "reducedData",
+  c("poplin", "numeric"),
+  function(x, type) {
+    .get_poplinReducedData_data_integer(
+      x, type,
+      get_slot = poplinReducedData,
+      funstr = "reducedData"
+    )
+  }
+)
+
+#' @export
+setMethod(
+  "reducedData",
+  c("poplin", "character"),
+  function(x, type) {
+    .get_poplinReducedData_data_character(
+      x, type,
+      get_slot = poplinReducedData,
+      funstr ="reducedData",
+      namestr = "reducedDataNames"
+    )
+  }
+)
+
+#' @export
+setMethod(
+  "reducedData",
+  c("poplin", "missing"),
+  function(x, type) {
+    .get_poplinReducedData_data_missing(
+      x,
+      base_fun = reducedData,
+      name_fun = reducedDataNames,
+      funstr = "reducedData"
+    )
+  }
+)
+
+#' @export
+setReplaceMethod(
+  "reducedData",
+  c("poplin", "numeric"),
+  function(x, type, check_samplenames = TRUE, ..., value) {
+    value <- .check_samplenames(x, value, check_samplenames)
+    .set_poplinReducedData_data_integer(
+      x, type, value,
+      get_slot = poplinReducedData,
+      set_element_fun = `poplinReducedData<-`,
+      funstr = "reducedData"
+    )
+  }
+)
+
+#' @export
+setReplaceMethod(
+  "reducedData",
+  c("poplin", "character"),
+  function(x, type, check_samplenames = TRUE, ..., value) {
+    value <- .check_samplenames(x, value, check_samplenames)
+    .set_poplinReducedData_data_character(
+      x, type, value,
+      get_slot = poplinReducedData,
+      set_element_fun = `poplinReducedData<-`,
+      funstr = "reducedData"
+    )
+  }
+)
+
+#' @export
+setReplaceMethod(
+  "reducedData",
+  c("poplin", "missing"),
+  function(x, type, check_samplenames = TRUE, ..., value) {
+    .set_poplinReducedData_data_missing(
+      x, value,
+      base_fun = `reducedData<-`,
+      name_fun = reducedDataNames,
+      name_pattern = "reduced"
+    )
+  }
+)

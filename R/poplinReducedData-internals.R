@@ -57,7 +57,114 @@
   set_element_fun(x, poplin_slot)
 }
 
+##' @export
+.get_poplinReducedData_data_integer <- function(x, index, get_slot, funstr) {
+  ## x <- updateObject(x)
+  tmp <- get_slot(x)
 
+  tryCatch({
+    tmp[, index]
+  }, error = function(e) {
+    stop("invalid subscript 'type' in '", funstr,
+         "(<", class(x), ">, type=\"numeric\", ...)':\n  ",
+         conditionMessage(e))
+  })
+
+}
+
+##' @export
+.get_poplinReducedData_data_character <- function(x, index, get_slot,
+                                                  funstr, namestr) {
+  ## x <- updateObject(x)
+  tmp <- get_slot(x)
+
+  tryCatch({
+    tmp[, index]
+  }, error = function(e) {
+    stop("invalid subscript 'type' in '", funstr,
+         "(<", class(x), ">, type=\"character\", ...)':\n  ",
+         "'", index, "' not in '", namestr, "(<", class(x), ">)'")
+  })
+
+}
+
+##' @export
+.get_poplinReducedData_data_missing <- function(x, base_fun, name_fun, funstr, ...) {
+  if (identical(length(name_fun(x)), 0L)) {
+    stop("no available entries for '", funstr, "(<", class(x), ">, ...)'")
+  }
+  base_fun(x, 1L, ...) # fallback to numeric type; retrieve the first data
+}
+
+
+
+##' @export
+.set_poplinReducedData_data_integer <- function(x, type, value, get_slot,
+                                                set_element_fun, funstr) {
+  ## x <- updateObject(x)
+
+  if (length(type) != 1L) {
+    stop("attempt to replace more than one element")
+  }
+
+  if (!is.null(value)) {
+    ## This dim assertion may be redundant as we pre-check dimnames
+    if (!identical(nrow(value), ncol(x))) {
+      stop("invalid 'value' in '",
+           funstr, "(<", class(x), ">, type=\"numeric\") <- value':\n  ",
+           "'value' should have number of rows equal to 'ncol(x)'")
+    }
+  }
+
+  tmp <- get_slot(x)
+  if (type > ncol(tmp)) {
+    stop("'type' out of bounds in '", funstr,
+         "(<", class(x), ">, type='numeric')")
+  }
+
+  tmp[[type]] <- value
+  set_element_fun(x, tmp)
+
+}
+
+
+##' @export
+.set_poplinReducedData_data_character <- function(x, type, value, get_slot,
+                                                  set_element_fun, funstr) {
+  ## x <- updateObject(x)
+
+  if (length(type) != 1L) {
+    stop("attempt to replace more than one element")
+  }
+
+  if (!is.null(value)) {
+    ## This dim assertion may be redundant as we pre-check dimnames
+    if (!identical(nrow(value), ncol(x))) {
+      stop("invalid 'value' in '",
+           funstr, "(<", class(x), ">, type=\"character\") <- value':\n  ",
+           "'value' should have number of rows equal to 'ncol(x)'")
+    }
+  }
+
+  tmp <- get_slot(x)
+  tmp[[type]] <- value
+  set_element_fun(x, tmp)
+
+}
+
+
+##' @export
+.set_poplinReducedData_data_missing <- function(x, value, ..., base_fun,
+                                                name_fun, name_pattern) {
+  if (length(name_fun(x))) {
+    ## replace the first entries
+    type <- 1L
+  } else {
+    ## if no data is available, set it to the first
+    type <- paste0(name_pattern, 1L)
+  }
+  base_fun(x, type, ..., value = value)
+}
 
 .check_samplenames <- function(reference, incoming, fun) {
   if (!is.null(incoming)) {
@@ -83,3 +190,4 @@
   }
   incoming
 }
+

@@ -121,7 +121,7 @@ setGeneric(
 ##' @export
 setGeneric(
   "reducedDataList<-",
-  function(x, check_dimnames = TRUE, ..., value) standardGeneric("reducedDataList<-")
+  function(x, check_samplenames = TRUE, ..., value) standardGeneric("reducedDataList<-")
 )
 
 ##' @export
@@ -135,4 +135,18 @@ setGeneric(
   "reducedDataNames<-",
   function(x, value) standardGeneric("reducedDataNames<-")
 )
+
+
+##' @export
+setGeneric(
+  "reducedData",
+  function(x, type, ...) standardGeneric("reducedData")
+)
+
+##' @export
+setGeneric(
+  "reducedData<-",
+  function(x, type, check_samplenames = TRUE, ..., value) standardGeneric("reducedData<-")
+)
+
 

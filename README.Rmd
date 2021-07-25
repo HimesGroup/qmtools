@@ -25,7 +25,7 @@ The goal of poplin is to ...
 - [x] Define poplin class
 - [x] Coerce method between SummarizedExperiment <-> poplin
 - [x] Setters and getters for transformed data
-- [ ] Setters and getters for dim-reduced data
+- [x] Setters and getters for dim-reduced data
 - [ ] Subsetting function for poplin class
 - [ ] Functions for imputations:
   - [x] count missing values

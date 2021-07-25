@@ -5,7 +5,8 @@
   "poplin",
   slots = c(
     missingCount = "list",
-    poplinData = "DataFrame"
+    poplinData = "DataFrame",
+    poplinReducedData = "DataFrame"
   ),
   contains = "SummarizedExperiment"
 )
@@ -17,7 +18,7 @@ poplin <- function(intensity,  ...,
                    imputedDataList = list(),
                    normalizedDataList = list()) {
   se <- SummarizedExperiment(list(raw = intensity), ...)
-  if(!is(se, "SummarizedExperiment")) {
+  if (!is(se, "SummarizedExperiment")) {
     se <- as(se, "SummarizedExperiment")
   }
   .se_to_poplin(
@@ -52,7 +53,8 @@ poplin <- function(intensity,  ...,
   out <- new(
     "poplin",
     se,
-    poplinData = new("DFrame", nrows = nrow(se))
+    poplinData = new("DFrame", nrows = nrow(se)),
+    poplinReducedData = new("DFrame", nrows = ncol(se))
   )
   imputedDataList(out) <- imputedDataList
   normalizedDataList(out) <- normalizedDataList

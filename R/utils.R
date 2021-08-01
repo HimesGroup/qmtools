@@ -10,7 +10,18 @@
   }
   names
 }
+
 ## See SummarizedExperiment vignettes (enabling subsetting operations)
+## .SummarizedExperiment.charbound <- function (idx, txt, fmt)
+## {
+##   orig <- idx
+##   idx <- match(idx, txt)
+##   if (any(bad <- is.na(idx))) {
+##     msg <- paste(S4Vectors:::selectSome(orig[bad]), collapse = " ")
+##     stop(sprintf(fmt, msg))
+##   }
+##   idx
+## }
 .get_subset_index <- function(subset, names) {
   if (is.character(subset)) {
     fmt <- paste0("<", class(x), ">[i,] index out of bounds: %s")
@@ -21,3 +32,12 @@
   as.vector(subset)
 }
 
+
+.subset_columns <- function(x, j, get_slot, element) {
+  tmp <- get_slot(x)[[element]]
+  nc <- ncol(tmp)
+  for (i in seq_len(nc)) {
+    tmp[[i]] <- tmp[[i]][, j]
+  }
+  tmp
+}

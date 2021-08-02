@@ -32,12 +32,28 @@
   as.vector(subset)
 }
 
-
 .subset_columns <- function(x, j, get_slot, element) {
   tmp <- get_slot(x)[[element]]
   nc <- ncol(tmp)
-  for (i in seq_len(nc)) {
-    tmp[[i]] <- tmp[[i]][, j]
+  for (k in seq_len(nc)) {
+    tmp[[k]] <- tmp[[k]][, j]
   }
   tmp
 }
+
+.replace_columns <- function(x, j, get_slot, element, value, i) {
+  left <- get_slot(x)[[element]]
+  right <- get_slot(value)[[element]]
+  nc <- ncol(left)
+  if (missing(i)) {
+    for (k in seq_len(nc)) {
+      left[[k]][, j] <- right[[k]]
+    }
+  } else {
+    for (k in seq_len(nc)) {
+      left[[k]][i, j] <- right[[k]]
+    }
+  }
+  left
+}
+

@@ -58,7 +58,7 @@ poplin <- function(intensity,  ...,
   )
   imputedDataList(out) <- imputedDataList
   normalizedDataList(out) <- normalizedDataList
-  missingCount(out) <- .get_missing_count(assay(se))
+  missingCount(out) <- .get_missing_count(assay(out))
   out
 }
 

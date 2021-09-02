@@ -40,113 +40,77 @@ setGeneric(
 
 ##' @export
 setGeneric(
-  "imputedDataList",
-  function(x, ...) standardGeneric("imputedDataList")
+  "poplin_data_list",
+  function(x, ...) standardGeneric("poplin_data_list")
 )
 
 ##' @export
 setGeneric(
-  "imputedDataList<-",
-  function(x, check_dimnames = TRUE, ..., value) standardGeneric("imputedDataList<-")
+  "poplin_data_list<-",
+  function(x, check_dimnames = TRUE, ..., value) standardGeneric("poplin_data_list<-")
 )
 
 ##' @export
 setGeneric(
-  "imputedDataNames",
-  function(x) standardGeneric("imputedDataNames")
+  "poplin_data_names",
+  function(x) standardGeneric("poplin_data_names")
 )
 
 ##' @export
 setGeneric(
-  "imputedDataNames<-",
-  function(x, value) standardGeneric("imputedDataNames<-")
+  "poplin_data_names<-",
+  function(x, value) standardGeneric("poplin_data_names<-")
 )
 
 ##' @export
 setGeneric(
-  "imputedData",
-  function(x, type, ...) standardGeneric("imputedData")
+  "poplin_data",
+  function(x, type, ...) standardGeneric("poplin_data")
 )
 
 ##' @export
 setGeneric(
-  "imputedData<-",
-  function(x, type, check_dimnames = TRUE, ..., value) standardGeneric("imputedData<-")
+  "poplin_data<-",
+  function(x, type, check_dimnames = TRUE, ..., value) standardGeneric("poplin_data<-")
 )
 
 
-##' @export
-setGeneric(
-  "normalizedDataList",
-  function(x, ...) standardGeneric("normalizedDataList")
-)
 
-##' @export
-setGeneric(
-  "normalizedDataList<-",
-  function(x, check_dimnames = TRUE, ..., value) standardGeneric("normalizedDataList<-")
-)
+## ##' @export
+## setGeneric(
+##   "reducedDataList",
+##   function(x, ...) standardGeneric("reducedDataList")
+## )
 
-##' @export
-setGeneric(
-  "normalizedDataNames",
-  function(x) standardGeneric("normalizedDataNames")
-)
+## ##' @export
+## setGeneric(
+##   "reducedDataList<-",
+##   function(x, check_samplenames = TRUE, ..., value) standardGeneric("reducedDataList<-")
+## )
 
-##' @export
-setGeneric(
-  "normalizedDataNames<-",
-  function(x, value) standardGeneric("normalizedDataNames<-")
-)
+## ##' @export
+## setGeneric(
+##   "reducedDataNames",
+##   function(x) standardGeneric("reducedDataNames")
+## )
 
-##' @export
-setGeneric(
-  "normalizedData",
-  function(x, type, ...) standardGeneric("normalizedData")
-)
-
-##' @export
-setGeneric(
-  "normalizedData<-",
-  function(x, type, check_dimnames = TRUE, ..., value) standardGeneric("normalizedData<-")
-)
+## ##' @export
+## setGeneric(
+##   "reducedDataNames<-",
+##   function(x, value) standardGeneric("reducedDataNames<-")
+## )
 
 
-##' @export
-setGeneric(
-  "reducedDataList",
-  function(x, ...) standardGeneric("reducedDataList")
-)
+## ##' @export
+## setGeneric(
+##   "reducedData",
+##   function(x, type, ...) standardGeneric("reducedData")
+## )
 
-##' @export
-setGeneric(
-  "reducedDataList<-",
-  function(x, check_samplenames = TRUE, ..., value) standardGeneric("reducedDataList<-")
-)
-
-##' @export
-setGeneric(
-  "reducedDataNames",
-  function(x) standardGeneric("reducedDataNames")
-)
-
-##' @export
-setGeneric(
-  "reducedDataNames<-",
-  function(x, value) standardGeneric("reducedDataNames<-")
-)
-
-
-##' @export
-setGeneric(
-  "reducedData",
-  function(x, type, ...) standardGeneric("reducedData")
-)
-
-##' @export
-setGeneric(
-  "reducedData<-",
-  function(x, type, check_samplenames = TRUE, ..., value) standardGeneric("reducedData<-")
-)
+## ##' @export
+## setGeneric(
+##   "reducedData<-",
+##   function(x, type, check_samplenames = TRUE, ..., value) standardGeneric("reducedData<-")
+## )
 
 

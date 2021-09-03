@@ -5,7 +5,7 @@
 ##   as(get_slot(x)[[element]], "SimpleList")
 ## }
 
-.get_poplinData_names <- function(x, get_slot, element) {
+.get_poplinData_names <- function(x, get_slot) {
   colnames(get_slot(x))
 }
 
@@ -173,6 +173,7 @@
       names(value), N = length(value), msg = "names(value)",
       name_pattern = name_pattern
     )
+
     collected <- do.call(
       DataFrame,
       c(lapply(value, I), list(row.names=NULL, check.names=FALSE))

@@ -75,42 +75,40 @@ setGeneric(
 )
 
 
+##' @export
+setGeneric(
+  "poplin_reduced_list",
+  function(x, ...) standardGeneric("poplin_reduced_list")
+)
 
-## ##' @export
-## setGeneric(
-##   "reducedDataList",
-##   function(x, ...) standardGeneric("reducedDataList")
-## )
+##' @export
+setGeneric(
+  "poplin_reduced_list<-",
+  function(x, check_samplenames = TRUE, ..., value) standardGeneric("poplin_reduced_list<-")
+)
 
-## ##' @export
-## setGeneric(
-##   "reducedDataList<-",
-##   function(x, check_samplenames = TRUE, ..., value) standardGeneric("reducedDataList<-")
-## )
+##' @export
+setGeneric(
+  "poplin_reduced_names",
+  function(x) standardGeneric("poplin_reduced_names")
+)
 
-## ##' @export
-## setGeneric(
-##   "reducedDataNames",
-##   function(x) standardGeneric("reducedDataNames")
-## )
+##' @export
+setGeneric(
+  "poplin_reduced_names<-",
+  function(x, value) standardGeneric("poplin_reduced_names<-")
+)
 
-## ##' @export
-## setGeneric(
-##   "reducedDataNames<-",
-##   function(x, value) standardGeneric("reducedDataNames<-")
-## )
+##' @export
+setGeneric(
+  "poplin_reduced",
+  function(x, type, ...) standardGeneric("poplin_reduced")
+)
 
-
-## ##' @export
-## setGeneric(
-##   "reducedData",
-##   function(x, type, ...) standardGeneric("reducedData")
-## )
-
-## ##' @export
-## setGeneric(
-##   "reducedData<-",
-##   function(x, type, check_samplenames = TRUE, ..., value) standardGeneric("reducedData<-")
-## )
+##' @export
+setGeneric(
+  "poplin_reduced<-",
+  function(x, type, check_samplenames = TRUE, ..., value) standardGeneric("poplin_reduced<-")
+)
 
 

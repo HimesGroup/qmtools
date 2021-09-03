@@ -42,16 +42,16 @@ setReplaceMethod(
   }
 )
 
-#' @export
+##' @export
 setMethod(
   "poplin_data_names",
   "poplin",
   function(x) {
-    .get_poplinData_names(x, get_slot = poplinData, element = "poplin_data_names")
+    .get_poplinData_names(x, get_slot = poplinData)
   }
 )
 
-#' @export
+##' @export
 setReplaceMethod(
   "poplin_data_names",
   c("poplin", "character"),
@@ -65,7 +65,7 @@ setReplaceMethod(
   }
 )
 
-#' @export
+##' @export
 setMethod(
   "poplin_data",
   c("poplin", "numeric"),
@@ -78,7 +78,7 @@ setMethod(
   }
 )
 
-#' @export
+##' @export
 setMethod(
   "poplin_data",
   c("poplin", "character"),
@@ -87,12 +87,12 @@ setMethod(
       x, type,
       get_slot = poplinData,
       funstr ="poplin_data",
-      namestr = "poplin"
+      namestr = "poplin_data_names"
     )
   }
 )
 
-#' @export
+##' @export
 setMethod(
   "poplin_data",
   c("poplin", "missing"),
@@ -106,7 +106,7 @@ setMethod(
   }
 )
 
-#' @export
+##' @export
 setReplaceMethod(
   "poplin_data",
   c("poplin", "numeric"),
@@ -122,7 +122,7 @@ setReplaceMethod(
 )
 
 
-#' @export
+##' @export
 setReplaceMethod(
   "poplin_data",
   c("poplin", "character"),
@@ -137,7 +137,7 @@ setReplaceMethod(
   }
 )
 
-#' @export
+##' @export
 setReplaceMethod(
   "poplin_data",
   c("poplin", "missing"),

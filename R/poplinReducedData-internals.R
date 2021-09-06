@@ -144,10 +144,7 @@
       tryCatch({
         rownames(incoming) <- samplenames_reference
       }, error = function(e) {
-        stop(
-          "'value' should have number of rows equal to 'ncol(x)'",
-          call. = FALSE
-        )
+        stop("'value' should have number of rows equal to 'ncol(x)'")
       })
     }
   }

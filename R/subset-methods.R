@@ -81,4 +81,4 @@ setReplaceMethod(
     out <- callNextMethod()
     missingCount(out) <- .get_missing_count(assay(out))
     out
-}) 
+})

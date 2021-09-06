@@ -31,6 +31,11 @@ setReplaceMethod(
         value[[v]] <- .check_samplenames(x, value[[v]], fun ='poplin_reduced_list')
       }
     }
+    value_names <- names(value)
+    if (!is.null(value_names) && anyDuplicated(value_names[value_names != ""])) {
+      stop("'names(value)' contains duplicates. ",
+           "Use different names for incoming data.")
+    }
     .set_poplinReducedData_datalist(
       x, value,
       get_slot = poplinReducedData,
@@ -54,6 +59,10 @@ setReplaceMethod(
   "poplin_reduced_names",
   c("poplin", "character"),
   function(x, value) {
+    if (!is.null(value) && anyDuplicated(value[value != ""])) {
+      stop("'value' contains duplicates. ",
+           "Use unique names.")
+    }
     .set_poplinReducedData_names(
       x, value,
       get_slot = poplinReducedData,
@@ -124,6 +133,10 @@ setReplaceMethod(
   "poplin_reduced",
   c("poplin", "character"),
   function(x, type, check_samplenames = TRUE, ..., value) {
+    if (type == "") {
+      stop("Empty string is not allowed. ",
+           "Use a different name for incoming data.")
+    }
     value <- .check_samplenames(x, value, check_samplenames)
     .set_poplinReducedData_data_character(
       x, type, value,

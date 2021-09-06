@@ -210,10 +210,7 @@
       tryCatch({
         rownames(incoming) <- rownames_reference
       }, error = function(e) {
-        stop(
-          "'value' should have number of rows equal to 'nrow(x)'",
-          call. = FALSE
-        )
+        stop("'value' should have number of rows equal to 'nrow(x)'")
       })
     }
     if (!is.null(colnames_incoming)) {
@@ -227,10 +224,7 @@
       tryCatch({
         colnames(incoming) <- colnames_reference
       }, error = function(e) {
-        stop(
-          "'value' should have number of columns equal to 'ncol(x)'",
-          call. = FALSE
-        )
+        stop("'value' should have number of columns equal to 'ncol(x)'")
       })
     }
   }

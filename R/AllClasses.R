@@ -1,7 +1,7 @@
 ##' @export
 ##' @import methods
 ##' @importClassesFrom SummarizedExperiment SummarizedExperiment
-.poplin <- setClass(
+setClass(
   "poplin",
   slots = c(
     missingCount = "list",
@@ -56,10 +56,4 @@ poplin <- function(intensity,  ...) {
 #' @importClassesFrom SummarizedExperiment RangedSummarizedExperiment
 setAs("SummarizedExperiment", "poplin", function(from) {
   .se_to_poplin(from)
-})
-
-#' @exportMethod coerce
-#' @importClassesFrom SummarizedExperiment RangedSummarizedExperiment SummarizedExperiment
-setAs("SummarizedExperiment", "poplin", function(from) {
-  .se_to_poplin(as(from, "SummarizedExperiment"))
 })

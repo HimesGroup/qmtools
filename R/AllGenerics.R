@@ -110,5 +110,3 @@ setGeneric(
   "poplin_reduced<-",
   function(x, type, check_samplenames = TRUE, ..., value) standardGeneric("poplin_reduced<-")
 )
-
-

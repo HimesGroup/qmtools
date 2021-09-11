@@ -1,5 +1,6 @@
+## PQN normalization
 .pqn <- function(x, dat_in, dat_out, ref_ids = NULL,
-                 ref_min_frac = 0, type = c("mean", "median")) {
+                 min_frac = 0.5, type = c("mean", "median")) {
   dat_m <- .verify_and_exract_input(x, dat_in)
   if (is.null(ref_ids)) {
     ref_m <- dat_m
@@ -13,7 +14,7 @@
       ref_m <- dat_m[ , idx, drop = FALSE]
     }
   }
-  idx_to_keep <- .idx_to_keep_by_missing(ref_m, "feature", ref_min_frac)
+  idx_to_keep <- .idx_to_keep_by_missing(ref_m, "feature", min_frac)
   ref_m_sub <- ref_m[idx_to_keep, , drop = FALSE]
   dat_m_sub <- dat_m[idx_to_keep, , drop = FALSE]
   ref_summary <- .mat_stats(ref_m_sub, margin = 1, type = type)
@@ -43,3 +44,5 @@
     median = apply(m, margin, median, na.rm = TRUE)
   )
 }
+
+## TIC normalization

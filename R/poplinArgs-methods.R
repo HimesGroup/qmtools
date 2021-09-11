@@ -36,3 +36,38 @@ setAs("poplinArgs", "list", function(from) {
 }
 
 setMethod("show", "poplinArgs", .poplinArgs_show)
+
+.slot_check <- function(object) {
+  snames <- slotNames(object)
+  slot_check <- sapply(slotNames(object), function(x) !.hasSlot(object, x))
+  if (sum(slot_check) == 0) {
+    character(0)
+  } else {
+    paste0("Slots not found: ", snames[slot_check])
+  }
+}
+
+.pqn_args_validity <- function(object) {
+  msg <- .slot_check(object)
+  if (length(object@dat_in) != 1) {
+    msg <- c(msg, "'dat_in' must be a character of length 1.")
+  }
+  if (length(object@dat_out) != 1) {
+    msg <- c(msg, "'dat_out' must be a character of length 1.")
+  }
+  if (identical(object@dat_in, object@dat_out)) {
+    msg <- c(msg, "'dat_in' and 'dat_out' must be different.")
+  }
+  if (length(object@min_frac) != 1 || object@min_frac < 0 ||
+      object@min_frac > 1) {
+    msg <- c(msg, "'min_frac' must be a numeric value between 0 and 1.")
+  }
+  if (length(object@type) != 1 || !(object@type %in% c("mean", "median"))) {
+    msg <- c(msg, "'type' must be either \"mean\" or \"median\".")
+  }
+  if (length(msg)) {
+    msg
+  } else TRUE
+}
+
+setValidity("pqn_args", .pqn_args_validity)

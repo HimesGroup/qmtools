@@ -24,8 +24,15 @@ setClass(
     dat_in = "character",
     dat_out = "character",
     ref_ids = "character_OR_NULL",
-    ref_min_frac = "numeric",
+    min_frac = "numeric",
     type = "character"
   ),
-  contains = "poplinArgs"
+  contains = "poplinArgs",
+  prototype = prototype(
+    dat_in = "raw",
+    dat_out = "pqn",
+    ref_ids = NULL,
+    min_frac = 0.5,
+    type = "mean"
+  )
 )

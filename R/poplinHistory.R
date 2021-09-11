@@ -1,4 +1,4 @@
-setClassUnion("Args_or_NULL", c("poplinArgs", "NULL"))
+## setClassUnion("Args_or_NULL", c("poplinArgs", "NULL"))
 
 setClass(
   "poplinHistory",

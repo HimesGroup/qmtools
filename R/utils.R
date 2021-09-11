@@ -26,3 +26,17 @@
     }
   }
 }
+
+##' @importFrom SummarizedExperiment assayNames
+##' @export
+.verify_and_exract_input <- function(x, name) {
+  name_pool <- c(assayNames(x), poplin_data_names(x))
+  if (!(name %in% name_pool)) {
+    stop("data '", name, "' is not found in the poplin object.\n",
+         "input must be one of c(assayNames(x), poplin_data_names(x)")
+  }
+  tryCatch(
+    assay(x, name),
+    error = function(err) poplin_data(x, name)
+  )
+}

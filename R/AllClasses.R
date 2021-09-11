@@ -11,49 +11,21 @@ setClass(
   contains = "SummarizedExperiment"
 )
 
-##' @export
-##' @import methods
-##' @importFrom SummarizedExperiment SummarizedExperiment
-poplin <- function(intensity,  ...) {
-  se <- SummarizedExperiment(list(raw = intensity), ...)
-  if (!is(se, "SummarizedExperiment")) {
-    se <- as(se, "SummarizedExperiment")
-  }
-  .se_to_poplin(se)
-}
+## Superclass for function arguments
+setClass("poplinArgs", contains = "VIRTUAL")
 
-.get_missing_count <- function(x) {
-  list(
-    per_sample = apply(x, 2, function(x) sum(is.na(x))),
-    per_feature = apply(x, 1, function(x) sum(is.na(x)))
-  )
-}
+## Convenient union
+setClassUnion("character_OR_NULL", c("character", "NULL"))
 
-##' @importFrom S4Vectors DataFrame SimpleList
-##' @importClassesFrom S4Vectors DataFrame
-##' @importFrom methods new
-##' @importFrom BiocGenerics nrow ncol
-##' @importMethodsFrom SummarizedExperiment assay
-.se_to_poplin <- function(se) {
-  old_validity <- S4Vectors:::disableValidity()
-  if (!isTRUE(old_validity)) {
-    ## Temporarily disable validity check and restore original setting upon the
-    ## exit of function
-    S4Vectors:::disableValidity(TRUE)
-    on.exit(S4Vectors:::disableValidity(old_validity))
-  }
-  out <- new(
-    "poplin",
-    se,
-    poplinData = new("DFrame", nrows = nrow(se)),
-    poplinReducedData = new("DFrame", nrows = ncol(se))
-  )
-  missingCount(out) <- .get_missing_count(assay(out))
-  out
-}
-
-#' @exportMethod coerce
-#' @importClassesFrom SummarizedExperiment RangedSummarizedExperiment
-setAs("SummarizedExperiment", "poplin", function(from) {
-  .se_to_poplin(from)
-})
+## Argument class for PQN normalization
+setClass(
+  "pqn_args",
+  slots = c(
+    dat_in = "character",
+    dat_out = "character",
+    ref_ids = "character_OR_NULL",
+    ref_min_frac = "numeric",
+    type = "character"
+  ),
+  contains = "poplinArgs"
+)

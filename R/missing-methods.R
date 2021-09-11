@@ -6,4 +6,3 @@ setReplaceMethod("missingCount", "poplin", function(x, value) {
   x@missingCount <- value
   x
 })
-

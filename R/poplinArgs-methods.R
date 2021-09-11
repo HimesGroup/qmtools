@@ -1,0 +1,38 @@
+## List coercion method
+##' @export
+as.list.poplinArgs <- function(x) {
+  snames <- slotNames(x)
+  internals <- grep(snames, pattern = "^\\.")
+  if (length(internals)) {
+    ## Exclude hidden slots
+    snames <- snames[-internals]
+  }
+  ## args_list <- vector("list", length(snames)) # empty list
+  ## names(args_list) <- snames
+  ## for (i in names(args_list)) {
+  ##   args_list[[i]] <- slot(x, name = i)
+  ## }
+  args_list <- lapply(snames, function(name) slot(x, name))
+  names(args_list) <- snames
+  args_list
+}
+
+setMethod("as.list", "poplinArgs", as.list.poplinArgs)
+
+##' @exportMethod coerce
+setAs("poplinArgs", "list", function(from) {
+  as.list(from)
+})
+
+## Show method
+.poplinArgs_show <- function(object) {
+  cat("Class: ", class(object), "\n", sep = "")
+  cat(" Arguments:\n")
+  poplin_args <- as.list(object)
+  for (i in seq_along(poplin_args)) {
+    cat(" - ", names(poplin_args)[i], ": ", deparse(poplin_args[[i]]), "\n",
+        sep = "")
+  }
+}
+
+setMethod("show", "poplinArgs", .poplinArgs_show)

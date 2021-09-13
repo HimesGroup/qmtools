@@ -19,28 +19,51 @@
   as.vector(subset)
 }
 
-.subset_columns <- function(x, j, get_slot, element) {
-  tmp <- get_slot(x)[[element]]
-  nc <- ncol(tmp)
-  for (k in seq_len(nc)) {
-    tmp[[k]] <- tmp[[k]][, j]
-  }
-  tmp
+.subset_columns <- function(x, j, get_slot) {
+  tmp <- get_slot(x)
+  tmp_subsets <- lapply(tmp, function(x) x[, j, drop = FALSE])
+  do.call(
+    DataFrame,
+    c(lapply(tmp_subsets, I), list(row.names=NULL, check.names=FALSE))
+  )
+  ## nc <- ncol(tmp)
+  ## for (k in seq_len(nc)) {
+  ##   tmp[[k]] <- tmp[[k]][, j, drop = FALSE]
+  ## }
+  ## tmp
 }
 
-.replace_columns <- function(x, j, get_slot, element, value, i) {
-  left <- get_slot(x)[[element]]
-  right <- get_slot(value)[[element]]
-  nc <- ncol(left)
+.replace_columns <- function(x, j, get_slot, value, i) {
+  left <- get_slot(x)
+  right <- get_slot(value)
   if (missing(i)) {
-    for (k in seq_len(nc)) {
-      left[[k]][, j] <- right[[k]]
-    }
+    tmp_replaced <- mapply(
+      FUN = function(x, y) {
+        x[, j] <- y
+        x
+      }, left, right, SIMPLIFY = FALSE
+    )
   } else {
-    for (k in seq_len(nc)) {
-      left[[k]][i, j] <- right[[k]]
-    }
+    tmp_replaced <- mapply(
+      FUN = function(x, y) {
+        x[i, j] <- y
+        x
+      }, left, right, SIMPLIFY = FALSE
+    )
   }
-  left
+  do.call(
+    DataFrame,
+    c(lapply(tmp_replaced, I), list(row.names=NULL, check.names=FALSE))
+  )
+  ## nc <- ncol(left)
+  ## if (missing(i)) {
+  ##   for (k in seq_len(nc)) {
+  ##     left[[k]][, j] <- right[[k]]
+  ##   }
+  ## } else {
+  ##   for (k in seq_len(nc)) {
+  ##     left[[k]][i, j] <- right[[k]]
+  ##   }
+  ## }
+  ## left
 }
-

@@ -1,28 +1,28 @@
 ##' @importClassesFrom S4Vectors SimpleList
 ##' @export
-.get_poplinData_datalist <- function(x, get_slot, element) {
-  ## x <- updateObject(x) # internal update for obsolete class but not necessary
-  as(get_slot(x)[[element]], "SimpleList")
-}
+## .get_poplinData_datalist <- function(x, get_slot, element) {
+##   ## x <- updateObject(x) # internal update for obsolete class but not necessary
+##   as(get_slot(x)[[element]], "SimpleList")
+## }
 
-.get_poplinData_names <- function(x, get_slot, element) {
-  colnames(get_slot(x)[[element]])
+.get_poplinData_names <- function(x, get_slot) {
+  colnames(get_slot(x))
 }
 
 .set_poplinData_names <- function(x, value, get_slot, set_element_fun,
-                              element, name_pattern) {
+                                  name_pattern) {
   poplin_slot <- get_slot(x)
-  N <- ncol(poplin_slot[[element]])
+  N <- ncol(poplin_slot)
   value <- .replace_empty_names(value, N, msg = "value",
                                 name_pattern = name_pattern)
-  colnames(poplin_slot[[element]]) <- value
+  colnames(poplin_slot) <- value
   set_element_fun(x, poplin_slot)
 }
 
 ##' @export
-.get_poplinData_data_integer <- function(x, index, get_slot, element, funstr) {
+.get_poplinData_data_integer <- function(x, index, get_slot, funstr) {
   ## x <- updateObject(x)
-  tmp <- get_slot(x)[[element]]
+  tmp <- get_slot(x)
 
   tryCatch({
     tmp[, index]
@@ -35,10 +35,11 @@
 }
 
 ##' @export
-.get_poplinData_data_character <- function(x, index, get_slot, element,
+.get_poplinData_data_character <- function(x, index, get_slot,
                                            funstr, namestr) {
+
   ## x <- updateObject(x)
-  tmp <- get_slot(x)[[element]]
+  tmp <- get_slot(x)
 
   tryCatch({
     tmp[, index]
@@ -59,8 +60,8 @@
 }
 
 ##' @export
-.set_poplinData_data_integer <- function(x, type, value, get_slot, set_element_fun,
-                                element, funstr) {
+.set_poplinData_data_integer <- function(x, type, value, get_slot,
+                                         set_element_fun, funstr) {
   ## x <- updateObject(x)
 
   if (length(type) != 1L) {
@@ -82,12 +83,12 @@
   }
 
   tmp <- get_slot(x)
-  if (type > ncol(tmp[[element]])) {
+  if (type > ncol(tmp)) {
     stop("'type' out of bounds in '", funstr,
          "(<", class(x), ">, type='numeric')")
   }
 
-  tmp[[element]][[type]] <- value
+  tmp[[type]] <- value
   set_element_fun(x, tmp)
 
 }
@@ -95,7 +96,7 @@
 
 ##' @export
 .set_poplinData_data_character <- function(x, type, value, get_slot,
-                                           set_element_fun, element, funstr) {
+                                           set_element_fun, funstr) {
   ## x <- updateObject(x)
 
   if (length(type) != 1L) {
@@ -117,7 +118,7 @@
   }
 
   tmp <- get_slot(x)
-  tmp[[element]][[type]] <- value
+  tmp[[type]] <- value
   set_element_fun(x, tmp)
 
 }
@@ -141,7 +142,7 @@
 ##' @importFrom methods as
 ##' @importFrom S4Vectors DataFrame I mcols mcols<- metadata metadata<-
 .set_poplinData_datalist <- function(x, value, get_slot, set_element_fun,
-                                     element, funstr, name_pattern) {
+                                     funstr, name_pattern) {
   ## x <- updateObject(x)
 
   if (identical(length(value), 0L)) {
@@ -151,6 +152,9 @@
 
     N_row <- vapply(value, nrow, 0L) # ensure integer of length 1
     N_col <- vapply(value, ncol, 0L) # ensure integer of length 1
+
+    ## The following assertion may not be necessary as we pre-check dimension
+    ## via .check_dimnames
     if (!all(N_row == nrow(x))) {
       stop(
         "invalid 'value' in '", funstr, "(<", class(x), ">) <- value'\n",
@@ -169,6 +173,7 @@
       names(value), N = length(value), msg = "names(value)",
       name_pattern = name_pattern
     )
+
     collected <- do.call(
       DataFrame,
       c(lapply(value, I), list(row.names=NULL, check.names=FALSE))
@@ -183,9 +188,9 @@
     }
   }
 
-  tmp <- get_slot(x)
-  tmp[[element]] <- collected
-  set_element_fun(x, tmp)
+  ## tmp <- get_slot(x)
+  ## tmp[[element]] <- collected
+  set_element_fun(x, collected)
 }
 
 .check_dimnames <- function(reference, incoming, fun) {
@@ -205,10 +210,7 @@
       tryCatch({
         rownames(incoming) <- rownames_reference
       }, error = function(e) {
-        stop(
-          "'value' should have number of rows equal to 'nrow(x)'",
-          call. = FALSE
-        )
+        stop("'value' should have number of rows equal to 'nrow(x)'")
       })
     }
     if (!is.null(colnames_incoming)) {
@@ -222,10 +224,7 @@
       tryCatch({
         colnames(incoming) <- colnames_reference
       }, error = function(e) {
-        stop(
-          "'value' should have number of columns equal to 'ncol(x)'",
-          call. = FALSE
-        )
+        stop("'value' should have number of columns equal to 'ncol(x)'")
       })
     }
   }

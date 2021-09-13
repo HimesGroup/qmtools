@@ -1,101 +1,25 @@
-##' @export
-##' @importFrom methods as
-##' @importFrom S4Vectors DataFrame I mcols mcols<- metadata metadata<-
-.set_poplinReducedData_datalist <- function(x, value, get_slot, set_element_fun,
-                                            funstr, name_pattern) {
-  ## x <- updateObject(x)
-
-  if (identical(length(value), 0L)) {
-    collected <- get_slot(x)[, 0] # DataFrame with 0 column
-  } else {
-    original <- value
-
-    N_row <- vapply(value, nrow, 0L) # ensure integer of length 1
-    if (!all(N_row == ncol(x))) {
-      stop(
-        "invalid 'value' in '", funstr, "(<", class(x), ">) <- value'\n",
-        "each element of 'value' should have number of rows equal to 'ncol(x)'"
-      )
-    }
-
-    names(value) <- .replace_empty_names(
-      names(value), N = length(value), msg = "names(value)",
-      name_pattern = name_pattern
-    )
-
-    collected <- do.call(
-      DataFrame,
-      c(lapply(value, I), list(row.names=NULL, check.names=FALSE))
-    )
-
-    ## Transfer metadata
-    if (is(original, "Annotated")) {
-      metadata(collected) <- metadata(original)
-    }
-    if (is(original, "Vector")) {
-      mcols(collected) <- mcols(original)
-    }
-  }
-
-  ## tmp <- get_slot(x)
-  ## tmp[[element]] <- collected
-  ## tmp <- collected
-  set_element_fun(x, collected)
+.get_poplinReducedData_names <- function(...) {
+  .get_poplinData_names(...)
 }
 
-.get_poplinReducedData_names <- function(x, get_slot) {
-  colnames(get_slot(x))
-}
-
-.set_poplinReducedData_names <- function(x, value, get_slot, set_element_fun,
-                                  element, name_pattern) {
-  poplin_slot <- get_slot(x)
-  N <- ncol(poplin_slot)
-  value <- .replace_empty_names(value, N, msg = "value",
-                                name_pattern = name_pattern)
-  colnames(poplin_slot) <- value
-  set_element_fun(x, poplin_slot)
+.set_poplinReducedData_names <- function(...) {
+  .set_poplinData_names(...)
 }
 
 ##' @export
-.get_poplinReducedData_data_integer <- function(x, index, get_slot, funstr) {
-  ## x <- updateObject(x)
-  tmp <- get_slot(x)
-
-  tryCatch({
-    tmp[, index]
-  }, error = function(e) {
-    stop("invalid subscript 'type' in '", funstr,
-         "(<", class(x), ">, type=\"numeric\", ...)':\n  ",
-         conditionMessage(e))
-  })
-
+.get_poplinReducedData_data_integer <- function(...) {
+  .get_poplinData_data_integer(...)
 }
 
 ##' @export
-.get_poplinReducedData_data_character <- function(x, index, get_slot,
-                                                  funstr, namestr) {
-  ## x <- updateObject(x)
-  tmp <- get_slot(x)
-
-  tryCatch({
-    tmp[, index]
-  }, error = function(e) {
-    stop("invalid subscript 'type' in '", funstr,
-         "(<", class(x), ">, type=\"character\", ...)':\n  ",
-         "'", index, "' not in '", namestr, "(<", class(x), ">)'")
-  })
-
+.get_poplinReducedData_data_character <- function(...) {
+  .get_poplinData_data_character(...)
 }
 
 ##' @export
-.get_poplinReducedData_data_missing <- function(x, base_fun, name_fun, funstr, ...) {
-  if (identical(length(name_fun(x)), 0L)) {
-    stop("no available entries for '", funstr, "(<", class(x), ">, ...)'")
-  }
-  base_fun(x, 1L, ...) # fallback to numeric type; retrieve the first data
+.get_poplinReducedData_data_missing <- function(...) {
+  .get_poplinData_data_missing(...)
 }
-
 
 
 ##' @export
@@ -152,19 +76,58 @@
 
 }
 
+##' @export
+.set_poplinReducedData_data_missing <- function(...) {
+  .set_poplinData_data_missing(...)
+}
+
 
 ##' @export
-.set_poplinReducedData_data_missing <- function(x, value, ..., base_fun,
-                                                name_fun, name_pattern) {
-  if (length(name_fun(x))) {
-    ## replace the first entries
-    type <- 1L
+##' @importFrom methods as
+##' @importFrom S4Vectors DataFrame I mcols mcols<- metadata metadata<-
+.set_poplinReducedData_datalist <- function(x, value, get_slot, set_element_fun,
+                                            funstr, name_pattern) {
+  ## x <- updateObject(x)
+
+  if (identical(length(value), 0L)) {
+    collected <- get_slot(x)[, 0] # DataFrame with 0 column
   } else {
-    ## if no data is available, set it to the first
-    type <- paste0(name_pattern, 1L)
+    original <- value
+
+    N_row <- vapply(value, nrow, 0L) # ensure integer of length 1
+    if (!all(N_row == ncol(x))) {
+      stop(
+        "invalid 'value' in '", funstr, "(<", class(x), ">) <- value'\n",
+        "each element of 'value' should have number of rows equal to 'ncol(x)'"
+      )
+    }
+
+    names(value) <- .replace_empty_names(
+      names(value), N = length(value), msg = "names(value)",
+      name_pattern = name_pattern
+    )
+
+    collected <- do.call(
+      DataFrame,
+      c(lapply(value, I), list(row.names=NULL, check.names=FALSE))
+    )
+
+    ## Transfer metadata
+    if (is(original, "Annotated")) {
+      metadata(collected) <- metadata(original)
+    }
+    if (is(original, "Vector")) {
+      mcols(collected) <- mcols(original)
+    }
   }
-  base_fun(x, type, ..., value = value)
+
+  ## tmp <- get_slot(x)
+  ## tmp[[element]] <- collected
+  ## tmp <- collected
+  set_element_fun(x, collected)
 }
+
+
 
 .check_samplenames <- function(reference, incoming, fun) {
   if (!is.null(incoming)) {
@@ -181,13 +144,9 @@
       tryCatch({
         rownames(incoming) <- samplenames_reference
       }, error = function(e) {
-        stop(
-          "'value' should have number of rows equal to 'ncol(x)'",
-          call. = FALSE
-        )
+        stop("'value' should have number of rows equal to 'ncol(x)'")
       })
     }
   }
   incoming
 }
-

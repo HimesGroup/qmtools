@@ -1,6 +1,5 @@
 ##' @export
 setMethod("[", c("poplin", "ANY", "ANY"), function(x, i, j, ..., drop = TRUE) {
-  ## x <- updateObject(x)
   if (!missing(i)) {
     ii <- .get_subset_index(i, rownames(x))
     poplinData(x) <- poplinData(x)[ii, , drop = FALSE]
@@ -11,12 +10,7 @@ setMethod("[", c("poplin", "ANY", "ANY"), function(x, i, j, ..., drop = TRUE) {
   }
   if (!missing(j)) {
     jj <- .get_subset_index(j, colnames(x))
-    poplinData(x)[["imputedDataList"]] <- .subset_columns(
-      x, jj, get_slot = poplinData, element = "imputedDataList"
-    )
-    poplinData(x)[["normalizedDataList"]] <- .subset_columns(
-      x, jj, get_slot = poplinData, element = "normalizedDataList"
-    )
+    poplinData(x) <- .subset_columns(x, jj, get_slot = poplinData)
     poplinReducedData(x) <- poplinReducedData(x)[jj, , drop = FALSE]
   }
   out <- callNextMethod()
@@ -24,15 +18,11 @@ setMethod("[", c("poplin", "ANY", "ANY"), function(x, i, j, ..., drop = TRUE) {
   out
 })
 
-
 ##' @export
 ##' @importClassesFrom SummarizedExperiment SummarizedExperiment
 ##' @importFrom SummarizedExperiment rowData colData
 setReplaceMethod(
   "[", c("poplin", "ANY", "ANY", "poplin"), function(x, i, j, ..., value) {
-
-    ## x <- updatedObject(x)
-    ## value <- updateObject(value)
 
     if (!missing(i)) {
       ii <- .get_subset_index(i, rownames(x))
@@ -59,12 +49,7 @@ setReplaceMethod(
 
       if (missing(i)) {
         tryCatch({
-          imp_left <- .replace_columns(
-            x, jj, get_slot = poplinData, element = "imputedDataList", value
-          )
-          norm_left <- .replace_columns(
-            x, jj, get_slot = poplinData, element = "normalizedDataList", value
-          )
+          poplinData_left <- .replace_columns(x, jj, poplinData, value)
         }, error=function(err) {
           stop(
             "failed to replace 'poplinData' in '<", class(x), ">[,j] <- value'\n",
@@ -72,12 +57,7 @@ setReplaceMethod(
         })
       } else {
         tryCatch({
-          imp_left <- .replace_columns(
-            x, jj, get_slot = poplinData, element = "imputedDataList", value, ii
-          )
-          norm_left <- .replace_columns(
-            x, jj, get_slot = poplinData, element = "normalizedDataList", value, ii
-          )
+          poplinData_left <- .replace_columns(x, jj, poplinData, value, ii)
         }, error=function(err) {
           stop(
             "failed to replace 'poplinData' in '<", class(x), ">[,j] <- value'\n",
@@ -94,12 +74,11 @@ setReplaceMethod(
           conditionMessage(err))
       })
 
-      poplinData(x)[["imputedDataList"]] <- imp_left
-      poplinData(x)[["normalizedDataList"]] <- norm_left
+      poplinData(x) <- poplinData_left
       poplinReducedData(x) <- poplinReducedData_left
     }
 
     out <- callNextMethod()
     missingCount(out) <- .get_missing_count(assay(out))
     out
-}) 
+})

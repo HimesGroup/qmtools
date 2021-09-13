@@ -55,9 +55,6 @@ setMethod("show", "poplinArgs", .poplinArgs_show)
   if (length(object@dat_out) != 1) {
     msg <- c(msg, "'dat_out' must be a character of length 1.")
   }
-  if (identical(object@dat_in, object@dat_out)) {
-    msg <- c(msg, "'dat_in' and 'dat_out' must be different.")
-  }
   if (length(object@min_frac) != 1 || object@min_frac < 0 ||
       object@min_frac > 1) {
     msg <- c(msg, "'min_frac' must be a numeric value between 0 and 1.")
@@ -71,3 +68,33 @@ setMethod("show", "poplinArgs", .poplinArgs_show)
 }
 
 setValidity("pqn_args", .pqn_args_validity)
+
+.sample_normalizer_args_validity <- function(object) {
+  msg <- .slot_check(object)
+  normalizer_allowed <- c("tic", "mean", "median", "mad", "euclidean")
+  if (length(object@normalizer) != 1 ||
+      !(object@normalizer %in% normalizer_allowed)) {
+    msg <- c(
+      msg,
+      paste0("'normalizer' must be one of ",
+             paste0("'", normalizer_allowed, "'", collapse = ", "), ".")
+    )
+  }
+  if (length(object@dat_in) != 1) {
+    msg <- c(msg, "'dat_in' must be a character of length 1.")
+  }
+  if (length(object@dat_out) != 1) {
+    msg <- c(msg, "'dat_out' must be a character of length 1.")
+  }
+  if (length(object@restrict) != 1) {
+    msg <- c(msg, "'restrict' must be a logical of length 1.")
+  }
+  if (length(object@rescale) != 1) {
+    msg <- c(msg, "'rescale' must be a logical of length 1.")
+  }
+  if (length(msg)) {
+    msg
+  } else TRUE
+}
+
+setValidity("sample_normalizer_args", .sample_normalizer_args_validity)

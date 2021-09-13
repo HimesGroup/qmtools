@@ -30,9 +30,29 @@ setClass(
   contains = "poplinArgs",
   prototype = prototype(
     dat_in = "raw",
-    dat_out = "pqn",
+    dat_out = "normalized",
     ref_ids = NULL,
     min_frac = 0.5,
     type = "mean"
+  )
+)
+
+## Argument class for other sample-based normalization
+setClass(
+  "sample_normalizer_args",
+  slot = c(
+    normalizer = "character",
+    dat_in = "character",
+    dat_out = "character",
+    restrict = "logical",
+    rescale = "logical"
+  ),
+  contain = "poplinArgs",
+  prototype = prototype(
+    normalizer = "tic",
+    dat_in = "raw",
+    dat_out = "normalized",
+    restrict = TRUE,
+    rescale = FALSE
   )
 )

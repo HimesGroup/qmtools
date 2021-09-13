@@ -1,7 +1,15 @@
 ## PQN normalization
+## The reference suggests to apply integral normalization prior to PQN so
+## consider to add that.
 .pqn <- function(x, dat_in, dat_out, ref_ids = NULL,
                  min_frac = 0.5, type = c("mean", "median")) {
   dat_m <- .verify_and_exract_input(x, dat_in)
+  ## unnecessary match.arg
+  type <- match.arg(type)
+  if (dat_out %in% assayNames(x)) {
+    stop("'dat_out' must not be one of assayNames(x): ",
+         assayNames(x))
+  }
   if (is.null(ref_ids)) {
     ref_m <- dat_m
   } else {
@@ -45,4 +53,34 @@
   )
 }
 
-## TIC normalization
+## other spectral function normalization methods
+##' @importFrom stats mad
+.sample_norm <- function(x, normalizer = c("tic", "mean", "median",
+                                           "mad", "euclidean"),
+                         dat_in, dat_out, restrict = FALSE, rescale = FALSE) {
+  dat_m <- .verify_and_exract_input(x, dat_in)
+  if (dat_out %in% assayNames(x)) {
+    stop("'dat_out' must not be one of assayNames(x): ",
+         assayNames(x))
+  }
+  ## unnecessary match.arg
+  normalizer <- match.arg(normalizer)
+  if (restrict) {
+    dat_m_sub <- na.omit(dat_m)
+  } else {
+    dat_m_sub <- dat_m
+  }
+  scale_factors <- switch(
+    normalizer,
+    tic = colSums(dat_m_sub, na.rm = TRUE),
+    mean = colMeans(dat_m_sub, na.rm = TRUE),
+    median = apply(dat_m_sub, 2, median, na.rm = TRUE),
+    mad = apply(dat_m_sub, 2, mad, na.rm = TRUE),
+    euclidean = apply(dat_m_sub, 2, function(x) sqrt(sum(x**2, na.rm = TRUE)))
+    )
+  if (rescale) {
+    scale_factors <- scale_factors / median(scale_factors)
+  }
+  poplin_data(x, dat_out) <- sweep(dat_m, 2, scale_factors, FUN = "/")
+  x
+}

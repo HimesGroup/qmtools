@@ -33,7 +33,7 @@ setReplaceMethod(
         value[[v]] <- .check_dimnames(x, value[[v]], fun ='poplin_data_list')
       }
     }
-    .check_name_duplicates(assayNames(x), poplin_data_names(x), names(value),
+    .check_name_duplicates(assayNames(x), names(value),
                            msg1 = "names(value)",
                            msg2 = "Use different names for incoming data.")
     .set_poplinData_datalist(
@@ -59,7 +59,7 @@ setReplaceMethod(
   "poplin_data_names",
   c("poplin", "character"),
   function(x, value) {
-    .check_name_duplicates(assayNames(x), poplin_data_names(x), value,
+    .check_name_duplicates(assayNames(x), value,
                            msg1 = "value",
                            msg2 = "Use unique names.")
     .set_poplinData_names(
@@ -137,7 +137,7 @@ setReplaceMethod(
       stop("Empty string is not allowed. ",
            "Use a different name for incoming data.")
     }
-    .check_name_duplicates(assayNames(x), poplin_data_names(x), type,
+    .check_name_duplicates(assayNames(x), type,
                            msg1 = "value",
                            msg2 = "Use a different name.")
     value <- .check_dimnames(x, value, check_dimnames)

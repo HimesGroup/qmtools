@@ -11,8 +11,7 @@
   names
 }
 
-.check_name_duplicates <- function(assay_names, poplin_data_names, value_names,
-                                   msg1, msg2) {
+.check_name_duplicates <- function(assay_names, value_names, msg1, msg2) {
   if (!is.null(value_names)) {
     ## Non-empty names must be unique
     if (anyDuplicated(value_names[value_names != ""])) {
@@ -20,9 +19,6 @@
     }
     if (any(value_names %in% assay_names)) {
       stop("'", msg1, "' must not overlap with assayNames(x). ", msg2)
-    }
-    if (any(value_names %in% poplin_data_names)) {
-      stop("'", msg1, "' must not overlap with poplin_data_names(x). ", msg2)
     }
   }
 }

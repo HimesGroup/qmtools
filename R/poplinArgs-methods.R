@@ -71,7 +71,7 @@ setValidity("pqn_args", .pqn_args_validity)
 
 .sample_normalizer_args_validity <- function(object) {
   msg <- .slot_check(object)
-  normalizer_allowed <- c("tic", "mean", "median", "mad", "euclidean")
+  normalizer_allowed <- c("sum", "mean", "median", "mad", "euclidean")
   if (length(object@normalizer) != 1 ||
       !(object@normalizer %in% normalizer_allowed)) {
     msg <- c(
@@ -98,3 +98,32 @@ setValidity("pqn_args", .pqn_args_validity)
 }
 
 setValidity("sample_normalizer_args", .sample_normalizer_args_validity)
+
+.cyclicloess_args_validity <- function(object) {
+  msg <- .slot_check(object)
+  ## if (length(object@normalizer) != 1 || object@normalizer != "cyclicloess") {
+  ##   msg <- c(msg, "'normalizer' must be cyclicloess.")
+  ## }
+  if (length(object@dat_in) != 1) {
+    msg <- c(msg, "'dat_in' must be a character of length 1.")
+  }
+  if (length(object@dat_out) != 1) {
+    msg <- c(msg, "'dat_out' must be a character of length 1.")
+  }
+  if (length(object@span) != 1 || object@span < 0 || object@span > 1) {
+    msg <- c(msg, "'span' must be a numeric value between 0 and 1.")
+  }
+  if (length(object@iterations) != 1 || object@iterations <= 0) {
+    msg <- c(msg, "'iterations' must be a positive integer.")
+  }
+  method_allowed <- c("pairs", "fast", "affy")
+  if (length(object@method) != 1 || !(object@method %in% method_allowed)) {
+    msg <- c(
+      msg,
+      paste0("'method' must be one of ",
+             paste0("'", method_allowed, "'", collapse = ", "), ".")
+    )
+  }
+}
+
+setValidity("cyclicloess_args", .cyclicloess_args_validity)

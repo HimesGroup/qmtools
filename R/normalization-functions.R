@@ -308,3 +308,40 @@
 	}
 	x
 }
+
+#################################################################################
+## feature scaler
+#################################################################################
+.auto_scale <- function(x, ...) {
+  (x - mean(x, ...)) / sd(x, ...)
+}
+
+.range_scale <- function(x, ...) {
+  (x - mean(x, ...)) / (max(x, ...) - min(x, ...))
+}
+
+.pareto_scale <- function(x, ...) {
+  (x - mean(x, ...)) / sqrt(sd(x, ...))
+}
+
+.vast_scale <- function(x, ...) {
+  .auto_scale(x, ...) * (mean(x, ...) / sd(x, ...))
+}
+
+.level_scale <- function(x, ...) {
+  (x - mean(x, ...)) / mean(x, ...)
+}
+
+.feature_scaler <- function(x, type = c("auto", "range", "pareto",
+                                        "vast", "level")
+                            ) {
+  type <- match.arg(type)
+  switch(
+    type,
+    auto = apply(x, 1, .auto_scale, na.rm = TRUE)
+    range = apply(x, 1, .range_scale, na.rm = TRUE)
+    pareto = apply(x, 1, .pareto_scale, na.rm = TRUE)
+    vast = apply(x, 1, .vast_scale, na.rm = TRUE)
+    level = apply(x, 1, .level_scale, na.rm = TRUE)
+    )
+}

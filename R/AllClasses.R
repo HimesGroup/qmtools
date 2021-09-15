@@ -38,7 +38,7 @@ setClass(
   )
 )
 
-## argument class for cyclicloess normalization
+## Argument class for cyclicloess normalization
 setClass(
   "cyclicloess_args",
   slot = c(

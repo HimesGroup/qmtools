@@ -1,35 +1,89 @@
+#################################################################################
+## Normalize function for end-users
+#################################################################################
+poplin_normalize <-
+  function(x,
+           normalizer = c("pqn",  "sum", "mean", "median", "mad", "euclidean",
+                          "cyclicloess", # sample-based
+                          "auto", "range", "pareto", "vast", "level", # metabolite-based
+                          "vsn"),
+           poplin_in, poplin_out, ...
+           ) {
+    normalizer <- match.arg(normalizer)
+    if (is(x, "poplin")) {
+      if (missing(poplin_in) || missing(poplin_out)) {
+        stop(
+          "If 'x' is a poplin object, \"poplin_in\" and \"poplin_out\" must be specified."
+        )
+      } else {
+        if (poplin_out %in% assayNames(x)) {
+          stop("'poplin_out' must not be one of assayNames(x): ",
+               assayNames(x))
+        }
+        m <- .verify_and_extract_input(x, poplin_in)
+        poplin_data(x, poplin_out) <- .normalize_fun_dispatch(m, normalizer = normalizer, ...)
+        ## place to log processing history
+        return(x)
+      }
+    } else if (is.matrix(x)) {
+      return(.normalize_fun_dispatch(x, normalizer = normalizer, ...))
+    } else {
+      stop("'x' must be a matrix or poplin object.")
+    }
+}
+
+.normalize_fun_dispatch <- function(x, normalizer, ...) {
+  switch(
+    normalizer,
+    pqn = poplin_normalize_pqn(x = x, ...),
+    sum = poplin_normalize_sum(x = x, ...),
+    mean = poplin_normalize_mean(x = x, ...),
+    mad = poplin_normalize_mad(x = x, ...),
+    median = poplin_normalize_median(x = x, ...),
+    euclidean = poplin_normalize_euclidean(x = x, ...),
+    cyclicloess = poplin_normalize_cyclicloess(x = x, ...),
+    auto = poplin_normalize_auto(x = x, ...),
+    range = poplin_normalize_range(x = x, ...),
+    pareto = poplin_normalize_pareto(x = x, ...),
+    vast = poplin_normalize_vast(x = x, ...),
+    level = poplin_normalize_level(x = x, ...),
+    vsn = poplin_normalize_vsn(x = x, ...)
+  )
+}
+
+
 ## PQN normalization
 ## The reference suggests to apply integral normalization prior to PQN so
 ## consider to add that.
-.normalize.pqn <- function(x, dat_in, dat_out, ref_ids = NULL,
-                 min_frac = 0.5, type = c("mean", "median")) {
-  dat_m <- .verify_and_exract_input(x, dat_in)
-  ## unnecessary match.arg
+poplin_normalize_pqn <- function(x, ref_samples = NULL, min_frac = 0.5,
+                                 type = c("mean", "median")) {
   type <- match.arg(type)
-  if (dat_out %in% assayNames(x)) {
-    stop("'dat_out' must not be one of assayNames(x): ",
-         assayNames(x))
-  }
-  if (is.null(ref_ids)) {
-    ref_m <- dat_m
+  if ((is.null(ref_samples))) {
+    ref <- x
   } else {
-    if (!all(ref_ids %in% colnames(x))) {
-      non_match <- setdiff(ref_ids, colnames(x))
-      stop("Reference samples not found in colnames(x): ",
-           non_match, call. = FALSE)
+    if (!(is.character(ref_samples) || is.numeric(ref_samples))) {
+      stop ("'ref_samples' must be a vector of character or integer.")
     } else {
-      idx <- which(colnames(x) %in% ref_ids)
-      ref_m <- dat_m[ , idx, drop = FALSE]
+      if (is.character(ref_samples) &&
+          !(all(ref_samples %in% colnames(x)))) {
+        non_match <- setdiff(ref_samples, colnames(x))
+        stop("Reference samples not found in colnames(x): ",
+             non_match, call. = FALSE)
+      } else if (is.numeric(ref_samples) &&
+                 !(all(ref_samples >= 1 & ref_samples <= ncol(x)))) {
+        stop("Subscript out of bound. 'ref_samples must be within [1, ncol(x)].")
+      } else {
+        ref <- x[, ref_samples, drop = FALSE]
+      }
     }
   }
-  idx_to_keep <- .idx_to_keep_by_missing(ref_m, "feature", min_frac)
-  ref_m_sub <- ref_m[idx_to_keep, , drop = FALSE]
-  dat_m_sub <- dat_m[idx_to_keep, , drop = FALSE]
-  ref_summary <- .mat_stats(ref_m_sub, margin = 1, type = type)
-  quotients <- apply(dat_m_sub, 2, function(x) x / ref_summary)
+  idx_to_keep <- .idx_to_keep_by_missing(ref, "feature", min_frac)
+  ref_sub <- ref[idx_to_keep, , drop = FALSE]
+  x_sub <- x[idx_to_keep, , drop = FALSE]
+  ref_summary <- .mat_stats(ref_sub, margin = 1, type = type)
+  quotients <- apply(x_sub, 2, function(x) x / ref_summary)
   medians <- .mat_stats(quotients, margin = 2, type = "median")
-  poplin_data(x, dat_out) <- sweep(dat_m, 2, medians, FUN = "/")
-  x
+  sweep(x, 2, medians, FUN = "/")
 }
 
 .idx_to_keep_by_missing <- function(m, margin = c("sample", "feature"),
@@ -54,90 +108,71 @@
 }
 
 ## other spectral function normalization methods
-.normalize.sum <- function(x, dat_in, dat_out,
-                           restrict = FALSE, rescale = FALSE) {
-  .column_based_norm(
-    x = x, dat_in = dat_in, dat_out = dat_out,
-    restrict = restrict, rescale = rescale, normalizer = "sum"
+poplin_normalize_sum <- function(x, restrict = FALSE, rescale = FALSE) {
+  .normalize_columns(
+    x = x, restrict = restrict, rescale = rescale, normalizer = "sum"
   )
 }
 
-.normalize.mean <- function(x, dat_in, dat_out,
-                            restrict = FALSE, rescale = FALSE) {
-  .column_based_norm(
-    x = x, dat_in = dat_in, dat_out = dat_out,
-    restrict = restrict, rescale = rescale, normalizer = "mean"
-  )
-
-}
-
-.normalize.median <- function(x, dat_in, dat_out,
-                              restrict = FALSE, rescale = FALSE) {
-  .column_based_norm(
-    x = x, dat_in = dat_in, dat_out = dat_out,
-    restrict = restrict, rescale = rescale, normalizer = "median"
+poplin_normalize_mean <- function(x, restrict = FALSE, rescale = FALSE) {
+  .normalize_columns(
+    x = x, restrict = restrict, rescale = rescale, normalizer = "mean"
   )
 }
 
-.normalize.mad <- function(x, dat_in, dat_out,
-                           restrict = FALSE, rescale = FALSE) {
-  .column_based_norm(
-    x = x, dat_in = dat_in, dat_out = dat_out,
-    restrict = restrict, rescale = rescale, normalizer = "mad"
+poplin_normalize_median <- function(x, restrict = FALSE, rescale = FALSE) {
+  .normalize_columns(
+    x = x, restrict = restrict, rescale = rescale, normalizer = "median"
   )
 }
 
-.normalize.euclidean <- function(x, dat_in, dat_out,
-                                 restrict = FALSE, rescale = FALSE) {
-  .column_based_norm(
-    x = x, dat_in = dat_in, dat_out = dat_out,
-    restrict = restrict, rescale = rescale, normalizer = "euclidean"
+poplin_normalize_mad <- function(x, restrict = FALSE, rescale = FALSE) {
+  .normalize_columns(
+    x = x, restrict = restrict, rescale = rescale, normalizer = "mad"
+  )
+}
+
+poplin_normalize_euclidean <- function(x, restrict = FALSE, rescale = FALSE) {
+  .normalize_columns(
+    x = x, restrict = restrict, rescale = rescale, normalizer = "euclidean"
   )
 }
 
 ##' @importFrom stats mad
-.column_based_norm <- function(x, normalizer = c("sum", "mean", "median",
+.normalize_columns <- function(x, normalizer = c("sum", "mean", "median",
                                                  "mad", "euclidean"),
-                         dat_in, dat_out, restrict = FALSE, rescale = FALSE) {
-  dat_m <- .verify_and_exract_input(x, dat_in)
-  if (dat_out %in% assayNames(x)) {
-    stop("'dat_out' must not be one of assayNames(x): ",
-         assayNames(x))
-  }
-  ## unnecessary match.arg
+                               restrict = FALSE, rescale = FALSE) {
   normalizer <- match.arg(normalizer)
   if (restrict) {
-    dat_m_sub <- na.omit(dat_m)
+    x_sub <- na.omit(x)
   } else {
-    dat_m_sub <- dat_m
+    x_sub <- x
   }
   scale_factors <- switch(
     normalizer,
-    sum = colSums(dat_m_sub, na.rm = TRUE),
-    mean = colMeans(dat_m_sub, na.rm = TRUE),
-    median = apply(dat_m_sub, 2, median, na.rm = TRUE),
-    mad = apply(dat_m_sub, 2, mad, na.rm = TRUE),
-    euclidean = apply(dat_m_sub, 2, function(x) sqrt(sum(x**2, na.rm = TRUE)))
+    sum = colSums(x_sub, na.rm = TRUE),
+    mean = colMeans(x_sub, na.rm = TRUE),
+    median = apply(x_sub, 2, median, na.rm = TRUE),
+    mad = apply(x_sub, 2, mad, na.rm = TRUE),
+    euclidean = apply(x_sub, 2, function(x) sqrt(sum(x**2, na.rm = TRUE)))
     )
   if (rescale) {
     scale_factors <- scale_factors / median(scale_factors)
   }
-  poplin_data(x, dat_out) <- sweep(dat_m, 2, scale_factors, FUN = "/")
-  x
+  sweep(x, 2, scale_factors, FUN = "/")
 }
 
 
 ################################################################################
 ## Cyclic LOESS normalization (taken from limma package 09/13/2021)
 ################################################################################
-.normalize.cyclicloess <- function(x, dat_in, dat_out, weights = NULL,
-                                   span = 0.7, iterations = 3, method = "fast") {
-  dat_m <- .verify_and_exract_input(x, dat_in)
-  poplin_data(x, dat_out) <- .normalizeCyclicLoess(
-    dat_m, weights = weights, span = span,
-    iterations = iterations, method = method
-  )
-  x
+poplin_normalize_cyclicloess <- function(x, pre_log2, weights = NULL, span = 0.7,
+                                         iterations = 3, method = "fast") {
+  if (pre_log2) {
+    x <- log2(x)
+  }
+  .normalizeCyclicLoess(x, weights = weights, span = span,
+                        iterations = iterations, method = method)
 }
 
 ##	LOESS FUNCTIONS
@@ -310,7 +345,7 @@
 }
 
 #################################################################################
-## feature scaler
+## Feature scaler
 #################################################################################
 .auto_scale <- function(x, ...) {
   (x - mean(x, ...)) / sd(x, ...)
@@ -332,16 +367,32 @@
   (x - mean(x, ...)) / mean(x, ...)
 }
 
-.feature_scaler <- function(x, type = c("auto", "range", "pareto",
-                                        "vast", "level")
-                            ) {
-  type <- match.arg(type)
-  switch(
-    type,
-    auto = apply(x, 1, .auto_scale, na.rm = TRUE)
-    range = apply(x, 1, .range_scale, na.rm = TRUE)
-    pareto = apply(x, 1, .pareto_scale, na.rm = TRUE)
-    vast = apply(x, 1, .vast_scale, na.rm = TRUE)
-    level = apply(x, 1, .level_scale, na.rm = TRUE)
-    )
+poplin_normalize_auto <- function(x) {
+  t(apply(x, 1, .auto_scale, na.rm = TRUE))
+}
+
+poplin_normalize_range <- function(x) {
+  t(apply(x, 1, .range_scale, na.rm = TRUE))
+}
+
+poplin_normalize_pareto <- function(x) {
+  t(apply(x, 1, .pareto_scale, na.rm = TRUE))
+}
+
+poplin_normalize_vast <- function(x) {
+  t(apply(x, 1, .vast_scale, na.rm = TRUE))
+}
+
+poplin_normalize_level <- function(x) {
+  t(apply(x, 1, .level_scale, na.rm = TRUE))
+}
+
+#################################################################################
+## VSN: simply provides interface
+#################################################################################
+poplin_normalize_vsn <- function(x, ...) {
+  if (!requireNamespace("vsn", quietly = TRUE)) {
+    stop("Package 'vsn' not found. Please install it first.")
+  }
+  Biobase::exprs(vsn::vsnMatrix(x = x, ...))
 }

@@ -25,7 +25,7 @@
 
 ##' @importFrom SummarizedExperiment assayNames
 ##' @export
-.verify_and_exract_input <- function(x, name) {
+.verify_and_extract_input <- function(x, name) {
   name_pool <- c(assayNames(x), poplin_data_names(x))
   if (!(name %in% name_pool)) {
     stop("data '", name, "' is not found in the poplin object.\n",

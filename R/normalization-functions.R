@@ -390,9 +390,19 @@ poplin_normalize_level <- function(x) {
 #################################################################################
 ## VSN: simply provides interface
 #################################################################################
-poplin_normalize_vsn <- function(x, ...) {
+poplin_normalize_vsn <- function(x, meanSdPlot = TRUE, ...) {
   if (!requireNamespace("vsn", quietly = TRUE)) {
     stop("Package 'vsn' not found. Please install it first.")
   }
-  Biobase::exprs(vsn::vsnMatrix(x = x, ...))
+  out <- suppressMessages(vsn::vsnMatrix(x = x, ...))
+  if (meanSdPlot) {
+    if (!requireNamespace("hexbin", quietly = TRUE)) {
+      stop("Package 'hexbin' is required to produce a meanSdPlot. ",
+           "Please install and try again.")
+    } else {
+      vsn::meanSdPlot(out)
+    }
+  }
+  Biobase::exprs(out)
 }
+

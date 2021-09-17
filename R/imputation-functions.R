@@ -14,5 +14,5 @@
 
 ##' @importFrom missForest missForest
 .randomforest <- function(x, ...) {
-  missForest(x, ...)$ximp
+  t(missForest(t(x), ...)$ximp)
 }

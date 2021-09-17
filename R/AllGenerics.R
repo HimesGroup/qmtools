@@ -196,3 +196,33 @@ setGeneric(
   "poplin_impute",
   function(x, method, ...) standardGeneric("poplin_impute")
 )
+
+setGeneric(
+  "poplin_impute_knn",
+  function(x, ...) standardGeneric("poplin_impute_knn")
+)
+
+setGeneric(
+  "poplin_impute_halfmin",
+  function(x, ...) standardGeneric("poplin_impute_halfmin")
+)
+
+setGeneric(
+  "poplin_impute_median",
+  function(x, ...) standardGeneric("poplin_impute_median")
+)
+
+setGeneric(
+  "poplin_impute_mean",
+  function(x, ...) standardGeneric("poplin_impute_mean")
+)
+
+setGeneric(
+  "poplin_impute_pca",
+  function(x, ...) standardGeneric("poplin_impute_pca")
+)
+
+setGeneric(
+  "poplin_impute_randomforest",
+  function(x, ...) standardGeneric("poplin_impute_randomforest")
+)

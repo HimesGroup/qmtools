@@ -16,12 +16,6 @@ setMethod(
   }
 )
 
-.poplin_class_normlization <- function(x, fun, poplin_in, poplin_out, ...) {
-  m <- .verify_and_extract_input(x, poplin_in)
-  poplin_data(x, poplin_out) <- fun(m, ...)
-  x
-}
-
 setMethod(
   "poplin_normalize_pqn",
   "matrix",
@@ -34,7 +28,7 @@ setMethod(
   "poplin_normalize_pqn",
   "poplin",
   function(x, poplin_in, poplin_out, ...) {
-    .poplin_class_normlization(x, .poplin_normalize_pqn,
+    .poplin_extract_and_assign(x, .poplin_normalize_pqn,
                                poplin_in, poplin_out, ...)
   }
 )
@@ -51,7 +45,7 @@ setMethod(
   "poplin_normalize_sum",
   "poplin",
   function(x, poplin_in, poplin_out, ...) {
-    .poplin_class_normlization(x, .poplin_normalize_sum,
+    .poplin_extract_and_assign(x, .poplin_normalize_sum,
                                poplin_in, poplin_out, ...)
   }
 )
@@ -68,7 +62,7 @@ setMethod(
   "poplin_normalize_mean",
   "poplin",
   function(x, poplin_in, poplin_out, ...) {
-    .poplin_class_normlization(x, .poplin_normalize_mean,
+    .poplin_extract_and_assign(x, .poplin_normalize_mean,
                                poplin_in, poplin_out, ...)
   }
 )
@@ -85,7 +79,7 @@ setMethod(
   "poplin_normalize_median",
   "poplin",
   function(x, poplin_in, poplin_out, ...) {
-    .poplin_class_normlization(x, .poplin_normalize_median,
+    .poplin_extract_and_assign(x, .poplin_normalize_median,
                                poplin_in, poplin_out, ...)
   }
 )
@@ -102,7 +96,7 @@ setMethod(
   "poplin_normalize_mad",
   "poplin",
   function(x, poplin_in, poplin_out, ...) {
-    .poplin_class_normlization(x, .poplin_normalize_mad,
+    .poplin_extract_and_assign(x, .poplin_normalize_mad,
                                poplin_in, poplin_out, ...)
   }
 )
@@ -119,7 +113,7 @@ setMethod(
   "poplin_normalize_euclidean",
   "poplin",
   function(x, poplin_in, poplin_out, ...) {
-    .poplin_class_normlization(x, .poplin_normalize_euclidean,
+    .poplin_extract_and_assign(x, .poplin_normalize_euclidean,
                                poplin_in, poplin_out, ...)
   }
 )
@@ -136,7 +130,7 @@ setMethod(
   "poplin_normalize_cyclicloess",
   "poplin",
   function(x, poplin_in, poplin_out, ...) {
-    .poplin_class_normlization(x, .poplin_normalize_cyclicloess,
+    .poplin_extract_and_assign(x, .poplin_normalize_cyclicloess,
                                poplin_in, poplin_out, ...)
   }
 )
@@ -153,7 +147,7 @@ setMethod(
   "poplin_normalize_auto",
   "poplin",
   function(x, poplin_in, poplin_out, ...) {
-    .poplin_class_normlization(x, .poplin_normalize_auto,
+    .poplin_extract_and_assign(x, .poplin_normalize_auto,
                                poplin_in, poplin_out, ...)
   }
 )
@@ -170,7 +164,7 @@ setMethod(
   "poplin_normalize_range",
   "poplin",
   function(x, poplin_in, poplin_out, ...) {
-    .poplin_class_normlization(x, .poplin_normalize_range,
+    .poplin_extract_and_assign(x, .poplin_normalize_range,
                                poplin_in, poplin_out, ...)
   }
 )
@@ -187,7 +181,7 @@ setMethod(
   "poplin_normalize_pareto",
   "poplin",
   function(x, poplin_in, poplin_out, ...) {
-    .poplin_class_normlization(x, .poplin_normalize_pareto,
+    .poplin_extract_and_assign(x, .poplin_normalize_pareto,
                                poplin_in, poplin_out, ...)
   }
 )
@@ -204,7 +198,7 @@ setMethod(
   "poplin_normalize_vast",
   "poplin",
   function(x, poplin_in, poplin_out, ...) {
-    .poplin_class_normlization(x, .poplin_normalize_vast,
+    .poplin_extract_and_assign(x, .poplin_normalize_vast,
                                poplin_in, poplin_out, ...)
   }
 )
@@ -221,7 +215,7 @@ setMethod(
   "poplin_normalize_level",
   "poplin",
   function(x, poplin_in, poplin_out, ...) {
-    .poplin_class_normlization(x, .poplin_normalize_level,
+    .poplin_extract_and_assign(x, .poplin_normalize_level,
                                poplin_in, poplin_out, ...)
   }
 )
@@ -238,7 +232,7 @@ setMethod(
   "poplin_normalize_vsn",
   "poplin",
   function(x, poplin_in, poplin_out, ...) {
-    .poplin_class_normlization(x, .poplin_normalize_vsn,
+    .poplin_extract_and_assign(x, .poplin_normalize_vsn,
                                poplin_in, poplin_out, ...)
   }
 )

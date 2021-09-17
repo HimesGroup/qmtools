@@ -1,43 +1,10 @@
-#################################################################################
-## Normalize function for end-users
-#################################################################################
-## poplin_normalize <-
-##   function(x,
-##            normalizer = c("pqn",  "sum", "mean", "median", "mad", "euclidean",
-##                           "cyclicloess", # sample-based
-##                           "auto", "range", "pareto", "vast", "level", # metabolite-based
-##                           "vsn"),
-##            poplin_in, poplin_out, ...
-##            ) {
-##     normalizer <- match.arg(normalizer)
-##     if (is(x, "poplin")) {
-##       if (missing(poplin_in) || missing(poplin_out)) {
-##         stop(
-##           "If 'x' is a poplin object, \"poplin_in\" and \"poplin_out\" must be specified."
-##         )
-##       } else {
-##         if (poplin_out %in% assayNames(x)) {
-##           stop("'poplin_out' must not be one of assayNames(x): ",
-##                assayNames(x))
-##         }
-##         m <- .verify_and_extract_input(x, poplin_in)
-##         poplin_data(x, poplin_out) <- .normalize_fun_dispatch(m, normalizer = normalizer, ...)
-##         ## place to log processing history
-##         return(x)
-##       }
-##     } else if (is.matrix(x)) {
-##       return(.normalize_fun_dispatch(x, normalizer = normalizer, ...))
-##     } else {
-##       stop("'x' must be a matrix or poplin object.")
-##     }
-## }
-
-.poplin_normalize <-
-  function(x,
-           normalizer = c("pqn",  "sum", "mean", "median", "mad", "euclidean",
-                          "cyclicloess", # sample-based
-                          "auto", "range", "pareto", "vast", "level", # metabolite-based
-                          "vsn"),
+.poplin_normalize <- function(x,
+                              normalizer = c("pqn",  "sum", "mean", "median",
+                                             "mad", "euclidean",
+                                             "cyclicloess", # sample-based
+                                             "auto", "range", "pareto",
+                                             "vast", "level", # metabolite-based
+                                             "vsn"),
            ...) {
     normalizer <- match.arg(normalizer)
     .normalize_fun_dispatch(x, normalizer = normalizer, ...)

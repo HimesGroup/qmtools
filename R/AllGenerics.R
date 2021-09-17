@@ -188,3 +188,11 @@ setGeneric(
   "poplin_normalize_vsn",
   function(x, ...) standardGeneric("poplin_normalize_vsn")
 )
+
+#################################################################################
+## Imputation Generics
+#################################################################################
+setGeneric(
+  "poplin_impute",
+  function(x, method, ...) standardGeneric("poplin_impute")
+)

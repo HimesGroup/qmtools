@@ -16,8 +16,9 @@ setClass("poplinArgs", contains = "VIRTUAL")
 
 ## Convenient union
 setClassUnion("character_OR_NULL", c("character", "NULL"))
+setClassUnion("numeric_OR_NULL", c("numeric", "NULL"))
 
-## Argument class for PQN normalization
+## Argument class for PQN
 setClass(
   "pqn_args",
   slots = c(
@@ -30,10 +31,32 @@ setClass(
   contains = "poplinArgs",
   prototype = prototype(
     dat_in = "raw",
-    dat_out = "normalized",
+    dat_out = "out",
     ref_ids = NULL,
     min_frac = 0.5,
     type = "mean"
+  )
+)
+
+## Argument class for cyclicloess normalization
+setClass(
+  "cyclicloess_args",
+  slot = c(
+    dat_in = "character",
+    dat_out = "character",
+    weights = "numeric_OR_NULL",
+    span = "numeric",
+    iterations = "integer",
+    method = "character"
+  ),
+  contain = "poplinArgs",
+  prototype = prototype(
+    dat_in = "raw",
+    dat_out = "out",
+    weights = NULL,
+    span = 0.7,
+    iterations = 3L,
+    method = "fast"
   )
 )
 
@@ -49,10 +72,11 @@ setClass(
   ),
   contain = "poplinArgs",
   prototype = prototype(
-    normalizer = "tic",
+    normalizer = "sum",
     dat_in = "raw",
-    dat_out = "normalized",
+    dat_out = "out",
     restrict = TRUE,
     rescale = FALSE
   )
 )
+

@@ -84,9 +84,9 @@ plot_reduced.poplin.matrix.pca <- function(x, comp = c(1, 2), group,
   }
   x_var_exp <- R2[comp[1]] * 100
   y_var_exp <- R2[comp[2]] * 100
-  xlabel <- paste0(colnames(imp)[comp[1]], " (",
+  xlabel <- paste0(colnames(x)[comp[1]], " (",
                    prettyNum(x_var_exp, digits = 4), "%)")
-  ylabel <- paste0(colnames(imp)[comp[1]], " (",
+  ylabel <- paste0(colnames(x)[comp[1]], " (",
                    prettyNum(y_var_exp, digits = 4), "%)")
   p <- p + xlab(xlabel) + ylab(ylabel) + theme_bw()
   if (legend) {
@@ -145,7 +145,7 @@ plot_na <- function(x, grid_gap = 1, colors = c("gray80", "gray20"),
 }
 
 .arrange_plots <- function(
-    plots, 
+    plots,
     row_dend_left = FALSE, hide_colorbar = TRUE) {
 
   plots <- plots[!sapply(plots, is.null)]

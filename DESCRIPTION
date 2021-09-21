@@ -20,9 +20,12 @@ Imports:
     methods,
     S4Vectors,
     stats,
-    SummarizedExperiment
 Suggests: 
     missForest,
     hexbin,
     Rtsne,
     vsn
+    VIM,
+    pcaMethods
+Depends: 
+    SummarizedExperiment

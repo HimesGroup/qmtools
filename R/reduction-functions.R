@@ -70,7 +70,7 @@
 }
 
 .poplin_reduce_tsne <- function(x, ncomp = 2, normalize = TRUE, ...) {
-  if (!requireNamespace("vsn", quietly = TRUE)) {
+  if (!requireNamespace("Rtsne", quietly = TRUE)) {
     stop("Package 'Rtsne' is required. Please install and try again.")
   }
   if (any(!is.finite(x))) {

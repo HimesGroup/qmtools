@@ -19,12 +19,12 @@ Imports:
     heatmaply,
     methods,
     S4Vectors,
-    stats,
+    stats
 Suggests: 
     missForest,
     hexbin,
     Rtsne,
-    vsn
+    vsn,
     VIM,
     pcaMethods
 Depends: 

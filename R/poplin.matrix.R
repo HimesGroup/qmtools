@@ -79,20 +79,21 @@ poplin.matrix.pca <- function(x, ...) {
   x
 }
 
-
 ##' @export
 summary.poplin.matrix.pca <- function(x, ...) {
-  cat("PCA Method:", attr(x, "method"), "\n")
   cat("Call:", deparse(attr(x, "call")), "\n")
+  cat("Reduction method:", attr(x, "method"), "\n")
   cat("Input dimension: [",
-      attr(x, "inputDim")[1], ", ",
-      attr(x, "inputDim")[2], "]\n", sep = "")
-  cat("Number of PCs calculated:", attr(x, "npc"), "\n")
+      attr(x, "origD")[1], ", ",
+      attr(x, "origD")[2], "]\n", sep = "")
+  cat("Input centered before PCA:", attr(x, "centered"), "\n")
+  cat("Input scaled before PCA:", attr(x, "scaled"), "\n")
+  cat("Number of PCs calculated:", attr(x, "ncomp"), "\n")
   cat("Importance of PC(s):\n")
   imp <- rbind(attr(x, "R2"), attr(x, "R2cum"))
   rownames(imp) <- c("Proportion of Variance",
                      "Cumulative Proportion")
-  colnames(imp) <- paste0("PC", 1:attr(x, "npc"))
+  colnames(imp) <- paste0("PC", 1:attr(x, "ncomp"))
   print(imp, digits = 4)
   invisible(imp)
 }
@@ -106,3 +107,27 @@ print.poplin.matrix.pca <- function(x, ...) {
   }
   print.default(x)
 }
+
+##' @export
+poplin.matrix.tsne <- function(x, ...) {
+  x <- poplin.matrix(x)
+  class(x) <- c("poplin.matrix.tsne", "poplin.matrix", "matrix")
+  x
+}
+
+
+##' @export
+summary.poplin.matrix.tsne <- function(x, ...) {
+  cat("Call:", deparse(attr(x, "call")), "\n")
+  cat("Reduction method:", attr(x, "method"), "\n")
+  cat("Input dimension: [",
+      attr(x, "origD")[1], ", ",
+      attr(x, "origD")[2], "]\n", sep = "")
+  cat("Input normalized before t-SNE:", attr(x, "normalized"), "\n")
+  cat("Dimension of the embedded spcae:", attr(x, "ncomp"), "\n")
+  cat("Perplexity:", attr(x, "perplexity"), "\n")
+  cat("Theta:", attr(x, "theta"), "\n")
+  cat("Eta:", attr(x, "eta"), "\n")
+  invisible(x)
+}
+

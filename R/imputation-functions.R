@@ -58,7 +58,7 @@
     out <- t(kNN(t(x), ...))[1:nrow(x), ]
     colnames(out) <- colnames(x)
   }
-  out
+  as.matrix(out)
 }
 
 ##' @importFrom missMDA imputePCA

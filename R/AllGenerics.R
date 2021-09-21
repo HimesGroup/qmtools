@@ -226,3 +226,22 @@ setGeneric(
   "poplin_impute_randomforest",
   function(x, ...) standardGeneric("poplin_impute_randomforest")
 )
+
+#################################################################################
+## Reduction Generics
+#################################################################################
+setGeneric(
+  "poplin_reduce",
+  function(x, method, ...) standardGeneric("poplin_reduce")
+)
+
+setGeneric(
+  "poplin_reduce_pca",
+  function(x, ...) standardGeneric("poplin_reduce_pca")
+)
+
+setGeneric(
+  "poplin_reduce_tsne",
+  function(x, ...) standardGeneric("poplin_reduce_tsne")
+)
+

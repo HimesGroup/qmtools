@@ -369,9 +369,9 @@
 #################################################################################
 ## VSN: simply provides interface
 #################################################################################
-.poplin_normalize_vsn <- function(x, meanSdPlot = TRUE, ...) {
+.poplin_normalize_vsn <- function(x, meanSdPlot = FALSE, ...) {
   if (!requireNamespace("vsn", quietly = TRUE)) {
-    stop("Package 'vsn' not found. Please install it first.")
+    stop("Package 'vsn' is required. Please install and try again.")
   }
   out <- suppressMessages(vsn::vsnMatrix(x = x, ...))
   if (meanSdPlot) {

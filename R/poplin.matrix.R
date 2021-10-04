@@ -95,7 +95,7 @@ summary.poplin.pca <- function(x, ...) {
                      "Cumulative Proportion")
   colnames(imp) <- paste0("PC", 1:attr(x, "ncomp"))
   print(imp, digits = 4)
-  invisible(imp)
+  invisible(x)
 }
 
 ##' @export
@@ -131,3 +131,22 @@ summary.poplin.tsne <- function(x, ...) {
   invisible(x)
 }
 
+##' @export
+summary.poplin.plsda <- function(x, ...) {
+  cat("Call:", deparse(attr(x, "call")), "\n")
+  cat("Reduction method:", attr(x, "method"), "\n")
+  cat("X dimension: [",
+    attr(x, "origD")[1], ", ",
+    attr(x, "origD")[2], "]\n",
+    sep = ""
+  )
+  cat("Y responses:", attr(x, "responses"), "\n")
+  cat("X, Y matrices centered before PLS-DA:", attr(x, "centered"), "\n")
+  cat("X scaled before PLS-DA:", attr(x, "scaled"), "\n")
+  cat("Number of components considered:", attr(x, "ncomp"), "\n")
+  cat("Amount of X variance explained by each component:", "\n")
+  imp <- rbind(attr(x, "explvar"), cumsum(attr(x, "explvar")))
+  rownames(imp) <- c("Explained %", "Cumulative %")
+  print(imp, digits = 4)
+  invisible(imp)
+}

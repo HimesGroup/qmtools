@@ -1,4 +1,4 @@
-.poplin_reduce <- function(x, method = c("pca", "tsne"), ncomp = 2, ...) {
+.poplin_reduce <- function(x, method = c("pca", "tsne", "plsda"), y, ncomp = 2, ...) {
   method <- match.arg(method)
   if (length(ncomp) != 1) {
     stop("'ncomp' must be a positive integer.")
@@ -6,7 +6,8 @@
   switch(
     method,
     pca = .poplin_reduce_pca(x, ncomp = ncomp, ...),
-    tsne = .poplin_reduce_tsne(x, ncomp = ncomp, ...)
+    tsne = .poplin_reduce_tsne(x, ncomp = ncomp, ...),
+    plsda = .poplin_reduce_tsne(x, y = y, ncomp = ncomp, ...)
   )
 }
 
@@ -100,7 +101,8 @@
 }
 
 
-.poplin_reduce_plsda <- function(x, y, ...) {
+.poplin_reduce_plsda <- function(x, y, ncomp = 2, center = TRUE, scale = FALSE,
+                                 ...) {
   if (!requireNamespace("pls", quietly = TRUE)) {
     stop("Package 'pls' is required. Please install and try again.")
   }
@@ -114,10 +116,15 @@
   colnames(y_dummy) <- gsub("^y", "", colnames(y_dummy))
 
   d <- data.frame(y = I(y_dummy), x = I(xt))
-  fit <- pls::plsr(y ~ x, data = d, ...)
+  fit <- pls::plsr(y ~ x, data = d, ncomp = ncomp,
+                   center = center, scale = scale, ...)
   out <- pls::scores(fit)
   ## pred_vals <- predict(fit, ncomp = fit$ncomp)
 
+  attr(out, "method") <- paste0("PLS-DA (", fit$method, ")")
+  attr(out, "origD.X") <- dim(x)
+  attr(out, "responses") <- pls::respnames(fit)
+  attr(out, "predictors") <- pls::prednames(fit)
   attr(out, "coefficients") <- fit$coefficients
   attr(out, "loadings") <- fit$loadings
   attr(out, "loadings.weights") <- fit$loadings.weights
@@ -127,7 +134,9 @@
   attr(out, "fitted.values") <- fitted(fit)
   attr(out, "residuals") <- residuals(fit)
   attr(out, "ncomp") <- fit$ncomp
-  attr(out, "method") <- fit$method
+  attr(out, "centered") <- center
+  attr(out, "scaled") <- scale
+  attr(out, "validation") <- fit$validation
   attr(out, "call") <- fun_call
   poplin.matrix(out, "poplin.plsda")
 }

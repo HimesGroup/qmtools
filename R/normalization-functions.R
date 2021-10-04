@@ -50,7 +50,7 @@
              non_match, call. = FALSE)
       } else if (is.numeric(ref_samples) &&
                  !(all(ref_samples >= 1 & ref_samples <= ncol(x)))) {
-        stop("Subscript out of bound. 'ref_samples must be within [1, ncol(x)].")
+        stop("Subscript out of bound. 'ref_samples' must be within [1, ncol(x)].")
       } else {
         ref <- x[, ref_samples, drop = FALSE]
       }

@@ -1,5 +1,8 @@
 .poplin_reduce <- function(x, method = c("pca", "tsne"), ncomp = 2, ...) {
   method <- match.arg(method)
+  if (length(ncomp) != 1) {
+    stop("'ncomp' must be a positive integer.")
+  }
   switch(
     method,
     pca = .poplin_reduce_pca(x, ncomp = ncomp, ...),
@@ -11,7 +14,7 @@
   if (ncomp > min(dim(x))) {
     stop("'ncomp' must be <= min(dim(x))")
   }
-  call <- match.call()
+  fun_call <- match.call()
   xt <- t(x) # transpose matrix;
   if (center || scale) {
     xt <- scale(xt, center = center, scale = scale)
@@ -36,7 +39,7 @@
   attr(out, "origD") <- dim(x)
   attr(out, "centered") <- center
   attr(out, "scaled") <- scale
-  attr(out, "call") <- call
+  attr(out, "call") <- fun_call
   poplin.matrix.pca(out)
 }
 
@@ -76,7 +79,7 @@
   if (any(!is.finite(x))) {
     stop("infinite or missing values in 'x'.")
   }
-  call <- match.call()
+  fun_call <- match.call()
   xt <- t(x) # transpose matrix;
   if (normalize) {
     xt <- Rtsne::normalize_input(xt)
@@ -92,7 +95,40 @@
   attr(out, "eta") <- res$eta
   attr(out, "origD") <- dim(x)
   attr(out, "normalized") <- normalize
-  attr(out, "call") <- call
+  attr(out, "call") <- fun_call
   poplin.matrix.tsne(out)
+}
+
+
+.poplin_reduce_plsda <- function(x, y, ...) {
+  if (!requireNamespace("pls", quietly = TRUE)) {
+    stop("Package 'pls' is required. Please install and try again.")
+  }
+  if (!is.factor(y)) {
+    stop("'y' must be a factor.")
+  }
+  xt <- t(x)
+  fun_call <- match.call()
+  y_levels <- levels(y)
+  y_dummy <- model.matrix(~ y - 1)
+  colnames(y_dummy) <- gsub("^y", "", colnames(y_dummy))
+
+  d <- data.frame(y = I(y_dummy), x = I(xt))
+  fit <- pls::plsr(y ~ x, data = d, ...)
+  out <- pls::scores(fit)
+  ## pred_vals <- predict(fit, ncomp = fit$ncomp)
+
+  attr(out, "coefficients") <- fit$coefficients
+  attr(out, "loadings") <- fit$loadings
+  attr(out, "loadings.weights") <- fit$loadings.weights
+  attr(out, "Yscores") <- fit$Yscores
+  attr(out, "Yloadings") <- fit$Yloadings
+  attr(out, "projection") <- fit$projection
+  attr(out, "fitted.values") <- fitted(fit)
+  attr(out, "residuals") <- residuals(fit)
+  attr(out, "ncomp") <- fit$ncomp
+  attr(out, "method") <- fit$method
+  attr(out, "call") <- fun_call
+  poplin.matrix(out)
 }
 

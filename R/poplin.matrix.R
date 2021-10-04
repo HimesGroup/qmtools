@@ -3,8 +3,8 @@
 ## Just rename it to poplin.class and extend it for print functions
 #################################################################################
 
-poplin.matrix <- function(x, ...) {
-  class(x) <- c("poplin.matrix", "matrix")
+poplin.matrix <- function(x, tag, ...) {
+  class(x) <- c(tag, "poplin.matrix", "matrix")
   mostattributes(x) <- c(attributes(x), list(...))
   x
 }
@@ -73,14 +73,14 @@ cbind.poplin.matrix <- function(..., deparse.level = 1) {
   out
 }
 
-poplin.matrix.pca <- function(x, ...) {
-  x <- poplin.matrix(x)
-  class(x) <- c("poplin.matrix.pca", "poplin.matrix", "matrix")
-  x
-}
+## poplin.matrix.pca <- function(x, ...) {
+##   x <- poplin.matrix(x)
+##   class(x) <- c("poplin.matrix.pca", "poplin.matrix", "matrix")
+##   x
+## }
 
 ##' @export
-summary.poplin.matrix.pca <- function(x, ...) {
+summary.poplin.pca <- function(x, ...) {
   cat("Call:", deparse(attr(x, "call")), "\n")
   cat("Reduction method:", attr(x, "method"), "\n")
   cat("Input dimension: [",
@@ -99,7 +99,7 @@ summary.poplin.matrix.pca <- function(x, ...) {
 }
 
 ##' @export
-print.poplin.matrix.pca <- function(x, ...) {
+print.poplin.matrix <- function(x, ...) {
   at <- attributes(x)
   custom_at <- setdiff(names(at), c("dim", "dimnames"))
   for (i in custom_at) {
@@ -108,16 +108,16 @@ print.poplin.matrix.pca <- function(x, ...) {
   print.default(x)
 }
 
-##' @export
-poplin.matrix.tsne <- function(x, ...) {
-  x <- poplin.matrix(x)
-  class(x) <- c("poplin.matrix.tsne", "poplin.matrix", "matrix")
-  x
-}
+## ##' @export
+## poplin.tsne <- function(x, ...) {
+##   x <- poplin.matrix(x)
+##   class(x) <- c("poplin.matrix.tsne", "poplin.matrix", "matrix")
+##   x
+## }
 
 
 ##' @export
-summary.poplin.matrix.tsne <- function(x, ...) {
+summary.poplin.tsne <- function(x, ...) {
   cat("Call:", deparse(attr(x, "call")), "\n")
   cat("Reduction method:", attr(x, "method"), "\n")
   cat("Input dimension: [",

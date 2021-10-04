@@ -40,7 +40,7 @@
   attr(out, "centered") <- center
   attr(out, "scaled") <- scale
   attr(out, "call") <- fun_call
-  poplin.matrix.pca(out)
+  out <- poplin.matrix(out, "poplin.pca")
 }
 
 .pca_svd <- function(x, ncomp) {
@@ -96,7 +96,7 @@
   attr(out, "origD") <- dim(x)
   attr(out, "normalized") <- normalize
   attr(out, "call") <- fun_call
-  poplin.matrix.tsne(out)
+  poplin.matrix(out, "poplin.tsne")
 }
 
 
@@ -129,6 +129,6 @@
   attr(out, "ncomp") <- fit$ncomp
   attr(out, "method") <- fit$method
   attr(out, "call") <- fun_call
-  poplin.matrix(out)
+  poplin.matrix(out, "poplin.plsda")
 }
 

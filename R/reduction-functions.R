@@ -115,11 +115,13 @@
   y_dummy <- model.matrix(~ y - 1)
   colnames(y_dummy) <- gsub("^y", "", colnames(y_dummy))
 
-  d <- data.frame(y = I(y_dummy), x = I(xt))
+  d <- data.frame(y = I(y_dummy), x = I(xt), row.names = colnames(x))
   fit <- pls::plsr(y ~ x, data = d, ncomp = ncomp,
                    center = center, scale = scale, ...)
   out <- pls::scores(fit)
-  ## pred_vals <- predict(fit, ncomp = fit$ncomp)
+  colnames(out) <- paste0("Comp", 1:ncol(out))
+  pred_vals <- predict(fit, ncomp = fit$ncomp)
+  y_predicted <- colnames(pred_vals)[apply(pred_vals, 1, which.max)]
 
   attr(out, "method") <- paste0("PLS-DA (", fit$method, ")")
   attr(out, "origD.X") <- dim(x)
@@ -128,8 +130,10 @@
   attr(out, "coefficients") <- fit$coefficients
   attr(out, "loadings") <- fit$loadings
   attr(out, "loadings.weights") <- fit$loadings.weights
-  attr(out, "Yscores") <- fit$Yscores
-  attr(out, "Yloadings") <- fit$Yloadings
+  attr(out, "Y.observed") <- y
+  attr(out, "Y.predicted") <- y_predicted
+  attr(out, "Y.scores") <- fit$Yscores
+  attr(out, "Y.loadings") <- fit$Yloadings
   attr(out, "projection") <- fit$projection
   attr(out, "fitted.values") <- fitted(fit)
   attr(out, "residuals") <- residuals(fit)

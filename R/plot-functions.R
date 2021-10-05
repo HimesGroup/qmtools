@@ -1,12 +1,12 @@
 ##' @export
 ##' @importFrom ggplot2 ggplot aes aes_string geom_point geom_text stat_ellipse
 ##' @importFrom ggplot2 xlab ylab ggtitle theme_bw theme element_blank
-plot_reduced <- function(x, ...) {
-  UseMethod("plot_reduced")
+poplin_plot <- function(x, ...) {
+  UseMethod("poplin_plot")
 }
 
 ##' @export
-plot_reduced.default <- function(x, comp = c(1, 2), group,
+poplin_plot.default <- function(x, comp = c(1, 2), group,
                                 label = FALSE, ellipse = FALSE,
                                 title = NULL, legend = TRUE) {
   if (max(comp) > ncol(x) || length(comp) != 2) {
@@ -18,16 +18,14 @@ plot_reduced.default <- function(x, comp = c(1, 2), group,
   if (is.null(colnames(x))) {
     stop("colnames(x) must be non-NULL.")
   } else {
-    cols <- colnames(x)[comp]
+    comp_names <- colnames(x)[comp]
   }
   if (missing(group)) {
-    p <- ggplot(x, aes_string(x = cols[1], y = cols[2])) +
-      geom_point()
+    p <- ggplot(x, aes_string(x = comp_names[1], y = comp_names[2]))
   } else {
     x$group <- factor(group, levels = unique(group))
-    p <- ggplot(x, aes_string(x = cols[1], y = cols[2], group = "group",
-                              col = "group", fill = "group")) +
-      geom_point()
+    p <- ggplot(x, aes_string(x = comp_names[1], y = comp_names[2],
+                              group = "group", col = "group", fill = "group"))
   }
   if (ellipse) {
     p <- p + stat_ellipse(geom = "polygon", alpha = 0.1)
@@ -38,6 +36,8 @@ plot_reduced.default <- function(x, comp = c(1, 2), group,
     } else {
       p <- p + geom_text(aes(label = rownames(x)), show.legend = FALSE)
     }
+  } else {
+    p <- p + geom_point()
   }
   if (!is.null(title)) {
     p <- p + ggtitle(title)
@@ -50,24 +50,23 @@ plot_reduced.default <- function(x, comp = c(1, 2), group,
 }
 
 ##' @export
-plot_reduced.poplin.matrix.pca <- function(x, comp = c(1, 2), group,
-                                                  label = FALSE, ellipse = FALSE,
-                                                  title = NULL, legend = TRUE) {
+poplin_plot.poplin.pca <- function(x, comp = c(1, 2), group,
+                                    label = FALSE, ellipse = FALSE,
+                                    title = NULL, legend = TRUE) {
   if (max(comp) > ncol(x) || length(comp) != 2) {
     stop("Choose two components within 1:ncol(x).")
   }
   comp <- sort(comp)
+  comp_names <- colnames(x)[comp]
   R2 <- attr(x, "R2") # extract before conversion
   x <- as.data.frame(x)
 
   if (missing(group)) {
-    p <- ggplot(x, aes(x = PC1, y = PC2)) +
-      geom_point()
+    p <- ggplot(x, aes_string(x = comp_names[1], y = comp_names[2]))
   } else {
     x$group <- factor(group, levels = unique(group))
-    p <- ggplot(x, aes(x = PC1, y = PC2, group = group, col = group,
-                       fill = group)) +
-      geom_point()
+    p <- ggplot(x, aes_string(x = comp_names[1], y = comp_names[2],
+                              group = "group", col = "group", fill = "group"))
   }
   if (ellipse) {
     p <- p + stat_ellipse(geom = "polygon", alpha = 0.1)
@@ -78,16 +77,55 @@ plot_reduced.poplin.matrix.pca <- function(x, comp = c(1, 2), group,
     } else {
       p <- p + geom_text(aes(label = rownames(x)), show.legend = FALSE)
     }
+  } else {
+    p <- p + geom_point()
   }
   if (!is.null(title)) {
     p <- p + ggtitle(title)
   }
   x_var_exp <- R2[comp[1]] * 100
   y_var_exp <- R2[comp[2]] * 100
-  xlabel <- paste0(colnames(x)[comp[1]], " (",
-                   prettyNum(x_var_exp, digits = 4), "%)")
-  ylabel <- paste0(colnames(x)[comp[1]], " (",
-                   prettyNum(y_var_exp, digits = 4), "%)")
+  xlabel <- paste0(comp_names[1], " (", prettyNum(x_var_exp, digits = 4), "%)")
+  ylabel <- paste0(comp_names[2], " (", prettyNum(y_var_exp, digits = 4), "%)")
+  p <- p + xlab(xlabel) + ylab(ylabel) + theme_bw()
+  if (legend) {
+    p + theme(legend.title = element_blank())
+  } else {
+    p + theme(legend.position = "none")
+  }
+}
+
+##' @export
+poplin_plot.poplin.plsda <- function(x, comp = c(1, 2),
+                                     label = FALSE, ellipse = FALSE,
+                                     title = NULL, legend = TRUE) {
+  if (max(comp) > ncol(x) || length(comp) != 2) {
+    stop("Choose two components within 1:ncol(x).")
+  }
+  comp <- sort(comp)
+  comp_names <- colnames(x)[comp] 
+  explvar <- attr(x, "explvar")
+  group <- attr(x, "Y.observed")
+  x <- as.data.frame(x)
+  x$group <- group
+  p <- ggplot(x, aes_string(x = comp_names[1], y = comp_names[2],
+                            group = "group", col = "group", fill = "group"))
+  if (ellipse) {
+    p <- p + stat_ellipse(geom = "polygon", alpha = 0.1)
+  }
+  if (label) {
+    if (is.null(rownames(x))) {
+      stop("rownames(x) must be non-NULL if label = TRUE.")
+    } else {
+      p <- p + geom_text(aes(label = rownames(x)), show.legend = FALSE)
+    }
+  } else {
+    p <- p + geom_point()
+  }
+  x_var_exp <- explvar[comp[1]]
+  y_var_exp <- explvar[comp[2]]
+  xlabel <- paste0(comp_names[1], " (", prettyNum(x_var_exp, digits = 4), "%)")
+  ylabel <- paste0(comp_names[2], " (", prettyNum(y_var_exp, digits = 4), "%)")
   p <- p + xlab(xlabel) + ylab(ylabel) + theme_bw()
   if (legend) {
     p + theme(legend.title = element_blank())

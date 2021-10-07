@@ -1,20 +1,29 @@
 ##' @export
 ##' @importFrom ggplot2 ggplot aes aes_string geom_point geom_text stat_ellipse
 ##' @importFrom ggplot2 xlab ylab ggtitle theme_bw theme element_blank
+##' @importFrom ggplot2 scale_color_manual scale_fill_manual scale_shape_manual
 poplin_plot <- function(x, ...) {
   UseMethod("poplin_plot")
 }
 
 ##' @export
 poplin_plot.default <- function(x, comp = c(1, 2), group,
-                                label = FALSE, ellipse = FALSE,
+                                group_col = NULL,
+                                point_size = 1.5,
+                                point_shape_by_group = FALSE,
+                                label = FALSE, label_size = 3.88,
+                                ellipse = FALSE,
                                 title = NULL, legend = TRUE) {
   if (max(comp) > ncol(x) || length(comp) != 2) {
     stop("Choose two components within 1:ncol(x).")
   }
+  if (!is.null(group_col)) {
+    if (!missing(group) && length(group_col) != length(unique(group))) {
+      stop("'group_col' must have the same length of unique values in 'group'.")
+    }
+  }
   comp <- sort(comp)
   x <- as.data.frame(x)
-
   if (is.null(colnames(x))) {
     stop("colnames(x) must be non-NULL.")
   } else {
@@ -24,20 +33,48 @@ poplin_plot.default <- function(x, comp = c(1, 2), group,
     p <- ggplot(x, aes_string(x = comp_names[1], y = comp_names[2]))
   } else {
     x$group <- factor(group, levels = unique(group))
-    p <- ggplot(x, aes_string(x = comp_names[1], y = comp_names[2],
-                              group = "group", col = "group", fill = "group"))
+    if (isFALSE(point_shape_by_group)) {
+      p <- ggplot(x, aes_string(x = comp_names[1], y = comp_names[2],
+                                group = "group", col = "group", fill = "group"))
+    } else {
+      p <- ggplot(x, aes_string(x = comp_names[1], y = comp_names[2],
+                                group = "group", col = "group", fill = "group",
+                                shape = "group"))
+      if (!isTRUE(point_shape_by_group)) {
+        if (length(point_shape_by_group) == length(unique(group))) {
+          p <- p + scale_shape_manual(values = point_shape_by_group)
+        } else {
+            stop("non-logical values of 'point_shape_by_group' must have ",
+                 "the same length of unique values in 'group'.")
+        }
+      }
+      ## if (!isTRUE(point_shape_by_group) &&
+      ##     length(point_shape_by_group) == length(unique(group))) {
+      ##   p + scale_shape_manual(values = point_shape_by_group)
+      ## } else if (length(point_shape_by_group) != length(unique(group))) {
+      ##   stop("non-logical values of 'point_shape_by_group' must have",
+      ##        "the same length of unique values in 'group'.")
+      ## }
+    }
+    if (!is.null(group_col)) {
+      p <- p + scale_color_manual(values = group_col)
+    }
   }
   if (ellipse) {
     p <- p + stat_ellipse(geom = "polygon", alpha = 0.1)
+    if (!is.null(group_col)) {
+      p <- p + scale_fill_manual(values = group_col)
+    }
   }
   if (label) {
     if (is.null(rownames(x))) {
       stop("rownames(x) must be non-NULL if label = TRUE.")
     } else {
-      p <- p + geom_text(aes(label = rownames(x)), show.legend = FALSE)
+      p <- p + geom_text(aes(label = rownames(x)), show.legend = FALSE,
+                         size = label_size)
     }
   } else {
-    p <- p + geom_point()
+    p <- p + geom_point(size = point_size)
   }
   if (!is.null(title)) {
     p <- p + ggtitle(title)
@@ -51,34 +88,64 @@ poplin_plot.default <- function(x, comp = c(1, 2), group,
 
 ##' @export
 poplin_plot.poplin.pca <- function(x, comp = c(1, 2), group,
-                                    label = FALSE, ellipse = FALSE,
-                                    title = NULL, legend = TRUE) {
+                                   group_col = NULL,
+                                   point_size = 1.5,
+                                   point_shape_by_group = FALSE,
+                                   label = FALSE, label_size = 3.88,
+                                   ellipse = FALSE,
+                                   title = NULL, legend = TRUE) {
   if (max(comp) > ncol(x) || length(comp) != 2) {
     stop("Choose two components within 1:ncol(x).")
+  }
+  if (!is.null(group_col)) {
+    if (!missing(group) && length(group_col) != length(unique(group))) {
+      stop("'group_col' must have the same length of unique values in 'group'.")
+    }
   }
   comp <- sort(comp)
   comp_names <- colnames(x)[comp]
   R2 <- attr(x, "R2") # extract before conversion
   x <- as.data.frame(x)
-
   if (missing(group)) {
     p <- ggplot(x, aes_string(x = comp_names[1], y = comp_names[2]))
   } else {
     x$group <- factor(group, levels = unique(group))
-    p <- ggplot(x, aes_string(x = comp_names[1], y = comp_names[2],
-                              group = "group", col = "group", fill = "group"))
+    if (isFALSE(point_shape_by_group)) {
+      p <- ggplot(x, aes_string(x = comp_names[1], y = comp_names[2],
+                                group = "group", col = "group", fill = "group"))
+    } else {
+      p <- ggplot(x, aes_string(x = comp_names[1], y = comp_names[2],
+                                group = "group", col = "group", fill = "group",
+                                shape = "group"))
+      if (!isTRUE(point_shape_by_group)) {
+        if (length(point_shape_by_group) == length(unique(group))) {
+          p <- p + scale_shape_manual(values = point_shape_by_group)
+        } else {
+          stop("non-logical values of 'point_shape_by_group' must have ",
+               "the same length of unique values in 'group'.")
+        }
+      }
+    }
+    if (!is.null(group_col)) {
+      p <- p + scale_color_manual(values = group_col)
+
+    }
   }
   if (ellipse) {
     p <- p + stat_ellipse(geom = "polygon", alpha = 0.1)
+    if (!is.null(group_col)) {
+      p <- p + scale_fill_manual(values = group_col)
+    }
   }
   if (label) {
     if (is.null(rownames(x))) {
       stop("rownames(x) must be non-NULL if label = TRUE.")
     } else {
-      p <- p + geom_text(aes(label = rownames(x)), show.legend = FALSE)
+      p <- p + geom_text(aes(label = rownames(x)), show.legend = FALSE,
+                         size = label_size)
     }
   } else {
-    p <- p + geom_point()
+    p <- p + geom_point(size = point_size)
   }
   if (!is.null(title)) {
     p <- p + ggtitle(title)
@@ -97,30 +164,64 @@ poplin_plot.poplin.pca <- function(x, comp = c(1, 2), group,
 
 ##' @export
 poplin_plot.poplin.plsda <- function(x, comp = c(1, 2),
-                                     label = FALSE, ellipse = FALSE,
+                                     group_col = NULL,
+                                     point_size = 1.5,
+                                     point_shape_by_group = FALSE,
+                                     label = FALSE, label_size = 3.88,
+                                     ellipse = FALSE,
                                      title = NULL, legend = TRUE) {
   if (max(comp) > ncol(x) || length(comp) != 2) {
     stop("Choose two components within 1:ncol(x).")
   }
   comp <- sort(comp)
-  comp_names <- colnames(x)[comp] 
+  comp_names <- colnames(x)[comp]
   explvar <- attr(x, "explvar")
   group <- attr(x, "Y.observed")
+  if (!is.null(group_col)) {
+    if (length(group_col) != length(unique(group))) {
+      stop("'group_col' must have the same length of ",
+           "unique values in 'attr(x, \"Y.observed\")'.")
+    }
+  }
   x <- as.data.frame(x)
   x$group <- group
-  p <- ggplot(x, aes_string(x = comp_names[1], y = comp_names[2],
-                            group = "group", col = "group", fill = "group"))
+  if (isFALSE(point_shape_by_group)) {
+    p <- ggplot(x, aes_string(x = comp_names[1], y = comp_names[2],
+                              group = "group", col = "group", fill = "group"))
+  } else {
+    p <- ggplot(x, aes_string(x = comp_names[1], y = comp_names[2],
+                              group = "group", col = "group", fill = "group",
+                              shape = "group"))
+    if (!isTRUE(point_shape_by_group)) {
+      if (length(point_shape_by_group) == length(unique(group))) {
+        p <- p + scale_shape_manual(values = point_shape_by_group)
+      } else {
+        stop("non-logical values of 'point_shape_by_group' must have ",
+             "the same length of unique values in 'attr(x, \"Y.observed\")'.")
+      }
+    }
+  }
+  if (!is.null(group_col)) {
+    p <- p + scale_color_manual(values = group_col)
+  }
   if (ellipse) {
     p <- p + stat_ellipse(geom = "polygon", alpha = 0.1)
+    if (!is.null(group_col)) {
+      p <- p + scale_fill_manual(values = group_col)
+    }
   }
   if (label) {
     if (is.null(rownames(x))) {
       stop("rownames(x) must be non-NULL if label = TRUE.")
     } else {
-      p <- p + geom_text(aes(label = rownames(x)), show.legend = FALSE)
+      p <- p + geom_text(aes(label = rownames(x)), show.legend = FALSE,
+                         size = label_size)
     }
   } else {
-    p <- p + geom_point()
+    p <- p + geom_point(size = point_size)
+  }
+  if (!is.null(title)) {
+    p <- p + ggtitle(title)
   }
   x_var_exp <- explvar[comp[1]]
   y_var_exp <- explvar[comp[2]]
@@ -259,3 +360,5 @@ plot_cor <- function(x,
   m <- cor(x, use = use, method = method)
   ggheatmap(m, showticklabels = showticklabels, ...)
 }
+
+

@@ -119,7 +119,7 @@
   fit <- pls::plsr(y ~ x, data = d, ncomp = ncomp,
                    center = center, scale = scale, ...)
   out <- pls::scores(fit)
-  colnames(out) <- paste0("Comp", 1:ncol(out))
+  ## colnames(out) <- paste0("Comp", 1:ncol(out))
   pred_vals <- predict(fit, ncomp = fit$ncomp)
   y_predicted <- colnames(pred_vals)[apply(pred_vals, 1, which.max)]
 

@@ -50,7 +50,7 @@
 .poplin_impute_knn <- function(x, by = c("feature", "sample"), ...) {
   if (!requireNamespace("VIM", quietly = TRUE)) {
     stop("Package 'VIM' is required. Please install and try again.")
-  } 
+  }
   by <- match.arg(by)
   if (by == "feature") {
     out <- VIM::kNN(x, ...)[, 1:ncol(x)]

@@ -3,7 +3,7 @@
 .poplin_annotate <- function(x, poplin_in, mz_var, rt_var, h, ref_samples = NULL,
                              show_dendro = FALSE,
                              cor_method = c("pearson", "spearman"),
-                             cor_cutoff = 0.6, ...) {
+                             cor_cutoff = 0.5, ...) {
   if (!requireNamespace("InterpretMSSpectrum", quietly = TRUE)) {
     stop("Package 'InterpretMSSpectrum' is required. ",
          "Please install and try again.")
@@ -16,13 +16,16 @@
     return(plot(fit))
   }
   rt_group <- cutree(fit, h = h)
-  rowData(x)$rt_group <- rt_group
   if (missing(poplin_in)) {
     int_mat <- assay(x, "raw")
   } else {
     int_mat <- .verify_and_extract_input(x, poplin_in)
   }
-  int_mat <- poplin_impute(int_mat, method = "halfmin") # temporary imputation
+
+  if (anyNA(int_mat)) {
+    stop("FINDMAIN annotation cannot be run with missing values. ",
+         "Please impute data first.")
+  }
 
   if (is.null(ref_samples)) {
     ref_samples <- colnames(int_mat)
@@ -61,10 +64,13 @@
         m <- int_mat[row_idx, ]
         graph_group <- .cor_igraph(m, cor_method = cor_method,
                                  cor_cutoff = cor_cutoff)
-        d <- data.frame(id = names(graph_group), rt_group = i,
-                        graph_group = graph_group)
+        ## d <- data.frame(id = names(graph_group), rt_group = i,
+        ##                 graph_group = graph_group)
+        d <- data.frame(rt_group = i, graph_group = graph_group)
       } else {
-        d <- data.frame(id = rownames(x)[row_idx], rt_group = i, graph_group = 1,
+        ## d <- data.frame(id = rownames(x)[row_idx], rt_group = i, graph_group = 1,
+        ##                 row.names = rownames(x)[row_idx])
+        d <- data.frame(rt_group = i, graph_group = 1,
                         row.names = rownames(x)[row_idx])
       }
       d$cor_group <- paste0(d$rt_group, "_", d$graph_group)
@@ -75,20 +81,14 @@
     group_rle <- rle(graph_res$cor_group)
     graph_res$feature_group <- rep(seq_along(group_rle$lengths), group_rle$lengths)
   }
-  graph_res
-  row_dat <- rowData(x)
-  row_dat$tmp_key_x <- rownames(x)
-  row_dat <- merge(row_dat, graph_res,
-                   by.x = c("tmp_key_x", "rt_group"),
-                   by.y = c("id", "rt_group"))
-  row_dat$int_med <- int_med
-
-  row_datlist <- split(row_dat, row_dat$feature_group)
-  lapply(row_datlist, function(y) {
-    y_sub <- y[, c(mz_var, "int_med")]
-    colnames(y_sub) <- c("mz", "intensity")
-    InterpretMSSpectrum::findMAIN(y_sub, ...)
-  })
+  fdat <- rowData(x)
+  fdat <- merge(fdat, graph_res, by = 0) ## merge by rownames
+  fdat$int_med <- int_med
+  fdatlist <- split(fdat, fdat$feature_group)
+  findmain_res <- lapply(fdatlist, function(y) .do_findmain(y, mz_var))
+  out <- do.call(rbind, findmain_res)
+  rownames(out) <- out$Row.names
+  subset(out, select = -c(Row.names, graph_group, int_med))
 }
 
 .cor_igraph <- function(m, cor_method, cor_cutoff) {
@@ -100,8 +100,14 @@
 }
 
 .do_findmain <- function(m, mz_var, ...) {
-  m_sub <- m[, c(mz_var, "int_med")] ## must specify columns to return findmain score (don't know why...)
-  colnames(m_sub) <- c("mz", "intensity")
-  InterpretMSSpectrum::findMAIN(m_sub, ...)
+  m_sub <- m[, c(mz_var, "int_med")] ## Must specify columns to return FINDMAIN score (don't know why...)
+  colnames(m_sub)[1] <- c("mz")
+  if (nrow(m_sub) == 1) {
+    ## Single-line spectrum; annotation would be pointless
+    res <- data.frame(m_sub, isogr = NA, iso = NA, charge = NA, adduct = NA,
+                      ppm = NA, label = NA)
+  } else {
+    res <- InterpretMSSpectrum::findMAIN(m_sub, ...)[[1]] # rank 1 result
+  }
+  merge(m, subset(res, select = -int_med), by.x = mz_var, by.y = "mz")
 }
-

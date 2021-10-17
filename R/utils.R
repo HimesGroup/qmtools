@@ -48,3 +48,4 @@
   poplin_reduced(x, poplin_out) <- fun(m, ...)
   x
 }
+

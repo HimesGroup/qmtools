@@ -8,14 +8,8 @@
     stop("Package 'InterpretMSSpectrum' is required. ",
          "Please install and try again.")
   }
-  ## Grouping peaks based on their retention time using hierarchical clustering
-  rt <- rowData(x)[, rt_var]
-  m <- dist(rt, method = "manhattan") # use manhattan to make interpretable
-  fit <- hclust(m)
-  if (show_dendro) {
-    return(plot(fit))
-  }
-  rt_group <- cutree(fit, h = h)
+
+  ## Check input intensity matrix
   if (missing(poplin_in)) {
     int_mat <- assay(x, "raw")
   } else {
@@ -44,8 +38,23 @@
     }
   }
   int_mat <- int_mat[, ref_samples, drop = FALSE]
+
+  ## Take median intensity across the ref_samples
   int_med <- apply(int_mat, 1, median, na.rm = TRUE)
 
+  ## Grouping peaks based on their retention time using hierarchical clustering
+  rt <- rowData(x)[, rt_var]
+  m <- dist(rt, method = "manhattan") # use manhattan to make interpretable
+  fit <- hclust(m)
+  if (show_dendro) {
+    return(plot(fit))
+  }
+  rt_group <- cutree(fit, h = h)
+
+  ## Extract feature information
+  fdat <- as.data.frame(rowData(x)) # convert due to split function later
+
+  ## Perform correlation analysis
   if (cor_cutoff < 1) {
     if (!requireNamespace("igraph", quietly = TRUE)) {
       stop("Package 'igraph' is required. ",
@@ -80,15 +89,18 @@
     graph_res <- with(graph_res, graph_res[order(rt_group, graph_group), ])
     group_rle <- rle(graph_res$cor_group)
     graph_res$feature_group <- rep(seq_along(group_rle$lengths), group_rle$lengths)
+    fdat <- merge(fdat, graph_res, by = 0) ## merge by rownames
+  } else {
+    fdat$feature_group <- fdat$rt_group <- rt_group
+    fdat$graph_group <- NA
+    fdat$Row.names <- rownames(fdat)
   }
-  fdat <- rowData(x)
-  fdat <- merge(fdat, graph_res, by = 0) ## merge by rownames
   fdat$int_med <- int_med
   fdatlist <- split(fdat, fdat$feature_group)
   findmain_res <- lapply(fdatlist, function(y) .do_findmain(y, mz_var))
   out <- do.call(rbind, findmain_res)
   rownames(out) <- out$Row.names
-  subset(out, select = -c(Row.names, graph_group, int_med))
+  DataFrame(subset(out, select = -c(Row.names, graph_group, int_med)))
 }
 
 .cor_igraph <- function(m, cor_method, cor_cutoff) {

@@ -269,3 +269,9 @@ setGeneric(
   "poplin_reduce_tsne",
   function(x, ...) standardGeneric("poplin_reduce_tsne")
 )
+
+##' @export
+setGeneric(
+  "poplin_reduce_plsda",
+  function(x, ...) standardGeneric("poplin_reduce_plsda")
+)

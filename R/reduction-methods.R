@@ -50,5 +50,23 @@ setMethod(
   }
 )
 
+setMethod(
+  "poplin_reduce_plsda",
+  "matrix",
+  function(x, ...) {
+    .poplin_impute_plsda(x, ...)
+  }
+)
+
+setMethod(
+  "poplin_reduce_plsda",
+  "poplin",
+  function(x, poplin_in, poplin_out, ...) {
+    .reduced_extract_and_assign(x, .poplin_reduce_plsda,
+                                poplin_in, poplin_out)
+  }
+)
+
+
 
 

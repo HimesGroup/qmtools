@@ -7,7 +7,7 @@
     method,
     pca = .poplin_reduce_pca(x, ncomp = ncomp, ...),
     tsne = .poplin_reduce_tsne(x, ncomp = ncomp, ...),
-    plsda = .poplin_reduce_tsne(x, y = y, ncomp = ncomp, ...)
+    plsda = .poplin_reduce_plsda(x, y = y, ncomp = ncomp, ...)
   )
 }
 

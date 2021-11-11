@@ -109,7 +109,7 @@ setGeneric(
 ##'@export
 setGeneric(
   "poplin_normalize",
-  function(x, normalizer, ...) standardGeneric("poplin_normalize")
+  function(x, method, ...) standardGeneric("poplin_normalize")
 )
 
 ##' @export

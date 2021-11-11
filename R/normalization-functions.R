@@ -1,19 +1,19 @@
 .poplin_normalize <- function(x,
-                              normalizer = c("pqn",  "sum", "mean", "median",
+                              method = c("pqn",  "sum", "mean", "median",
                                              "mad", "euclidean",
                                              "cyclicloess", # sample-based
                                              "auto", "range", "pareto",
                                              "vast", "level", # metabolite-based
                                              "vsn"),
            ...) {
-    normalizer <- match.arg(normalizer)
-    .normalize_fun_dispatch(x, normalizer = normalizer, ...)
+    method <- match.arg(method)
+    .normalize_fun_dispatch(x, method = method, ...)
 }
 
 
-.normalize_fun_dispatch <- function(x, normalizer, ...) {
+.normalize_fun_dispatch <- function(x, method, ...) {
   switch(
-    normalizer,
+    method,
     pqn = .poplin_normalize_pqn(x = x, ...),
     sum = .poplin_normalize_sum(x = x, ...),
     mean = .poplin_normalize_mean(x = x, ...),
@@ -89,46 +89,46 @@
 ## other spectral function normalization methods
 .poplin_normalize_sum <- function(x, restrict = FALSE, rescale = FALSE) {
   .normalize_columns(
-    x = x, restrict = restrict, rescale = rescale, normalizer = "sum"
+    x = x, restrict = restrict, rescale = rescale, method = "sum"
   )
 }
 
 .poplin_normalize_mean <- function(x, restrict = FALSE, rescale = FALSE) {
   .normalize_columns(
-    x = x, restrict = restrict, rescale = rescale, normalizer = "mean"
+    x = x, restrict = restrict, rescale = rescale, method = "mean"
   )
 }
 
 .poplin_normalize_median <- function(x, restrict = FALSE, rescale = FALSE) {
   .normalize_columns(
-    x = x, restrict = restrict, rescale = rescale, normalizer = "median"
+    x = x, restrict = restrict, rescale = rescale, method = "median"
   )
 }
 
 .poplin_normalize_mad <- function(x, restrict = FALSE, rescale = FALSE) {
   .normalize_columns(
-    x = x, restrict = restrict, rescale = rescale, normalizer = "mad"
+    x = x, restrict = restrict, rescale = rescale, method = "mad"
   )
 }
 
 .poplin_normalize_euclidean <- function(x, restrict = FALSE, rescale = FALSE) {
   .normalize_columns(
-    x = x, restrict = restrict, rescale = rescale, normalizer = "euclidean"
+    x = x, restrict = restrict, rescale = rescale, method = "euclidean"
   )
 }
 
 ##' @importFrom stats mad
-.normalize_columns <- function(x, normalizer = c("sum", "mean", "median",
+.normalize_columns <- function(x, method = c("sum", "mean", "median",
                                                  "mad", "euclidean"),
                                restrict = FALSE, rescale = FALSE) {
-  normalizer <- match.arg(normalizer)
+  method <- match.arg(method)
   if (restrict) {
     x_sub <- na.omit(x)
   } else {
     x_sub <- x
   }
   scale_factors <- switch(
-    normalizer,
+    method,
     sum = colSums(x_sub, na.rm = TRUE),
     mean = colMeans(x_sub, na.rm = TRUE),
     median = apply(x_sub, 2, median, na.rm = TRUE),
@@ -146,12 +146,12 @@
 ## Cyclic LOESS normalization (taken from limma package 09/13/2021)
 ################################################################################
 .poplin_normalize_cyclicloess <- function(x, pre_log2, weights = NULL, span = 0.7,
-                                         iterations = 3, method = "fast") {
+                                         iterations = 3, type = "fast") {
   if (pre_log2) {
     x <- log2(x)
   }
   .normalizeCyclicLoess(x, weights = weights, span = span,
-                        iterations = iterations, method = method)
+                        iterations = iterations, type = type)
 }
 
 ##	LOESS FUNCTIONS
@@ -275,16 +275,16 @@
 
 
 .normalizeCyclicLoess <- function(x, weights = NULL, span = 0.7,
-                                  iterations = 3, method = "fast")
+                                  iterations = 3, type = "fast")
 	## Cyclic loess normalization of columns of matrix
 	## incorporating probes weights.
 	## Yunshun (Andy) Chen and Gordon Smyth
 	## 14 April 2010.  Last modified 24 Feb 2012.
 {
 	x <- as.matrix(x)
-	method <- match.arg(method, c("fast","affy","pairs"))
+	type <- match.arg(type, c("fast","affy","pairs"))
 	n <- ncol(x)
-	if (method == "pairs") {
+	if (type == "pairs") {
 		for (k in 1:iterations)
       for (i in 1:(n - 1))
         for (j in (i + 1):n) {
@@ -295,7 +295,7 @@
           x[, j] <- x[, j] - f / 2		
         }
 	}
-	if (method == "fast") {
+	if (type == "fast") {
 		for (k in 1:iterations) {
 			a <- rowMeans(x, na.rm = TRUE)
 			for (i in 1:n) {
@@ -305,7 +305,7 @@
 			}
 		}
 	}
-	if (method == "affy") {
+	if (type == "affy") {
 		g <- nrow(x)
 		for (k in 1:iterations) {
 			adjustment <- matrix(0, g, n)

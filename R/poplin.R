@@ -9,13 +9,6 @@ poplin <- function(intensity,  ...) {
   .se_to_poplin(se)
 }
 
-.get_missing_count <- function(x) {
-  list(
-    per_sample = apply(x, 2, function(x) sum(is.na(x))),
-    per_feature = apply(x, 1, function(x) sum(is.na(x)))
-  )
-}
-
 ##' @importFrom S4Vectors DataFrame SimpleList
 ##' @importClassesFrom S4Vectors DataFrame
 ##' @importFrom methods new
@@ -29,14 +22,12 @@ poplin <- function(intensity,  ...) {
     S4Vectors:::disableValidity(TRUE)
     on.exit(S4Vectors:::disableValidity(old_validity))
   }
-  out <- new(
+  new(
     "poplin",
     se,
     poplinData = new("DFrame", nrows = nrow(se)),
     poplinReducedData = new("DFrame", nrows = ncol(se))
   )
-  missingCount(out) <- .get_missing_count(assay(out))
-  out
 }
 
 ##' @exportMethod coerce

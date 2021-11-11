@@ -1,18 +1,6 @@
 ## It is a bad practice to use {} in generic as it triggers a special case that
 ## is more expensive, and generally best avoided.
 
-##' @export
-setGeneric(
-  "missingCount",
-  function(x) standardGeneric("missingCount")
-)
-
-##' @export
-setGeneric(
-  "missingCount<-",
-  function(x, value) standardGeneric("missingCount<-")
-)
-
 #################################################################################
 ## poplinData and poplinReducedData
 #################################################################################

@@ -13,9 +13,7 @@ setMethod("[", c("poplin", "ANY", "ANY"), function(x, i, j, ..., drop = TRUE) {
     poplinData(x) <- .subset_columns(x, jj, get_slot = poplinData)
     poplinReducedData(x) <- poplinReducedData(x)[jj, , drop = FALSE]
   }
-  out <- callNextMethod()
-  missingCount(out) <- .get_missing_count(assay(out))
-  out
+  callNextMethod()
 })
 
 ##' @export
@@ -77,8 +75,5 @@ setReplaceMethod(
       poplinData(x) <- poplinData_left
       poplinReducedData(x) <- poplinReducedData_left
     }
-
-    out <- callNextMethod()
-    missingCount(out) <- .get_missing_count(assay(out))
-    out
+    callNextMethod()
 })

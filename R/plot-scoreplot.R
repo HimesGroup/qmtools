@@ -96,6 +96,7 @@ poplin_scoreplot.default <- function(x, comp = c(1, 2), group,
 ##' @export
 poplin_scoreplot.poplin.pca <- function(x, comp = c(1, 2),
                                         group, group_col = NULL,
+                                        xlab = NULL, ylab = NULL,
                                         ...) {
   if (max(comp) > ncol(x) || length(comp) != 2) {
     stop("Choose only two components within 1:ncol(x).")
@@ -122,13 +123,15 @@ poplin_scoreplot.poplin.pca <- function(x, comp = c(1, 2),
     )
   }
   poplin_scoreplot.default(x = x, comp = comp, group = group,
-                           group_col = group_col, ...)
+                           group_col = group_col,
+                           xlab = xlab, ylab = ylab, ...)
 }
 
 ##' @export
 poplin_scoreplot.poplin.plsda <- function(x, comp = c(1, 2),
                                           group = attr(x, "Y.observed"),
-                                          group_col = NULL, ...) {
+                                          group_col = NULL,
+                                          xlab = NULL, ylab = NULL, ...) {
   if (max(comp) > ncol(x) || length(comp) != 2) {
     stop("Choose only two components within 1:ncol(x).")
   }
@@ -153,5 +156,6 @@ poplin_scoreplot.poplin.plsda <- function(x, comp = c(1, 2),
       prettyNum(attr(x, "explvar")[comp[2]], digits = 4), "%)")
   }
   poplin_scoreplot.default(x = x, comp = comp, group = group,
-                           group_col = group_col, ...)
+                           group_col = group_col,
+                           xlab = xlab, ylab = ylab, ...)
 }

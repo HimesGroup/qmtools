@@ -47,26 +47,32 @@
   t(out)
 }
 
-##' @importFrom VIM kNN
 .poplin_impute_knn <- function(x, by = c("feature", "sample"), ...) {
+  if (!requireNamespace("VIM", quietly = TRUE)) {
+    stop("Package 'VIM' is required. Please install and try again.")
+  }
   by <- match.arg(by)
   if (by == "feature") {
-    out <- kNN(x, ...)[, 1:ncol(x)]
+    out <- VIM::kNN(x, ...)[, 1:ncol(x)]
     ## VIM package internally converts x as data.table, which drops rownames
     rownames(out) <- rownames(x)
   } else {
-    out <- t(kNN(t(x), ...))[1:nrow(x), ]
+    out <- t(VIM::kNN(t(x), ...))[1:nrow(x), ]
     colnames(out) <- colnames(x)
   }
-  out
+  as.matrix(out)
 }
 
-##' @importFrom missMDA imputePCA
 .poplin_impute_pca <- function(x, ...) {
-  imputePCA(x, ...)$completeObs
+  if (!requireNamespace("pcaMethods", quietly = TRUE)) {
+    stop("Package 'pcaMethods' is required. Please install and try again.")
+  } 
+  t(pcaMethods::pca(t(x), method = "bpca", ...)@completeObs)
 }
 
-##' @importFrom missForest missForest
 .poplin_impute_randomforest <- function(x, ...) {
-  t(missForest(t(x), ...)$ximp)
+  if (!requireNamespace("missForest", quietly = TRUE)) {
+    stop("Package 'missForest' is required. Please install and try again.")
+  } 
+  t(missForest::missForest(t(x), ...)$ximp)
 }

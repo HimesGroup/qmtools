@@ -4,7 +4,6 @@
 setClass(
   "poplin",
   slots = c(
-    missingCount = "list",
     poplinData = "DataFrame",
     poplinReducedData = "DataFrame"
   ),

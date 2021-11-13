@@ -11,7 +11,7 @@ setMethod(
   "poplin",
   function(x, method, poplin_in, poplin_out, ...) {
     m <- .verify_and_extract_input(x, poplin_in)
-    poplin_data(x, poplin_out) <- .poplin_impute(x, method = method, ...)
+    poplin_data(x, poplin_out) <- .poplin_impute(m, method = method, ...)
     x
   }
 )
@@ -27,7 +27,7 @@ setMethod(
 setMethod(
   "poplin_impute_knn",
   "poplin",
-  function(x, ...) {
+  function(x, poplin_in, poplin_out, ...) {
     .poplin_extract_and_assign(x, .poplin_impute_knn,
                                poplin_in, poplin_out)
   }
@@ -44,7 +44,7 @@ setMethod(
 setMethod(
   "poplin_impute_halfmin",
   "poplin",
-  function(x, ...) {
+  function(x, poplin_in, poplin_out, ...) {
     .poplin_extract_and_assign(x, .poplin_impute_halfmin,
                                poplin_in, poplin_out)
   }
@@ -61,7 +61,7 @@ setMethod(
 setMethod(
   "poplin_impute_median",
   "poplin",
-  function(x, ...) {
+  function(x, poplin_in, poplin_out, ...) {
     .poplin_extract_and_assign(x, .poplin_impute_median,
                                poplin_in, poplin_out)
   }
@@ -78,7 +78,7 @@ setMethod(
 setMethod(
   "poplin_impute_mean",
   "poplin",
-  function(x, ...) {
+  function(x, poplin_in, poplin_out, ...) {
     .poplin_extract_and_assign(x, .poplin_impute_mean,
                                poplin_in, poplin_out)
   }
@@ -95,7 +95,7 @@ setMethod(
 setMethod(
   "poplin_impute_pca",
   "poplin",
-  function(x, ...) {
+  function(x, poplin_in, poplin_out, ...) {
     .poplin_extract_and_assign(x, .poplin_impute_pca,
                                poplin_in, poplin_out)
   }
@@ -112,7 +112,7 @@ setMethod(
 setMethod(
   "poplin_impute_randomforest",
   "poplin",
-  function(x, ...) {
+  function(x, poplin_in, poplin_out, ...) {
     .poplin_extract_and_assign(x, .poplin_impute_randomforest,
                                poplin_in, poplin_out)
   }

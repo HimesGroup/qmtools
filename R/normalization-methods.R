@@ -1,17 +1,17 @@
 setMethod(
   "poplin_normalize",
   "matrix",
-  function(x, normalizer, ...) {
-    .poplin_normalize(x, normalizer = normalizer, ...)
+  function(x, method, ...) {
+    .poplin_normalize(x, method = method, ...)
   }
 )
 
 setMethod(
   "poplin_normalize",
   "poplin",
-  function(x, normalizer, poplin_in, poplin_out, ...) {
+  function(x, method, poplin_in, poplin_out, ...) {
     m <- .verify_and_extract_input(x, poplin_in)
-    poplin_data(x, poplin_out) <- .poplin_normalize(m, normalizer = normalizer, ...)
+    poplin_data(x, poplin_out) <- .poplin_normalize(m, method = method, ...)
     x
   }
 )

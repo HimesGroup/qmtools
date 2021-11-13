@@ -1,11 +1,11 @@
 ##' @importFrom ggplot2 geom_segment scale_x_continuous scale_y_continuous sec_axis
 ##' @export
-poplin_biplot <- function(x, comp = 1:2, ...) {
+poplin_biplot <- function(x, ...) {
   UseMethod("poplin_biplot")
 }
 
 ##' @export
-poplin_biplot.default <- function(x, y, comp, group,
+poplin_biplot.default <- function(x, y, comp = 1:2, group,
                                   group_col = NULL,
                                   point_size = 1.5,
                                   point_shape_by_group = FALSE,
@@ -71,7 +71,7 @@ poplin_biplot.poplin.pca <- function(x, scale = 1, comp = 1:2, ...) {
   comp <- sort(comp)
   n <- nrow(x)
   lam <- attr(x, "sdev")[comp] * sqrt(n)
-  if (scale < 0 || scale > 1) 
+  if (scale < 0 || scale > 1)
     warning("'scale' is outside [0, 1]")
   if (scale != 0)
     lam <- lam**scale

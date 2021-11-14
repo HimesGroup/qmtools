@@ -29,7 +29,7 @@ setMethod(
   "poplin",
   function(x, poplin_in, poplin_out, ...) {
     .reduced_extract_and_assign(x, .poplin_reduce_pca,
-                               poplin_in, poplin_out)
+                               poplin_in, poplin_out, ...)
   }
 )
 
@@ -46,7 +46,7 @@ setMethod(
   "poplin",
   function(x, poplin_in, poplin_out, ...) {
     .reduced_extract_and_assign(x, .poplin_reduce_tsne,
-                                poplin_in, poplin_out)
+                                poplin_in, poplin_out, ...)
   }
 )
 
@@ -63,7 +63,7 @@ setMethod(
   "poplin",
   function(x, poplin_in, poplin_out, ...) {
     .reduced_extract_and_assign(x, .poplin_reduce_plsda,
-                                poplin_in, poplin_out)
+                                poplin_in, poplin_out, ...)
   }
 )
 

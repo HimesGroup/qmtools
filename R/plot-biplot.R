@@ -82,11 +82,26 @@ poplin_biplot.poplin.pca <- function(x, scale = 1, comp = 1:2, ...) {
 }
 
 ##' @export
-poplin_biplot.poplin.plsda <- function(x, scale = 1, comp = 1:2,
-                                       group = attr(x, "Y.observed"), ...) {
-
+poplin_biplot.poplin.plsda <- function(x, comp = 1:2, ...) {
   X <- x[, comp]
   Y <- attr(x, "loadings")[, comp]
-  poplin_biplot.default(X, Y, comp = 1:2, group = group, ...)
+  poplin_biplot.default(X, Y, comp = 1:2, group = attr(x, "Y.observed"), ...)
 }
 
+
+##' @export
+poplin_biplot.poplin <- function(x, poplin_in, comp = 1:2, ...) {
+  if (!(poplin_in %in% poplin_reduced_names(x))) {
+    stop("'", poplin_in, "' is not found in the poplin object.\n",
+         "Input must be one of poplin_reduced_names(x).")
+  }
+  m <- poplin_reduced(x, poplin_in)
+  ## poplin_biplot(m, comp = comp, ...)
+  if (inherits(m, "poplin.pca")) {
+    poplin_biplot.poplin.pca(m, comp = comp, ...)
+  } else if (inherits(m, "poplin.plsda")) {
+    poplin_biplot.poplin.plsda(m, comp = comp, ...)
+  } else {
+    poplin_biplot.default(m, comp = comp, ...)
+  }
+}

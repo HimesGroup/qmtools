@@ -64,7 +64,7 @@ poplin_biplot.default <- function(x, y, comp = 1:2, group,
 }
 
 ##' @export
-poplin_biplot.poplin.pca <- function(x, scale = 1, comp = 1:2, ...) {
+poplin_biplot.poplin.pca <- function(x, scale = 1, comp = 1:2, group, ...) {
   if (max(comp) > ncol(x) || length(comp) != 2) {
     stop("Choose two components within 1:ncol(x).")
   }
@@ -78,14 +78,15 @@ poplin_biplot.poplin.pca <- function(x, scale = 1, comp = 1:2, ...) {
   else lam <- 1
   X <- t(t(x[, comp]) / lam)
   Y <- t(t(attr(x, "loadings")[, comp]) * lam)
-  poplin_biplot.default(X, Y, comp = 1:2, ...)
+  poplin_biplot.default(X, Y, comp = 1:2, group = group, ...)
 }
 
 ##' @export
-poplin_biplot.poplin.plsda <- function(x, comp = 1:2, ...) {
+poplin_biplot.poplin.plsda <- function(x, comp = 1:2,
+                                       group = attr(x, "Y.observed"), ...) {
   X <- x[, comp]
   Y <- attr(x, "loadings")[, comp]
-  poplin_biplot.default(X, Y, comp = 1:2, group = attr(x, "Y.observed"), ...)
+  poplin_biplot.default(X, Y, comp = 1:2, group = group, ...)
 }
 
 
@@ -96,12 +97,12 @@ poplin_biplot.poplin <- function(x, poplin_in, comp = 1:2, ...) {
          "Input must be one of poplin_reduced_names(x).")
   }
   m <- poplin_reduced(x, poplin_in)
-  ## poplin_biplot(m, comp = comp, ...)
-  if (inherits(m, "poplin.pca")) {
-    poplin_biplot.poplin.pca(m, comp = comp, ...)
-  } else if (inherits(m, "poplin.plsda")) {
-    poplin_biplot.poplin.plsda(m, comp = comp, ...)
-  } else {
-    poplin_biplot.default(m, comp = comp, ...)
-  }
+  poplin_biplot(m, comp = comp, ...)
+  ## if (inherits(m, "poplin.pca")) {
+  ##   poplin_biplot.poplin.pca(m, comp = comp, ...)
+  ## } else if (inherits(m, "poplin.plsda")) {
+  ##   poplin_biplot.poplin.plsda(m, comp = comp, ...)
+  ## } else {
+  ##   poplin_biplot.default(m, comp = comp, ...)
+  ## }
 }

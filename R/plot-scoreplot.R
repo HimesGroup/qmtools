@@ -159,3 +159,13 @@ poplin_scoreplot.poplin.plsda <- function(x, comp = c(1, 2),
                            group_col = group_col,
                            xlab = xlab, ylab = ylab, ...)
 }
+
+##' @export
+poplin_scoreplot.poplin <- function(x, poplin_in, comp = 1:2, ...) {
+  if (!(poplin_in %in% poplin_reduced_names(x))) {
+    stop("'", poplin_in, "' is not found in the poplin object.\n",
+         "Input must be one of poplin_reduced_names(x).")
+  }
+  m <- poplin_reduced(x, poplin_in)
+  poplin_scoreplot(m, comp = comp, ...)
+}

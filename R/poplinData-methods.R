@@ -1,3 +1,57 @@
+##' Poplin data methods
+##'
+##' Methods to get or set data processing results. These methods are intended to
+##' store and retrieve intermediate data sets involved in normalization,
+##' imputation, and transformation.
+##'
+##' @section Getter methods:
+##'
+##' Let \code{x} is a \linkS4class{poplin} object.
+##'
+##' \describe{
+##' \item{\code{poplin_data_names(x)}:}{
+##' Return the names of all intermediate data sets stored in \code{x@poplinData}.
+##' }
+##' \item{\code{poplin_data_list(x, type)}:}{
+##' Retrieves a named \linkS4class{List} of matrices containing one or more
+##' intermediate data. Each entry is a matrix with the same dimension of raw
+##' feature data in \code{assay(x)}.
+##' }
+##' \item{\code{poplin_data(x, type)}:}{
+##' Retrieves a matrix containing data in process. \code{type} is either a
+##' string specifying the name of data set to retrieve or an integer specifying
+##' the index of the desired data set, defaulting to the first entry if missing.
+##' }
+##' }
+##'
+##' @section Setter methods:
+##'
+##' \describe{
+##' \item{\code{poplin_data_names(x) <- value}:}{
+##' \code{value} is a character vector to be assigned for the names of
+##' intermediate data sets.
+##' }
+##' \item{\code{poplin_data_list(x) <- value}:}{
+##' \code{value} is expected to be a named \linkS4class{List} of matrices. If
+##' the result already exists, it will be replaced. If \code{value} is
+##' \code{NULL}, any existing result will be removed.
+##' }
+##' \item{\code{poplin_data(x, type) <- value}:}{
+##' \code{value} is expected to be a matrix. \code{type} determines how the
+##' result is assigned:
+##' - integer: it must be within the range of existing results. \code{value}
+##' will replace the result at that index.
+##' - character: if the result exists with this name, it will be replaced with
+##' \code{value}. Otherwise a new result with this name will be appended.
+##' - missing: \code{value} will be assigned to the first entry.
+##'
+##' If \code{value} is \code{NULL}, the result corresponding to \code{type} will
+##' be removed.
+##' }
+##' }
+##' @param x
+##' @return
+
 ##' @export
 setMethod("poplinData", "poplin", function(x) x@poplinData)
 

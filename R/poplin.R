@@ -2,7 +2,7 @@
 ##'
 ##' The poplin class is designed to process LC/MS data. It is an extension of
 ##' the standard SummarizedExperiment class, and supports additional containers
-##' for data in process (e.g., normalization, imputation) via
+##' for data processing results (e.g., normalization, imputation) via
 ##' \code{\link{poplinData}} and dimension reduction results (PCA, PLS-DA) via
 ##' \code{\link{poplinReduced}}. A poplin object also can be created by
 ##' coercing from a \linkS4class{SummarizedExperiment} object.
@@ -19,7 +19,7 @@
 ##' poplin(m)
 ##' ## Coercion from an SummarizedExperiment object
 ##' as(se, "poplin")
-##' 
+##'
 ##' @export
 ##' @import methods
 ##' @importFrom SummarizedExperiment SummarizedExperiment

@@ -1,8 +1,8 @@
 ##' Poplin data methods
 ##'
-##' Methods to get or set data processing results. These methods are intended to
-##' store and retrieve intermediate data sets involved in normalization,
-##' imputation, and transformation.
+##' Methods to get or set data processing results in a \linkS4class{poplin}
+##' object. These methods are intended to store and retrieve processed data
+##' sets involved in normalization, imputation, and transformation.
 ##'
 ##' @section Getter methods:
 ##'
@@ -10,15 +10,15 @@
 ##'
 ##' \describe{
 ##' \item{\code{poplin_data_names(x)}:}{
-##' Return the names of all intermediate data sets stored in \code{x@poplinData}.
+##' Return the names of all processed data sets stored in \code{x@poplinData}.
 ##' }
 ##' \item{\code{poplin_data_list(x, type)}:}{
 ##' Retrieves a named \linkS4class{List} of matrices containing one or more
-##' intermediate data. Each entry is a matrix with the same dimension of raw
+##' data processing results. Each entry is a matrix with the same dimension of raw
 ##' feature data in \code{assay(x)}.
 ##' }
 ##' \item{\code{poplin_data(x, type)}:}{
-##' Retrieves a matrix containing data in process. \code{type} is either a
+##' Retrieves a matrix of data processing result. \code{type} is either a
 ##' string specifying the name of data set to retrieve or an integer specifying
 ##' the index of the desired data set, defaulting to the first entry if missing.
 ##' }
@@ -29,7 +29,7 @@
 ##' \describe{
 ##' \item{\code{poplin_data_names(x) <- value}:}{
 ##' \code{value} is a character vector to be assigned for the names of
-##' intermediate data sets.
+##' processed data sets.
 ##' }
 ##' \item{\code{poplin_data_list(x) <- value}:}{
 ##' \code{value} is expected to be a named \linkS4class{List} of matrices. If
@@ -49,6 +49,7 @@
 ##' be removed.
 ##' }
 ##' }
+##'
 ##' @param x
 ##' @return
 

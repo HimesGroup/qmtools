@@ -1,3 +1,60 @@
+##' Poplin dimension-reduced data methods
+##'
+##' Methods to get or set dimension reduction results in a \linkS4class{poplin}
+##' object. These methods are intended to store and retrieve low-dimensional
+##' representation (e.g., PCA, PLS-DA) of LC/MS data sets.
+##'
+##' @section Getter methods:
+##'
+##' Let \code{x} is a \linkS4class{poplin} object.
+##'
+##' \describe{
+##' \item{\code{poplin_reduced_names(x)}:}{
+##' Return the names of all dimension-reduced data sets stored in
+##' \code{x@poplinReducedData}.
+##' }
+##' \item{\code{poplin_reduced_list(x)}:}{
+##' Retrieves a named \linkS4class{List} of matrices containing one or more
+##' dimension-reduced data. Each entry is a matrix with the same number of rows
+##' as \code{ncol(x)}.
+##' }
+##' \item{\code{poplin_reduced(x, type)}:}{
+##' Retrieves a matrix of low-dimensional representation. \code{type} is either
+##' a string specifying the name of data set to retrieve or an integer
+##' specifying the index of the desired data sets, defaulting to the first entry
+##' if missing.
+##' }
+##' }
+##'
+##' @section Setter methods:
+##'
+##' \describe{
+##' \item{\code{poplin_reduced_names(x) <- value}:}{
+##' \code{value} is a character vector to be assigned for the names of
+##' dimension-reduced data sets.
+##' }
+##' \item{\code{poplin_reduced_list(x) <- value}:}{
+##' \code{value} is expected to be a named \linkS4class{List} of matrices. If
+##' the result already exists, it will be replaced. If \code{value} is
+##' \code{NULL}, any existing result will be removed.
+##' }
+##' \item{\code{poplin_reduced(x, type) <- value}:}{
+##' \code{value} is expected to be a matrix. \code{type} determines how the
+##' result is assigned:
+##' - integer: it must be within the range of existing results. \code{value}
+##' will replace the result at that index.
+##' - character: if the result exists with this name, it will be replaced with
+##' \code{value}. Otherwise a new result with this name will be appended.
+##' - missing: \code{value} will be assigned to the first entry.
+##'
+##' If \code{value} is \code{NULL}, the result corresponding to \code{type} will
+##' be removed.
+##' }
+##' }
+##' @return
+##' @author Jaehyun
+
+
 ##' @export
 setMethod("poplinReducedData", "poplin", function(x) x@poplinReducedData)
 

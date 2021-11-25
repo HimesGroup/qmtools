@@ -1,3 +1,9 @@
+##' Imputation methods
+##'
+##' Missing values are frequently found in metabolomics data. The \pkg{poplin}
+##' package provides a few options to handle them.
+##'
+##' @name poplin_impute
 setMethod(
   "poplin_impute",
   "matrix",
@@ -6,6 +12,7 @@ setMethod(
   }
 )
 
+##' @rdname poplin_impute
 setMethod(
   "poplin_impute",
   "poplin",
@@ -16,6 +23,7 @@ setMethod(
   }
 )
 
+##' @rdname poplin_impute
 setMethod(
   "poplin_impute_knn",
   "matrix",
@@ -24,6 +32,7 @@ setMethod(
   }
 )
 
+##' @rdname poplin_impute
 setMethod(
   "poplin_impute_knn",
   "poplin",
@@ -33,6 +42,7 @@ setMethod(
   }
 )
 
+##' @rdname poplin_impute
 setMethod(
   "poplin_impute_halfmin",
   "matrix",
@@ -41,6 +51,7 @@ setMethod(
   }
 )
 
+##' @rdname poplin_impute
 setMethod(
   "poplin_impute_halfmin",
   "poplin",
@@ -50,6 +61,7 @@ setMethod(
   }
 )
 
+##' @rdname poplin_impute
 setMethod(
   "poplin_impute_median",
   "matrix",
@@ -58,6 +70,7 @@ setMethod(
   }
 )
 
+##' @rdname poplin_impute
 setMethod(
   "poplin_impute_median",
   "poplin",
@@ -67,6 +80,7 @@ setMethod(
   }
 )
 
+##' @rdname poplin_impute
 setMethod(
   "poplin_impute_mean",
   "matrix",
@@ -75,6 +89,7 @@ setMethod(
   }
 )
 
+##' @rdname poplin_impute
 setMethod(
   "poplin_impute_mean",
   "poplin",
@@ -84,6 +99,7 @@ setMethod(
   }
 )
 
+##' @rdname poplin_impute
 setMethod(
   "poplin_impute_pca",
   "matrix",
@@ -92,6 +108,7 @@ setMethod(
   }
 )
 
+##' @rdname poplin_impute
 setMethod(
   "poplin_impute_pca",
   "poplin",
@@ -101,6 +118,7 @@ setMethod(
   }
 )
 
+##' @rdname poplin_impute
 setMethod(
   "poplin_impute_randomforest",
   "matrix",
@@ -109,6 +127,7 @@ setMethod(
   }
 )
 
+##' @rdname poplin_impute
 setMethod(
   "poplin_impute_randomforest",
   "poplin",

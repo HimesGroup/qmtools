@@ -1,3 +1,6 @@
+##' Dimension reduction methods
+##'
+##' @name poplin_reduce
 setMethod(
   "poplin_reduce",
   "matrix",
@@ -6,6 +9,7 @@ setMethod(
   }
 )
 
+##' @rdname poplin_reduce
 setMethod(
   "poplin_reduce",
   "poplin",
@@ -16,6 +20,7 @@ setMethod(
   }
 )
 
+##' @rdname poplin_reduce
 setMethod(
   "poplin_reduce_pca",
   "matrix",
@@ -24,6 +29,7 @@ setMethod(
   }
 )
 
+##' @rdname poplin_reduce
 setMethod(
   "poplin_reduce_pca",
   "poplin",
@@ -33,6 +39,7 @@ setMethod(
   }
 )
 
+##' @rdname poplin_reduce
 setMethod(
   "poplin_reduce_tsne",
   "matrix",
@@ -41,6 +48,7 @@ setMethod(
   }
 )
 
+##' @rdname poplin_reduce
 setMethod(
   "poplin_reduce_tsne",
   "poplin",
@@ -50,6 +58,7 @@ setMethod(
   }
 )
 
+##' @rdname poplin_reduce
 setMethod(
   "poplin_reduce_plsda",
   "matrix",
@@ -58,6 +67,7 @@ setMethod(
   }
 )
 
+##' @rdname poplin_reduce
 setMethod(
   "poplin_reduce_plsda",
   "poplin",

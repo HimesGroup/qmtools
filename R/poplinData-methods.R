@@ -50,19 +50,19 @@
 ##' }
 ##' }
 ##'
-##' @param x
 ##' @return
-
+##' @name poplinData
 ##' @export
 setMethod("poplinData", "poplin", function(x) x@poplinData)
 
+##' @rdname poplinData
 ##' @export
 setReplaceMethod("poplinData", "poplin", function(x, value) {
   x@poplinData <- value
   x
 })
 
-
+##' @rdname poplinData
 ##' @importClassesFrom S4Vectors SimpleList
 ##' @export
 setMethod(
@@ -78,6 +78,7 @@ setMethod(
   }
 )
 
+##' @rdname poplinData
 ##' @export
 setReplaceMethod(
   "poplin_data_list",
@@ -100,6 +101,7 @@ setReplaceMethod(
   }
 )
 
+##' @rdname poplinData
 ##' @export
 setMethod(
   "poplin_data_names",
@@ -109,6 +111,7 @@ setMethod(
   }
 )
 
+##' @rdname poplinData
 ##' @export
 setReplaceMethod(
   "poplin_data_names",
@@ -126,6 +129,7 @@ setReplaceMethod(
   }
 )
 
+##' @rdname poplinData
 ##' @export
 setMethod(
   "poplin_data",
@@ -139,6 +143,7 @@ setMethod(
   }
 )
 
+##' @rdname poplinData
 ##' @export
 setMethod(
   "poplin_data",
@@ -153,6 +158,7 @@ setMethod(
   }
 )
 
+##' @rdname poplinData
 ##' @export
 setMethod(
   "poplin_data",
@@ -167,6 +173,7 @@ setMethod(
   }
 )
 
+##' @rdname poplinData
 ##' @export
 setReplaceMethod(
   "poplin_data",
@@ -183,6 +190,7 @@ setReplaceMethod(
 )
 
 
+##' @rdname poplinData
 ##' @export
 setReplaceMethod(
   "poplin_data",
@@ -205,6 +213,7 @@ setReplaceMethod(
   }
 )
 
+##' @rdname poplinData
 ##' @export
 setReplaceMethod(
   "poplin_data",

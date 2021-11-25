@@ -20,7 +20,8 @@ Imports:
     methods,
     S4Vectors,
     stats
-Suggests: 
+Suggests:
+    limma
     missForest,
     hexbin,
     Rtsne,

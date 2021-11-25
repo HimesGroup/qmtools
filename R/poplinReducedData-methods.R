@@ -51,19 +51,20 @@
 ##' be removed.
 ##' }
 ##' }
+##' @name poplinReducedData
 ##' @return
-##' @author Jaehyun
-
-
 ##' @export
 setMethod("poplinReducedData", "poplin", function(x) x@poplinReducedData)
 
+
+##' @rdname poplinReducedData
 ##' @export
 setReplaceMethod("poplinReducedData", "poplin", function(x, value) {
   x@poplinReducedData <- value
   x
 })
 
+##' @rdname poplinReducedData
 ##' @importClassesFrom S4Vectors SimpleList
 ##' @export
 setMethod(
@@ -78,6 +79,7 @@ setMethod(
   }
 )
 
+##' @rdname poplinReducedData
 ##' @export
 setReplaceMethod(
   "poplin_reduced_list",
@@ -102,6 +104,7 @@ setReplaceMethod(
   }
 )
 
+##' @rdname poplinReducedData
 ##' @export
 setMethod(
   "poplin_reduced_names",
@@ -111,6 +114,7 @@ setMethod(
   }
 )
 
+##' @rdname poplinReducedData
 ##' @export
 setReplaceMethod(
   "poplin_reduced_names",
@@ -129,6 +133,7 @@ setReplaceMethod(
   }
 )
 
+##' @rdname poplinReducedData
 ##' @export
 setMethod(
   "poplin_reduced",
@@ -142,6 +147,7 @@ setMethod(
   }
 )
 
+##' @rdname poplinReducedData
 ##' @export
 setMethod(
   "poplin_reduced",
@@ -156,6 +162,7 @@ setMethod(
   }
 )
 
+##' @rdname poplinReducedData
 ##' @export
 setMethod(
   "poplin_reduced",
@@ -170,6 +177,7 @@ setMethod(
   }
 )
 
+##' @rdname poplinReducedData
 ##' @export
 setReplaceMethod(
   "poplin_reduced",
@@ -185,6 +193,7 @@ setReplaceMethod(
   }
 )
 
+##' @rdname poplinReducedData
 ##' @export
 setReplaceMethod(
   "poplin_reduced",
@@ -204,6 +213,7 @@ setReplaceMethod(
   }
 )
 
+##' @rdname poplinReducedData
 ##' @export
 setReplaceMethod(
   "poplin_reduced",

@@ -1,10 +1,7 @@
 .poplin_normalize <- function(x,
                               method = c("pqn",  "sum", "mean", "median",
-                                             "mad", "euclidean",
-                                             "cyclicloess", # sample-based
-                                             "auto", "range", "pareto",
-                                             "vast", "level", # metabolite-based
-                                             "vsn"),
+                                         "mad", "euclidean", "cyclicloess",
+                                         "vsn", "scale"),
            ...) {
     method <- match.arg(method)
     .normalize_fun_dispatch(x, method = method, ...)
@@ -19,14 +16,15 @@
     mean = .poplin_normalize_mean(x = x, ...),
     mad = .poplin_normalize_mad(x = x, ...),
     median = .poplin_normalize_median(x = x, ...),
-    euclidean = .poplin_normalize_euclidean(x = x, ...),
+    ## euclidean = .poplin_normalize_euclidean(x = x, ...),
     cyclicloess = .poplin_normalize_cyclicloess(x = x, ...),
-    auto = .poplin_normalize_auto(x = x, ...),
-    range = .poplin_normalize_range(x = x, ...),
-    pareto = .poplin_normalize_pareto(x = x, ...),
-    vast = .poplin_normalize_vast(x = x, ...),
-    level = .poplin_normalize_level(x = x, ...),
-    vsn = .poplin_normalize_vsn(x = x, ...)
+    vsn = .poplin_normalize_vsn(x = x, ...),
+    ## auto = .poplin_normalize_auto(x = x, ...),
+    ## range = .poplin_normalize_range(x = x, ...),
+    ## pareto = .poplin_normalize_pareto(x = x, ...),
+    ## vast = .poplin_normalize_vast(x = x, ...),
+    ## level = .poplin_normalize_level(x = x, ...),
+    scale = .poplin_normalize_scale(x = x, ...)
   )
 }
 
@@ -146,7 +144,9 @@
 ## Cyclic LOESS normalization (taken from limma package 09/13/2021)
 ################################################################################
 .poplin_normalize_cyclicloess <- function(x, pre_log2, weights = NULL, span = 0.7,
-                                         iterations = 3, type = "fast") {
+                                          iterations = 3,
+                                          type = c("fast", "affy", "pairs")) {
+  type <- match.arg(type)
   if (pre_log2) {
     x <- log2(x)
   }
@@ -324,6 +324,25 @@
 }
 
 #################################################################################
+## VSN: simply provides interface
+#################################################################################
+.poplin_normalize_vsn <- function(x, meanSdPlot = FALSE, ...) {
+  if (!requireNamespace("vsn", quietly = TRUE)) {
+    stop("Package 'vsn' is required. Please install and try again.")
+  }
+  out <- suppressMessages(vsn::vsnMatrix(x = x, ...))
+  if (meanSdPlot) {
+    if (!requireNamespace("hexbin", quietly = TRUE)) {
+      stop("Package 'hexbin' is required to produce a meanSdPlot. ",
+           "Please install and try again.")
+    } else {
+      vsn::meanSdPlot(out)
+    }
+  }
+  Biobase::exprs(out)
+}
+
+#################################################################################
 ## Feature scaler
 #################################################################################
 .auto_scale <- function(x, ...) {
@@ -366,22 +385,16 @@
   t(apply(x, 1, .level_scale, na.rm = TRUE))
 }
 
-#################################################################################
-## VSN: simply provides interface
-#################################################################################
-.poplin_normalize_vsn <- function(x, meanSdPlot = FALSE, ...) {
-  if (!requireNamespace("vsn", quietly = TRUE)) {
-    stop("Package 'vsn' is required. Please install and try again.")
-  }
-  out <- suppressMessages(vsn::vsnMatrix(x = x, ...))
-  if (meanSdPlot) {
-    if (!requireNamespace("hexbin", quietly = TRUE)) {
-      stop("Package 'hexbin' is required to produce a meanSdPlot. ",
-           "Please install and try again.")
-    } else {
-      vsn::meanSdPlot(out)
-    }
-  }
-  Biobase::exprs(out)
+.poplin_normalize_scale <- function(x, type = c("auto", "range", "pareto",
+                                                "vast", "level")) {
+  type <- match.arg(type)
+  switch(
+    type,
+    auto = .poplin_normalize_auto(x),
+    range = .poplin_normalize_range(x),
+    pareto = .poplin_normalize_pareto(x),
+    vast = .poplin_normalize_vast(x),
+    level = .poplin_normalize_level(x),
+  )
 }
 

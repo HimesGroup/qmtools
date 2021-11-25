@@ -156,6 +156,12 @@ setGeneric(
 
 ##' @export
 setGeneric(
+  "poplin_normalize_vsn",
+  function(x, ...) standardGeneric("poplin_normalize_vsn")
+)
+
+##' @export
+setGeneric(
   "poplin_normalize_auto",
   function(x, ...) standardGeneric("poplin_normalize_auto")
 )
@@ -186,9 +192,10 @@ setGeneric(
 
 ##' @export
 setGeneric(
-  "poplin_normalize_vsn",
-  function(x, ...) standardGeneric("poplin_normalize_vsn")
+  "poplin_normalize_scale",
+  function(x, ...) standardGeneric("poplin_normalize_scale")
 )
+
 
 #################################################################################
 ## Imputation Generics

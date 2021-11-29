@@ -233,6 +233,12 @@ setGeneric(
 
 ##' @export
 setGeneric(
+  "poplin_impute_simple",
+  function(x, ...) standardGeneric("poplin_impute_simple")
+)
+
+##' @export
+setGeneric(
   "poplin_impute_pca",
   function(x, ...) standardGeneric("poplin_impute_pca")
 )

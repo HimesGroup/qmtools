@@ -63,13 +63,13 @@ setMethod(
 
 ##' Probabilistic quotient normalization (PQN)
 ##'
-##' Apply probabilistic quotient normalization to a matrix or
+##' Apply probabilistic quotient normalization (PQN) to a matrix or
 ##' \linkS4class{poplin} object. For the calculation of quotients, a reference
 ##' spectrum needs to be obtained from a mean or median spectrum based on all
 ##' spectra of the study or a subset of the study. Feature intensities are
 ##' normalized by the median of quotients. See Dieterle et al. (2006) for
 ##' details.
-##' 
+##'
 ##' @param x A matrix or \linkS4class{poplin} object.
 ##' @param poplin_in Name of a data matrix to retrieve.
 ##' @param poplin_out Name of a data matrix to store.
@@ -116,7 +116,7 @@ setMethod(
 ##' Apply sum normalization to a matrix or \linkS4class{poplin} object. For each
 ##' sample, feature intensities are divided by its Total Ion Current (TIC),
 ##' i.e., every feature is divided by the sum of all intensity values.
-##' 
+##'
 ##' @param x A matrix or \linkS4class{poplin} object.
 ##' @param poplin_in Name of a data matrix to retrieve.
 ##' @param poplin_out Name of a data matrix to store.
@@ -153,7 +153,7 @@ setMethod(
 ##' Apply mean normalization to a matrix or \linkS4class{poplin} object. For
 ##' each sample, feature intensities are divided by its mean. The mean of
 ##' intensity values for individual samples will be one as a result.
-##' 
+##'
 ##' @param x A matrix or \linkS4class{poplin} object.
 ##' @param poplin_in Name of a data matrix to retrieve.
 ##' @param poplin_out Name of a data matrix to store.
@@ -190,7 +190,7 @@ setMethod(
 ##' Apply median normalization to a matrix or \linkS4class{poplin} object. For
 ##' each sample, feature intensities are divided by its median. The median of
 ##' intensity values for individual samples will be one as a result.
-##' 
+##'
 ##' @param x A matrix or \linkS4class{poplin} object.
 ##' @param poplin_in Name of a data matrix to retrieve.
 ##' @param poplin_out Name of a data matrix to store.
@@ -228,7 +228,7 @@ setMethod(
 ##' \linkS4class{poplin} object. For each sample, feature intensities are scaled
 ##' by its MAD. The MAD of intensity values for individual samples will be one
 ##' as a result.
-##' 
+##'
 ##' @param x A matrix or \linkS4class{poplin} object.
 ##' @param poplin_in Name of a data matrix to retrieve.
 ##' @param poplin_out Name of a data matrix to store.
@@ -347,7 +347,7 @@ setMethod(
 ##' from the \pkg{vsn} package (see [vsn::vsn2] for help). The vsn produces
 ##' normalized intensities based on a glog (generalized logarithm) scale to base
 ##' 2. See Huber et al. (2002) for details.
-##' 
+##'
 ##' @references
 ##' Huber W, von Heydebreck A, Sültmann H, Poustka A, Vingron M. Variance
 ##' stabilization applied to microarray data calibration and to the
@@ -384,7 +384,7 @@ setMethod(
 )
 
 ##' Feature-based scaling
-##' 
+##'
 ##' Apply feature-based scaling to a matrix or \linkS4class{poplin} object. The
 ##' supported methods include
 ##' \itemize{

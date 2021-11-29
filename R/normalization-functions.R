@@ -394,7 +394,7 @@
     range = .poplin_normalize_range(x),
     pareto = .poplin_normalize_pareto(x),
     vast = .poplin_normalize_vast(x),
-    level = .poplin_normalize_level(x),
+    level = .poplin_normalize_level(x)
   )
 }
 

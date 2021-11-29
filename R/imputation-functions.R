@@ -1,17 +1,62 @@
 .poplin_impute <- function(x,
-                           method = c("knn", "halfmin", "median",
-                                      "mean", "pca", "randomforest"),
+                           method = c("knn", "randomforest", "pca", "simple"),
                            ...) {
   method <- match.arg(method)
   switch(
     method,
     knn = .poplin_impute_knn(x, ...),
-    halfmin = .poplin_impute_halfmin(x, ...),
-    median = .poplin_impute_median(x, ...),
-    mean = .poplin_impute_mean(x, ...),
-    pca = .poplin_impute_pca(x, ...),
     randomforest = .poplin_impute_randomforest(x, ...),
+    pca = .poplin_impute_pca(x, ...),
+    ## halfmin = .poplin_impute_halfmin(x, ...),
+    ## median = .poplin_impute_median(x, ...),
+    ## mean = .poplin_impute_mean(x, ...),
+    simple = .poplin_impute_simple(x, ...)
     )
+}
+
+## Knn imputation
+.poplin_impute_knn <- function(x, by = c("feature", "sample"), ...) {
+  if (!requireNamespace("VIM", quietly = TRUE)) {
+    stop("Package 'VIM' is required. Please install and try again.")
+  }
+  by <- match.arg(by)
+  if (by == "feature") {
+    out <- VIM::kNN(x, ...)[, 1:ncol(x)]
+    ## VIM package internally converts x as data.table, which drops rownames
+    rownames(out) <- rownames(x)
+  } else {
+    out <- t(VIM::kNN(t(x), ...))[1:nrow(x), ]
+    colnames(out) <- colnames(x)
+  }
+  as.matrix(out)
+}
+
+## Random forest imputation
+.poplin_impute_randomforest <- function(x, ...) {
+  if (!requireNamespace("missForest", quietly = TRUE)) {
+    stop("Package 'missForest' is required. Please install and try again.")
+  } 
+  t(missForest::missForest(t(x), ...)$ximp)
+}
+
+## Bayesian PCA imputation
+.poplin_impute_pca <- function(x, type = c("bpca", "ppca", "nipals", "svdImpute"), ...) {
+  if (!requireNamespace("pcaMethods", quietly = TRUE)) {
+    stop("Package 'pcaMethods' is required. Please install and try again.")
+  }
+  type <- match.arg(type)
+  t(pcaMethods::pca(t(x), method = type, ...)@completeObs)
+}
+
+## Simple univariate imputation
+.poplin_impute_simple <- function(x, type = c("halfmin", "median", "mean")) {
+  type <- match.arg(type)
+  switch(
+    type,
+    halfmin = .poplin_impute_halfmin(x),
+    median = .poplin_impute_median(x),
+    mean = .poplin_impute_mean(x)
+  )
 }
 
 .poplin_impute_halfmin <- function(x) {
@@ -45,34 +90,4 @@
     x
   })
   t(out)
-}
-
-.poplin_impute_knn <- function(x, by = c("feature", "sample"), ...) {
-  if (!requireNamespace("VIM", quietly = TRUE)) {
-    stop("Package 'VIM' is required. Please install and try again.")
-  }
-  by <- match.arg(by)
-  if (by == "feature") {
-    out <- VIM::kNN(x, ...)[, 1:ncol(x)]
-    ## VIM package internally converts x as data.table, which drops rownames
-    rownames(out) <- rownames(x)
-  } else {
-    out <- t(VIM::kNN(t(x), ...))[1:nrow(x), ]
-    colnames(out) <- colnames(x)
-  }
-  as.matrix(out)
-}
-
-.poplin_impute_pca <- function(x, ...) {
-  if (!requireNamespace("pcaMethods", quietly = TRUE)) {
-    stop("Package 'pcaMethods' is required. Please install and try again.")
-  } 
-  t(pcaMethods::pca(t(x), method = "bpca", ...)@completeObs)
-}
-
-.poplin_impute_randomforest <- function(x, ...) {
-  if (!requireNamespace("missForest", quietly = TRUE)) {
-    stop("Package 'missForest' is required. Please install and try again.")
-  } 
-  t(missForest::missForest(t(x), ...)$ximp)
 }

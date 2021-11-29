@@ -3,49 +3,57 @@
 \name{poplin_impute}
 \alias{poplin_impute}
 \alias{poplin_impute,poplin-method}
-\alias{poplin_impute_knn,matrix-method}
-\alias{poplin_impute_knn,poplin-method}
-\alias{poplin_impute_halfmin,matrix-method}
-\alias{poplin_impute_halfmin,poplin-method}
-\alias{poplin_impute_median,matrix-method}
-\alias{poplin_impute_median,poplin-method}
-\alias{poplin_impute_mean,matrix-method}
-\alias{poplin_impute_mean,poplin-method}
-\alias{poplin_impute_pca,matrix-method}
-\alias{poplin_impute_pca,poplin-method}
-\alias{poplin_impute_randomforest,matrix-method}
-\alias{poplin_impute_randomforest,poplin-method}
 \title{Imputation methods}
 \usage{
-\S4method{poplin_impute}{matrix}(x, method, ...)
+\S4method{poplin_impute}{matrix}(x, method = c("knn", "pca", "randomforest", "simple"), ...)
 
-\S4method{poplin_impute}{poplin}(x, method, poplin_in, poplin_out, ...)
+\S4method{poplin_impute}{poplin}(
+  x,
+  method = c("knn", "pca", "randomforest", "simple"),
+  poplin_in,
+  poplin_out,
+  ...
+)
+}
+\arguments{
+\item{x}{A matrix or \linkS4class{poplin} object.}
 
-\S4method{poplin_impute_knn}{matrix}(x, ...)
+\item{method}{A imputation method. Default is 'pqn'.}
 
-\S4method{poplin_impute_knn}{poplin}(x, poplin_in, poplin_out, ...)
+\item{...}{Argument passed to a specific imputation method.}
 
-\S4method{poplin_impute_halfmin}{matrix}(x, ...)
+\item{poplin_in}{Name of a data matrix to retrieve.}
 
-\S4method{poplin_impute_halfmin}{poplin}(x, poplin_in, poplin_out, ...)
-
-\S4method{poplin_impute_median}{matrix}(x, ...)
-
-\S4method{poplin_impute_median}{poplin}(x, poplin_in, poplin_out, ...)
-
-\S4method{poplin_impute_mean}{matrix}(x, ...)
-
-\S4method{poplin_impute_mean}{poplin}(x, poplin_in, poplin_out, ...)
-
-\S4method{poplin_impute_pca}{matrix}(x, ...)
-
-\S4method{poplin_impute_pca}{poplin}(x, poplin_in, poplin_out, ...)
-
-\S4method{poplin_impute_randomforest}{matrix}(x, ...)
-
-\S4method{poplin_impute_randomforest}{poplin}(x, poplin_in, poplin_out, ...)
+\item{poplin_out}{Name of a data matrix to store.}
+}
+\value{
+A matrix or \linkS4class{poplin} object of the same dimension as
+\code{x} containing the imputed intensities.
 }
 \description{
 Missing values are frequently found in metabolomics data. The \pkg{poplin}
 package provides a few options to handle them.
+\link{poplin_impute} is a wrapper for the following set of functions:
+\describe{
+\item{\code{\link{poplin_impute_knn}}:}{
+k-nearest neighbor (KNN) imputation
 }
+\item{\code{\link{poplin_impute_pca}}:}{
+principal component analysis (PCA) imputation
+}
+\item{\code{\link{poplin_impute_randomforest}}:}{
+random forest imputation
+}
+\item{\code{\link{poplin_impute_simple}}:}{
+simple univariate imputation (e.g., half-minimum, mean, median)
+}
+}
+}
+\seealso{
+Other imputation methods: 
+\code{\link{poplin_impute_knn}()},
+\code{\link{poplin_impute_pca}()},
+\code{\link{poplin_impute_randomforest}()},
+\code{\link{poplin_impute_simple}()}
+}
+\concept{imputation methods}

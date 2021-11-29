@@ -43,7 +43,7 @@ A matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the normalized intensities.
 }
 \description{
-Apply probabilistic quotient normalization to a matrix or
+Apply probabilistic quotient normalization (PQN) to a matrix or
 \linkS4class{poplin} object. For the calculation of quotients, a reference
 spectrum needs to be obtained from a mean or median spectrum based on all
 spectra of the study or a subset of the study. Feature intensities are

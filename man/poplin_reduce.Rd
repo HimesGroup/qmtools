@@ -3,30 +3,60 @@
 \name{poplin_reduce}
 \alias{poplin_reduce}
 \alias{poplin_reduce,poplin-method}
-\alias{poplin_reduce_pca,matrix-method}
-\alias{poplin_reduce_pca,poplin-method}
-\alias{poplin_reduce_tsne,matrix-method}
-\alias{poplin_reduce_tsne,poplin-method}
-\alias{poplin_reduce_plsda,matrix-method}
-\alias{poplin_reduce_plsda,poplin-method}
 \title{Dimension reduction methods}
 \usage{
-\S4method{poplin_reduce}{matrix}(x, method, ...)
+\S4method{poplin_reduce}{matrix}(x, method = c("pca", "tsne", "plsda"), y, ncomp = 2, ...)
 
-\S4method{poplin_reduce}{poplin}(x, method, poplin_in, poplin_out, ...)
+\S4method{poplin_reduce}{poplin}(
+  x,
+  method = c("pca", "tsne", "plsda"),
+  poplin_in,
+  poplin_out,
+  y,
+  ncomp = 2,
+  ...
+)
+}
+\arguments{
+\item{x}{A matrix or \linkS4class{poplin} object.}
 
-\S4method{poplin_reduce_pca}{matrix}(x, ...)
+\item{method}{A dimension reduction method. Default is 'pca'.}
 
-\S4method{poplin_reduce_pca}{poplin}(x, poplin_in, poplin_out, ...)
+\item{y}{A factor vector for discrete outcome required for PLS-DA. Ignored
+otherwise.}
 
-\S4method{poplin_reduce_tsne}{matrix}(x, ...)
+\item{ncomp}{Output dimensionality.}
 
-\S4method{poplin_reduce_tsne}{poplin}(x, poplin_in, poplin_out, ...)
+\item{...}{Argument passed to a specific dimension reduction method.}
 
-\S4method{poplin_reduce_plsda}{matrix}(x, ...)
+\item{poplin_in}{Name of a data matrix to retrieve.}
 
-\S4method{poplin_reduce_plsda}{poplin}(x, poplin_in, poplin_out, ...)
+\item{poplin_out}{Name of a data matrix to store.}
+}
+\value{
+A matrix or \linkS4class{poplin} object with the same number of rows
+as \code{ncol(x)} containing the dimension reduction result.
 }
 \description{
-Dimension reduction methods
+In metabolomics, dimension reduction methods are often used for modeling
+and visualization.
+\link{poplin_reduce} is a wrapper for the following set of functions:
+\describe{
+\item{\code{\link{poplin_reduce_pca}}:}{
+principal component analysis (PCA)
 }
+\item{\code{\link{poplin_reduce_plsda}}:}{
+partial least squares-discriminant analysis (PLS-DA)
+}
+\item{\code{\link{poplin_reduce_tsne}}:}{
+t-distributed stochastic neighbor embedding
+}
+}
+}
+\seealso{
+Other data reduction methods: 
+\code{\link{poplin_reduce_pca}()},
+\code{\link{poplin_reduce_plsda}()},
+\code{\link{poplin_reduce_tsne}()}
+}
+\concept{data reduction methods}

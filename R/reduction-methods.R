@@ -77,7 +77,7 @@ setMethod(
   "poplin_reduce_pca",
   "matrix",
   function(x, ncomp = 2, center = TRUE, scale = FALSE, ...) {
-    .poplin_impute_pca(x, ncomp = ncomp, center = center, scale = scale, ...)
+    .poplin_reduce_pca(x, ncomp = ncomp, center = center, scale = scale, ...)
   }
 )
 
@@ -85,7 +85,7 @@ setMethod(
 setMethod(
   "poplin_reduce_pca",
   "poplin",
-  function(x, poplin_in, poplin_out, ncomp = 2, center = 2, scale = FALSE, ...) {
+  function(x, poplin_in, poplin_out, ncomp = 2, center = TRUE, scale = FALSE, ...) {
     .reduced_extract_and_assign(x, .poplin_reduce_pca,
                                 poplin_in, poplin_out,
                                 ncomp = ncomp, center = center, scale = scale, ...)
@@ -109,7 +109,7 @@ setMethod(
 ##'
 ##' Jesse H. Krijthe (2015). Rtsne: T-Distributed Stochastic Neighbor Embedding
 ##' using a Barnes-Hut Implementation, URL: https://github.com/jkrijthe/Rtsne
-##' 
+##'
 ##' @param x A matrix or \linkS4class{poplin} object.
 ##' @param poplin_in Name of a data matrix to retrieve.
 ##' @param poplin_out Name of a data matrix to store.
@@ -127,7 +127,7 @@ setMethod(
   "poplin_reduce_tsne",
   "matrix",
   function(x, ncomp = 2, normalize = TRUE, ...) {
-    .poplin_impute_tsne(x, ncomp = ncomp, normalize = normalize, ...)
+    .poplin_reduce_tsne(x, ncomp = ncomp, normalize = normalize, ...)
   }
 )
 
@@ -157,7 +157,7 @@ setMethod(
 ##' @param method A dimension reduction method. Default is 'pca'.
 ##' @param poplin_in Name of a data matrix to retrieve.
 ##' @param poplin_out Name of a data matrix to store.
-##' @param y A factor vector for discrete outcome. 
+##' @param y A factor vector for discrete outcome.
 ##' @param ncomp Output dimensionality.
 ##' @param center A logical indicating mean-centering prior to PLS-DA.
 ##' @param scale A logical indicating unit variance scaling prior to PLS-DA.
@@ -171,7 +171,7 @@ setMethod(
   "poplin_reduce_plsda",
   "matrix",
   function(x, y, ncomp = 2, center = TRUE, scale = FALSE, ...) {
-    .poplin_impute_plsda(x, y = y, ncomp = ncomp,
+    .poplin_reduce_plsda(x, y = y, ncomp = ncomp,
                          center = center, scale = scale, ...)
   }
 )
@@ -188,7 +188,3 @@ setMethod(
                                 center = center, scale = scale, ...)
   }
 )
-
-
-
-

@@ -6,7 +6,7 @@
 ##'
 ##' @section Getter methods:
 ##'
-##' Let \code{x} is a \linkS4class{poplin} object.
+##' In the code snippets below, \code{x} is a \linkS4class{poplin} object.
 ##'
 ##' \describe{
 ##' \item{\code{poplin_reduced_names(x)}:}{
@@ -51,20 +51,20 @@
 ##' be removed.
 ##' }
 ##' }
-##' @name poplinReducedData
+##' @name poplin_reduced
 ##' @return
+NULL
+
 ##' @export
 setMethod("poplinReducedData", "poplin", function(x) x@poplinReducedData)
 
 
-##' @rdname poplinReducedData
 ##' @export
 setReplaceMethod("poplinReducedData", "poplin", function(x, value) {
   x@poplinReducedData <- value
   x
 })
 
-##' @rdname poplinReducedData
 ##' @importClassesFrom S4Vectors SimpleList
 ##' @export
 setMethod(
@@ -79,7 +79,6 @@ setMethod(
   }
 )
 
-##' @rdname poplinReducedData
 ##' @export
 setReplaceMethod(
   "poplin_reduced_list",
@@ -104,7 +103,6 @@ setReplaceMethod(
   }
 )
 
-##' @rdname poplinReducedData
 ##' @export
 setMethod(
   "poplin_reduced_names",
@@ -114,7 +112,6 @@ setMethod(
   }
 )
 
-##' @rdname poplinReducedData
 ##' @export
 setReplaceMethod(
   "poplin_reduced_names",
@@ -133,7 +130,6 @@ setReplaceMethod(
   }
 )
 
-##' @rdname poplinReducedData
 ##' @export
 setMethod(
   "poplin_reduced",
@@ -147,7 +143,6 @@ setMethod(
   }
 )
 
-##' @rdname poplinReducedData
 ##' @export
 setMethod(
   "poplin_reduced",
@@ -162,7 +157,6 @@ setMethod(
   }
 )
 
-##' @rdname poplinReducedData
 ##' @export
 setMethod(
   "poplin_reduced",
@@ -177,7 +171,6 @@ setMethod(
   }
 )
 
-##' @rdname poplinReducedData
 ##' @export
 setReplaceMethod(
   "poplin_reduced",
@@ -193,7 +186,6 @@ setReplaceMethod(
   }
 )
 
-##' @rdname poplinReducedData
 ##' @export
 setReplaceMethod(
   "poplin_reduced",
@@ -213,7 +205,6 @@ setReplaceMethod(
   }
 )
 
-##' @rdname poplinReducedData
 ##' @export
 setReplaceMethod(
   "poplin_reduced",

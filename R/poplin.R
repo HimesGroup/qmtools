@@ -3,15 +3,19 @@
 ##' The poplin class is designed to process LC/MS data. It is an extension of
 ##' the standard SummarizedExperiment class, and supports additional containers
 ##' for data processing results (e.g., normalization, imputation) via
-##' [poplinData] and dimension reduction results (PCA, PLS-DA) via
-##' [poplinReducedData]. A poplin object also can be created by coercing from a
+##' [poplin_data] and dimension reduction results (PCA, PLS-DA) via
+##' [poplin_reduced]. A poplin object also can be created by coercing from a
 ##' \linkS4class{SummarizedExperiment} object.
-##' 
+##'
 ##' @param intensity Peak intensity matrix where rows represent features and
 ##'   columns represent samples.
 ##' @param ... Arguments passed to the [SummarizedExperiment] constructor.
 ##' @return A poplin object
 ##' @author Jaehyun Joo
+##' @name poplin-class
+##' @usage
+##' ## Constructor
+##' poplin(intensity, ...)
 ##' @examples
 ##' nsamp <- 20
 ##' nfeature <- 1000
@@ -20,6 +24,37 @@
 ##' ## Coercion from an SummarizedExperiment object
 ##' as(se, "poplin")
 ##'
+NULL
+
+##' Internal poplin fields
+##'
+##' Methods to get or set internal fields in a \linkS4class{poplin} object.
+##' These methods are not intended to be used by end users of the \pkg{poplin}
+##' package.
+##'
+##' In the snippets below, \code{x} is a \linkS4class{poplin} object.
+##'
+##' \describe{
+##'
+##' \item{\code{poplinData(x)}, \code{poplinData(x) <- value}:}{ Returns a
+##' \linkS4class{DataFrame} of matrices containing one or more data processing
+##' results. \code{value} must be a \linkS4class{DataFrame} with the dimension
+##' equal to \code{dim(x)}. End users are supposed to interact with this field
+##' via [poplin_data]. }
+##'
+##' \item{\code{poplinReducedData(x), \code{poplinReducedData(x) <- value}}:}{
+##' Returns a \linkS4class{DataFrame} of matrices containing one or more
+##' dimension-reduced data. \code{value} must be a \linkS4class{DataFrame} with
+##' the dimension equal to \code{ncol(x)}. End users are supposed to interact
+##' with this field via [poplin_reduced]. }
+##'
+##' }
+##'
+##' @seealso [poplin_data], [poplin_reduced]
+##' @name poplin-internals
+NULL
+
+
 ##' @export
 ##' @import methods
 ##' @importFrom SummarizedExperiment SummarizedExperiment

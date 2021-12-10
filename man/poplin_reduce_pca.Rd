@@ -12,7 +12,7 @@
   poplin_in,
   poplin_out,
   ncomp = 2,
-  center = 2,
+  center = TRUE,
   scale = FALSE,
   ...
 )

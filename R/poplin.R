@@ -101,3 +101,4 @@ setAs("SummarizedExperiment", "poplin", function(from) {
 
 ##' @export
 setMethod("show", "poplin", .poplin_show)
+

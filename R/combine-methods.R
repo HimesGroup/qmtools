@@ -104,7 +104,6 @@ setMethod("rbind", "poplin", function(..., deparse.level = 1) {
                               check = FALSE)
 })
 
-##' @rdname poplin-combine/subset
 setMethod("cbind", "poplin", function(..., deparse.level = 1) {
   old_validity <- S4Vectors:::disableValidity()
   if (!isTRUE(old_validity)) {

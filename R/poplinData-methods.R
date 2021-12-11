@@ -28,7 +28,7 @@
 ##'
 ##' \describe{
 ##' \item{\code{poplin_data_names(x) <- value}:}{
-##' \code{value} is a character vector to be assigned for the names of
+##' \code{value} must be a character vector to be assigned for the names of
 ##' processed data sets.
 ##' }
 ##' \item{\code{poplin_data_list(x) <- value}:}{
@@ -50,8 +50,9 @@
 ##' }
 ##' }
 ##'
-##' @return
 ##' @name poplin_data
+##' @docType methods
+##' @seealso [poplin_raw], [poplin_reduced]
 NULL
 
 ##' @export

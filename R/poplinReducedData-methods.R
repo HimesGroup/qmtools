@@ -1,4 +1,4 @@
-##' Poplin dimension-reduced data methods
+##' Dimension-reduced data methods
 ##'
 ##' Methods to get or set dimension reduction results in a \linkS4class{poplin}
 ##' object. These methods are intended to store and retrieve low-dimensional
@@ -30,7 +30,7 @@
 ##'
 ##' \describe{
 ##' \item{\code{poplin_reduced_names(x) <- value}:}{
-##' \code{value} is a character vector to be assigned for the names of
+##' \code{value} must be a character vector to be assigned for the names of
 ##' dimension-reduced data sets.
 ##' }
 ##' \item{\code{poplin_reduced_list(x) <- value}:}{
@@ -52,7 +52,8 @@
 ##' }
 ##' }
 ##' @name poplin_reduced
-##' @return
+##' @docType methods
+##' @seealso [poplin_raw], [poplin_data]
 NULL
 
 ##' @export

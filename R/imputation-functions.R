@@ -4,18 +4,18 @@
   method <- match.arg(method)
   switch(
     method,
-    knn = .poplin_impute_knn(x, ...),
-    randomforest = .poplin_impute_randomforest(x, ...),
-    pca = .poplin_impute_pca(x, ...),
-    ## halfmin = .poplin_impute_halfmin(x, ...),
-    ## median = .poplin_impute_median(x, ...),
-    ## mean = .poplin_impute_mean(x, ...),
-    simple = .poplin_impute_simple(x, ...)
+    knn = .impute_knn(x, ...),
+    randomforest = .impute_randomforest(x, ...),
+    pca = .impute_pca(x, ...),
+    ## halfmin = .impute_halfmin(x, ...),
+    ## median = .impute_median(x, ...),
+    ## mean = .impute_mean(x, ...),
+    simple = .impute_simple(x, ...)
     )
 }
 
 ## Knn imputation
-.poplin_impute_knn <- function(x, by = c("feature", "sample"), ...) {
+.impute_knn <- function(x, by = c("feature", "sample"), ...) {
   if (!requireNamespace("VIM", quietly = TRUE)) {
     stop("Package 'VIM' is required. Please install and try again.")
   }
@@ -32,15 +32,15 @@
 }
 
 ## Random forest imputation
-.poplin_impute_randomforest <- function(x, ...) {
+.impute_randomforest <- function(x, ...) {
   if (!requireNamespace("missForest", quietly = TRUE)) {
     stop("Package 'missForest' is required. Please install and try again.")
-  } 
+  }
   t(missForest::missForest(t(x), ...)$ximp)
 }
 
 ## Bayesian PCA imputation
-.poplin_impute_pca <- function(x, type = c("bpca", "ppca", "nipals", "svdImpute"), ...) {
+.impute_pca <- function(x, type = c("bpca", "ppca", "nipals", "svdImpute"), ...) {
   if (!requireNamespace("pcaMethods", quietly = TRUE)) {
     stop("Package 'pcaMethods' is required. Please install and try again.")
   }
@@ -49,17 +49,17 @@
 }
 
 ## Simple univariate imputation
-.poplin_impute_simple <- function(x, type = c("halfmin", "median", "mean")) {
+.impute_simple <- function(x, type = c("halfmin", "median", "mean")) {
   type <- match.arg(type)
   switch(
     type,
-    halfmin = .poplin_impute_halfmin(x),
-    median = .poplin_impute_median(x),
-    mean = .poplin_impute_mean(x)
+    halfmin = .impute_halfmin(x),
+    median = .impute_median(x),
+    mean = .impute_mean(x)
   )
 }
 
-.poplin_impute_halfmin <- function(x) {
+.impute_halfmin <- function(x) {
   out <- apply(x, 1, function(x) {
     if (anyNA(x)) {
       val <- min(x, na.rm = TRUE) / 2
@@ -70,7 +70,7 @@
   t(out)
 }
 
-.poplin_impute_median <- function(x) {
+.impute_median <- function(x) {
   out <- apply(x, 1, function(x) {
     if (anyNA(x)) {
       val <- median(x, na.rm = TRUE)
@@ -81,7 +81,7 @@
   t(out)
 }
 
-.poplin_impute_mean <- function(x) {
+.impute_mean <- function(x) {
   out <- apply(x, 1, function(x) {
     if (anyNA(x)) {
       val <- mean(x, na.rm = TRUE)

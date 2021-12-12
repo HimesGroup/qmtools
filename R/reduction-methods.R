@@ -4,13 +4,13 @@
 ##' and visualization.
 ##' [poplin_reduce] is a wrapper for the following set of functions:
 ##' \describe{
-##' \item{\code{\link{poplin_reduce_pca}}:}{
+##' \item{\code{\link{reduce_pca}}:}{
 ##' principal component analysis (PCA)
 ##' }
-##' \item{\code{\link{poplin_reduce_plsda}}:}{
+##' \item{\code{\link{reduce_plsda}}:}{
 ##' partial least squares-discriminant analysis (PLS-DA)
 ##' }
-##' \item{\code{\link{poplin_reduce_tsne}}:}{
+##' \item{\code{\link{reduce_tsne}}:}{
 ##' t-distributed stochastic neighbor embedding
 ##' }
 ##' }
@@ -71,22 +71,22 @@ setMethod(
 ##' @return A poplin.pca matrix or \linkS4class{poplin} object with the same
 ##'   number of rows as \code{ncol(x)} containing the dimension reduction
 ##'   result.
-##' @name poplin_reduce_pca
+##' @name reduce_pca
 ##' @family data reduction methods
 setMethod(
-  "poplin_reduce_pca",
+  "reduce_pca",
   "matrix",
   function(x, ncomp = 2, center = TRUE, scale = FALSE, ...) {
-    .poplin_reduce_pca(x, ncomp = ncomp, center = center, scale = scale, ...)
+    .reduce_pca(x, ncomp = ncomp, center = center, scale = scale, ...)
   }
 )
 
-##' @rdname poplin_reduce_pca
+##' @rdname reduce_pca
 setMethod(
-  "poplin_reduce_pca",
+  "reduce_pca",
   "poplin",
   function(x, poplin_in, poplin_out, ncomp = 2, center = TRUE, scale = FALSE, ...) {
-    .reduced_extract_and_assign(x, .poplin_reduce_pca,
+    .reduced_extract_and_assign(x, .reduce_pca,
                                 poplin_in, poplin_out,
                                 ncomp = ncomp, center = center, scale = scale, ...)
   }
@@ -121,22 +121,22 @@ setMethod(
 ##' @return A poplin.tsne matrix or \linkS4class{poplin} object with the same
 ##'   number of rows as \code{ncol(x)} containing the dimension reduction
 ##'   result.
-##' @name poplin_reduce_tsne
+##' @name reduce_tsne
 ##' @family data reduction methods
 setMethod(
-  "poplin_reduce_tsne",
+  "reduce_tsne",
   "matrix",
   function(x, ncomp = 2, normalize = TRUE, ...) {
-    .poplin_reduce_tsne(x, ncomp = ncomp, normalize = normalize, ...)
+    .reduce_tsne(x, ncomp = ncomp, normalize = normalize, ...)
   }
 )
 
-##' @rdname poplin_reduce_tsne
+##' @rdname reduce_tsne
 setMethod(
-  "poplin_reduce_tsne",
+  "reduce_tsne",
   "poplin",
   function(x, poplin_in, poplin_out, ncomp = 2, normalize = TRUE, ...) {
-    .reduced_extract_and_assign(x, .poplin_reduce_tsne,
+    .reduced_extract_and_assign(x, .reduce_tsne,
                                 poplin_in, poplin_out,
                                 ncomp = ncomp, normalize = normalize, ...)
   }
@@ -152,7 +152,7 @@ setMethod(
 ##'  Kristian Hovde Liland, Bjørn-Helge Mevik and Ron Wehrens (2021). pls:
 ##'  Partial Least Squares and Principal Component Regression. R package version
 ##'  2.8-0. https://CRAN.R-project.org/package=pls
-##' 
+##'
 ##' @param x A matrix or \linkS4class{poplin} object.
 ##' @param method A dimension reduction method. Default is 'pca'.
 ##' @param poplin_in Name of a data matrix to retrieve.
@@ -165,24 +165,24 @@ setMethod(
 ##' @return A poplin.plsda matrix or \linkS4class{poplin} object with the same
 ##'   number of rows as \code{ncol(x)} containing the dimension reduction
 ##'   result.
-##' @name poplin_reduce_plsda
+##' @name reduce_plsda
 ##' @family data reduction methods
 setMethod(
-  "poplin_reduce_plsda",
+  "reduce_plsda",
   "matrix",
   function(x, y, ncomp = 2, center = TRUE, scale = FALSE, ...) {
-    .poplin_reduce_plsda(x, y = y, ncomp = ncomp,
+    .reduce_plsda(x, y = y, ncomp = ncomp,
                          center = center, scale = scale, ...)
   }
 )
 
-##' @rdname poplin_reduce_plsda
+##' @rdname reduce_plsda
 setMethod(
-  "poplin_reduce_plsda",
+  "reduce_plsda",
   "poplin",
   function(x, poplin_in, poplin_out, y,
            ncomp = 2, center = TRUE, scale = FALSE, ...) {
-    .reduced_extract_and_assign(x, .poplin_reduce_plsda,
+    .reduced_extract_and_assign(x, .reduce_plsda,
                                 poplin_in, poplin_out,
                                 y = y, ncomp = ncomp,
                                 center = center, scale = scale, ...)

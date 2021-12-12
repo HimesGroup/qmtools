@@ -42,21 +42,21 @@ In metabolomics, dimension reduction methods are often used for modeling
 and visualization.
 \link{poplin_reduce} is a wrapper for the following set of functions:
 \describe{
-\item{\code{\link{poplin_reduce_pca}}:}{
+\item{\code{\link{reduce_pca}}:}{
 principal component analysis (PCA)
 }
-\item{\code{\link{poplin_reduce_plsda}}:}{
+\item{\code{\link{reduce_plsda}}:}{
 partial least squares-discriminant analysis (PLS-DA)
 }
-\item{\code{\link{poplin_reduce_tsne}}:}{
+\item{\code{\link{reduce_tsne}}:}{
 t-distributed stochastic neighbor embedding
 }
 }
 }
 \seealso{
 Other data reduction methods: 
-\code{\link{poplin_reduce_pca}()},
-\code{\link{poplin_reduce_plsda}()},
-\code{\link{poplin_reduce_tsne}()}
+\code{\link{reduce_pca}()},
+\code{\link{reduce_plsda}()},
+\code{\link{reduce_tsne}()}
 }
 \concept{data reduction methods}

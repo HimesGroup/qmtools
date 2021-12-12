@@ -4,7 +4,7 @@
 ##' object. These methods are intended to store and retrieve processed data
 ##' sets involved in normalization, imputation, and transformation.
 ##'
-##' @section Getter methods:
+##' @section Getters:
 ##'
 ##' In the code snippets below, \code{x} is a \linkS4class{poplin} object.
 ##'
@@ -24,7 +24,7 @@
 ##' }
 ##' }
 ##'
-##' @section Setter methods:
+##' @section Setters:
 ##'
 ##' \describe{
 ##' \item{\code{poplin_data_names(x) <- value}:}{

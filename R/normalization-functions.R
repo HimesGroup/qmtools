@@ -11,20 +11,20 @@
 .normalize_fun_dispatch <- function(x, method, ...) {
   switch(
     method,
-    pqn = .poplin_normalize_pqn(x = x, ...),
-    sum = .poplin_normalize_sum(x = x, ...),
-    mean = .poplin_normalize_mean(x = x, ...),
-    mad = .poplin_normalize_mad(x = x, ...),
-    median = .poplin_normalize_median(x = x, ...),
-    ## euclidean = .poplin_normalize_euclidean(x = x, ...),
-    cyclicloess = .poplin_normalize_cyclicloess(x = x, ...),
-    vsn = .poplin_normalize_vsn(x = x, ...),
-    ## auto = .poplin_normalize_auto(x = x, ...),
-    ## range = .poplin_normalize_range(x = x, ...),
-    ## pareto = .poplin_normalize_pareto(x = x, ...),
-    ## vast = .poplin_normalize_vast(x = x, ...),
-    ## level = .poplin_normalize_level(x = x, ...),
-    scale = .poplin_normalize_scale(x = x, ...)
+    pqn = .normalize_pqn(x = x, ...),
+    sum = .normalize_sum(x = x, ...),
+    mean = .normalize_mean(x = x, ...),
+    mad = .normalize_mad(x = x, ...),
+    median = .normalize_median(x = x, ...),
+    ## euclidean = .normalize_euclidean(x = x, ...),
+    cyclicloess = .normalize_cyclicloess(x = x, ...),
+    vsn = .normalize_vsn(x = x, ...),
+    ## auto = .normalize_auto(x = x, ...),
+    ## range = .normalize_range(x = x, ...),
+    ## pareto = .normalize_pareto(x = x, ...),
+    ## vast = .normalize_vast(x = x, ...),
+    ## level = .normalize_level(x = x, ...),
+    scale = .normalize_scale(x = x, ...)
   )
 }
 
@@ -32,7 +32,7 @@
 ## PQN normalization
 ## The reference suggests to apply integral normalization prior to PQN so
 ## consider to add that.
-.poplin_normalize_pqn <- function(x, ref_samples = NULL, min_frac = 0.5,
+.normalize_pqn <- function(x, ref_samples = NULL, min_frac = 0.5,
                                  type = c("mean", "median")) {
   type <- match.arg(type)
   if ((is.null(ref_samples))) {
@@ -85,31 +85,31 @@
 }
 
 ## other spectral function normalization methods
-.poplin_normalize_sum <- function(x, restrict = FALSE, rescale = FALSE) {
+.normalize_sum <- function(x, restrict = FALSE, rescale = FALSE) {
   .normalize_columns(
     x = x, restrict = restrict, rescale = rescale, method = "sum"
   )
 }
 
-.poplin_normalize_mean <- function(x, restrict = FALSE, rescale = FALSE) {
+.normalize_mean <- function(x, restrict = FALSE, rescale = FALSE) {
   .normalize_columns(
     x = x, restrict = restrict, rescale = rescale, method = "mean"
   )
 }
 
-.poplin_normalize_median <- function(x, restrict = FALSE, rescale = FALSE) {
+.normalize_median <- function(x, restrict = FALSE, rescale = FALSE) {
   .normalize_columns(
     x = x, restrict = restrict, rescale = rescale, method = "median"
   )
 }
 
-.poplin_normalize_mad <- function(x, restrict = FALSE, rescale = FALSE) {
+.normalize_mad <- function(x, restrict = FALSE, rescale = FALSE) {
   .normalize_columns(
     x = x, restrict = restrict, rescale = rescale, method = "mad"
   )
 }
 
-.poplin_normalize_euclidean <- function(x, restrict = FALSE, rescale = FALSE) {
+.normalize_euclidean <- function(x, restrict = FALSE, rescale = FALSE) {
   .normalize_columns(
     x = x, restrict = restrict, rescale = rescale, method = "euclidean"
   )
@@ -143,7 +143,7 @@
 ################################################################################
 ## Cyclic LOESS normalization (taken from limma package 09/13/2021)
 ################################################################################
-.poplin_normalize_cyclicloess <- function(x, pre_log2, weights = NULL, span = 0.7,
+.normalize_cyclicloess <- function(x, pre_log2, weights = NULL, span = 0.7,
                                           iterations = 3,
                                           type = c("fast", "affy", "pairs")) {
   type <- match.arg(type)
@@ -326,7 +326,7 @@
 #################################################################################
 ## VSN: simply provides interface
 #################################################################################
-.poplin_normalize_vsn <- function(x, meanSdPlot = FALSE, ...) {
+.normalize_vsn <- function(x, meanSdPlot = FALSE, ...) {
   if (!requireNamespace("vsn", quietly = TRUE)) {
     stop("Package 'vsn' is required. Please install and try again.")
   }
@@ -365,36 +365,36 @@
   (x - mean(x, ...)) / mean(x, ...)
 }
 
-.poplin_normalize_auto <- function(x) {
+.normalize_auto <- function(x) {
   t(apply(x, 1, .auto_scale, na.rm = TRUE))
 }
 
-.poplin_normalize_range <- function(x) {
+.normalize_range <- function(x) {
   t(apply(x, 1, .range_scale, na.rm = TRUE))
 }
 
-.poplin_normalize_pareto <- function(x) {
+.normalize_pareto <- function(x) {
   t(apply(x, 1, .pareto_scale, na.rm = TRUE))
 }
 
-.poplin_normalize_vast <- function(x) {
+.normalize_vast <- function(x) {
   t(apply(x, 1, .vast_scale, na.rm = TRUE))
 }
 
-.poplin_normalize_level <- function(x) {
+.normalize_level <- function(x) {
   t(apply(x, 1, .level_scale, na.rm = TRUE))
 }
 
-.poplin_normalize_scale <- function(x, type = c("auto", "range", "pareto",
+.normalize_scale <- function(x, type = c("auto", "range", "pareto",
                                                 "vast", "level")) {
   type <- match.arg(type)
   switch(
     type,
-    auto = .poplin_normalize_auto(x),
-    range = .poplin_normalize_range(x),
-    pareto = .poplin_normalize_pareto(x),
-    vast = .poplin_normalize_vast(x),
-    level = .poplin_normalize_level(x)
+    auto = .normalize_auto(x),
+    range = .normalize_range(x),
+    pareto = .normalize_pareto(x),
+    vast = .normalize_vast(x),
+    level = .normalize_level(x)
   )
 }
 

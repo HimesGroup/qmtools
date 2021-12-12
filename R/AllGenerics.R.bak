@@ -114,86 +114,86 @@ setGeneric(
 
 ##' @export
 setGeneric(
-  "normalize_pqn",
-  function(x, ...) standardGeneric("normalize_pqn")
+  "poplin_normalize_pqn",
+  function(x, ...) standardGeneric("poplin_normalize_pqn")
 )
 
 ##' @export
 setGeneric(
-  "normalize_sum",
-  function(x, ...) standardGeneric("normalize_sum")
+  "poplin_normalize_sum",
+  function(x, ...) standardGeneric("poplin_normalize_sum")
 )
 
 ##' @export
 setGeneric(
-  "normalize_mean",
-  function(x, ...) standardGeneric("normalize_mean")
+  "poplin_normalize_mean",
+  function(x, ...) standardGeneric("poplin_normalize_mean")
 )
 
 ##' @export
 setGeneric(
-  "normalize_median",
-  function(x, ...) standardGeneric("normalize_median")
+  "poplin_normalize_median",
+  function(x, ...) standardGeneric("poplin_normalize_median")
 )
 
 ##' @export
 setGeneric(
-  "normalize_mad",
-  function(x, ...) standardGeneric("normalize_mad")
+  "poplin_normalize_mad",
+  function(x, ...) standardGeneric("poplin_normalize_mad")
 )
 
 ##' @export
 setGeneric(
-  "normalize_euclidean",
-  function(x, ...) standardGeneric("normalize_euclidean")
+  "poplin_normalize_euclidean",
+  function(x, ...) standardGeneric("poplin_normalize_euclidean")
 )
 
 ##' @export
 setGeneric(
-  "normalize_cyclicloess",
-  function(x, ...) standardGeneric("normalize_cyclicloess")
+  "poplin_normalize_cyclicloess",
+  function(x, ...) standardGeneric("poplin_normalize_cyclicloess")
 )
 
 ##' @export
 setGeneric(
-  "normalize_vsn",
-  function(x, ...) standardGeneric("normalize_vsn")
+  "poplin_normalize_vsn",
+  function(x, ...) standardGeneric("poplin_normalize_vsn")
 )
 
 ##' @export
 setGeneric(
-  "normalize_auto",
-  function(x, ...) standardGeneric("normalize_auto")
+  "poplin_normalize_auto",
+  function(x, ...) standardGeneric("poplin_normalize_auto")
 )
 
 ##' @export
 setGeneric(
-  "normalize_range",
-  function(x, ...) standardGeneric("normalize_range")
+  "poplin_normalize_range",
+  function(x, ...) standardGeneric("poplin_normalize_range")
 )
 
 ##' @export
 setGeneric(
-  "normalize_pareto",
-  function(x, ...) standardGeneric("normalize_pareto")
+  "poplin_normalize_pareto",
+  function(x, ...) standardGeneric("poplin_normalize_pareto")
 )
 
 ##' @export
 setGeneric(
-  "normalize_vast",
-  function(x, ...) standardGeneric("normalize_vast")
+  "poplin_normalize_vast",
+  function(x, ...) standardGeneric("poplin_normalize_vast")
 )
 
 ##' @export
 setGeneric(
-  "normalize_level",
-  function(x, ...) standardGeneric("normalize_level")
+  "poplin_normalize_level",
+  function(x, ...) standardGeneric("poplin_normalize_level")
 )
 
 ##' @export
 setGeneric(
-  "normalize_scale",
-  function(x, ...) standardGeneric("normalize_scale")
+  "poplin_normalize_scale",
+  function(x, ...) standardGeneric("poplin_normalize_scale")
 )
 
 
@@ -209,44 +209,44 @@ setGeneric(
 
 ##' @export
 setGeneric(
-  "impute_knn",
-  function(x, ...) standardGeneric("impute_knn")
+  "poplin_impute_knn",
+  function(x, ...) standardGeneric("poplin_impute_knn")
 )
 
 ##' @export
 setGeneric(
-  "impute_halfmin",
-  function(x, ...) standardGeneric("impute_halfmin")
+  "poplin_impute_halfmin",
+  function(x, ...) standardGeneric("poplin_impute_halfmin")
 )
 
 ##' @export
 setGeneric(
-  "impute_median",
-  function(x, ...) standardGeneric("impute_median")
+  "poplin_impute_median",
+  function(x, ...) standardGeneric("poplin_impute_median")
 )
 
 ##' @export
 setGeneric(
-  "impute_mean",
-  function(x, ...) standardGeneric("impute_mean")
+  "poplin_impute_mean",
+  function(x, ...) standardGeneric("poplin_impute_mean")
 )
 
 ##' @export
 setGeneric(
-  "impute_simple",
-  function(x, ...) standardGeneric("impute_simple")
+  "poplin_impute_simple",
+  function(x, ...) standardGeneric("poplin_impute_simple")
 )
 
 ##' @export
 setGeneric(
-  "impute_pca",
-  function(x, ...) standardGeneric("impute_pca")
+  "poplin_impute_pca",
+  function(x, ...) standardGeneric("poplin_impute_pca")
 )
 
 ##' @export
 setGeneric(
-  "impute_randomforest",
-  function(x, ...) standardGeneric("impute_randomforest")
+  "poplin_impute_randomforest",
+  function(x, ...) standardGeneric("poplin_impute_randomforest")
 )
 
 #################################################################################
@@ -261,18 +261,18 @@ setGeneric(
 
 ##' @export
 setGeneric(
-  "reduce_pca",
-  function(x, ...) standardGeneric("reduce_pca")
+  "poplin_reduce_pca",
+  function(x, ...) standardGeneric("poplin_reduce_pca")
 )
 
 ##' @export
 setGeneric(
-  "reduce_tsne",
-  function(x, ...) standardGeneric("reduce_tsne")
+  "poplin_reduce_tsne",
+  function(x, ...) standardGeneric("poplin_reduce_tsne")
 )
 
 ##' @export
 setGeneric(
-  "reduce_plsda",
-  function(x, ...) standardGeneric("reduce_plsda")
+  "poplin_reduce_plsda",
+  function(x, ...) standardGeneric("poplin_reduce_plsda")
 )

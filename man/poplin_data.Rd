@@ -9,7 +9,7 @@ Methods to get or set data processing results in a \linkS4class{poplin}
 object. These methods are intended to store and retrieve processed data
 sets involved in normalization, imputation, and transformation.
 }
-\section{Getter methods}{
+\section{Getters}{
 
 
 In the code snippets below, \code{x} is a \linkS4class{poplin} object.
@@ -31,7 +31,7 @@ the index of the desired data set, defaulting to the first entry if missing.
 }
 }
 
-\section{Setter methods}{
+\section{Setters}{
 
 
 \describe{

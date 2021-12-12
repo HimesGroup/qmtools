@@ -35,25 +35,25 @@ Missing values are frequently found in metabolomics data. The \pkg{poplin}
 package provides a few options to handle them.
 \link{poplin_impute} is a wrapper for the following set of functions:
 \describe{
-\item{\code{\link{poplin_impute_knn}}:}{
+\item{\code{\link{impute_knn}}:}{
 k-nearest neighbor (KNN) imputation
 }
-\item{\code{\link{poplin_impute_pca}}:}{
+\item{\code{\link{impute_pca}}:}{
 principal component analysis (PCA) imputation
 }
-\item{\code{\link{poplin_impute_randomforest}}:}{
+\item{\code{\link{impute_randomforest}}:}{
 random forest imputation
 }
-\item{\code{\link{poplin_impute_simple}}:}{
+\item{\code{\link{impute_simple}}:}{
 simple univariate imputation (e.g., half-minimum, mean, median)
 }
 }
 }
 \seealso{
 Other imputation methods: 
-\code{\link{poplin_impute_knn}()},
-\code{\link{poplin_impute_pca}()},
-\code{\link{poplin_impute_randomforest}()},
-\code{\link{poplin_impute_simple}()}
+\code{\link{impute_knn}()},
+\code{\link{impute_pca}()},
+\code{\link{impute_randomforest}()},
+\code{\link{impute_simple}()}
 }
 \concept{imputation methods}

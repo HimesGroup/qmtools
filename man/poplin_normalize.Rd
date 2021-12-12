@@ -41,41 +41,41 @@ Data normalization aims to reduce unwanted variations. The \pkg{poplin}
 package provides a few data-driven normalization methods.
 \link{poplin_normalize} is a wrapper for the following set of functions:
 \describe{
-\item{\code{\link{poplin_normalize_sum}}:}{
+\item{\code{\link{normalize_sum}}:}{
 sum normalization (TIC normalization)
 }
-\item{\code{\link{poplin_normalize_mean}}:}{
+\item{\code{\link{normalize_mean}}:}{
 mean normalization
 }
-\item{\code{\link{poplin_normalize_median}}:}{
+\item{\code{\link{normalize_median}}:}{
 median normalization
 }
-\item{\code{\link{poplin_normalize_mad}}:}{
+\item{\code{\link{normalize_mad}}:}{
 MAD (median absolute deviation) normalization
 }
-\item{\code{\link{poplin_normalize_cyclicloess}}:}{
+\item{\code{\link{normalize_cyclicloess}}:}{
 cyclic LOESS normalization
 }
-\item{\code{\link{poplin_normalize_pqn}}:}{
+\item{\code{\link{normalize_pqn}}:}{
 PQN (probabilistic quotient normalization)
 }
-\item{\code{\link{poplin_normalize_vsn}}:}{
+\item{\code{\link{normalize_vsn}}:}{
 VSN (variance stabilizing normalization)
 }
-\item{\code{\link{poplin_normalize_scale}}:}{
+\item{\code{\link{normalize_scale}}:}{
 feature-based scaling (e.g., auto, range, pareto, vast, level)
 }
 }
 }
 \seealso{
 Other normalization methods: 
-\code{\link{poplin_normalize_cyclicloess}()},
-\code{\link{poplin_normalize_mad}()},
-\code{\link{poplin_normalize_mean}()},
-\code{\link{poplin_normalize_median}()},
-\code{\link{poplin_normalize_pqn}()},
-\code{\link{poplin_normalize_scale}()},
-\code{\link{poplin_normalize_sum}()},
-\code{\link{poplin_normalize_vsn}()}
+\code{\link{normalize_cyclicloess}()},
+\code{\link{normalize_mad}()},
+\code{\link{normalize_mean}()},
+\code{\link{normalize_median}()},
+\code{\link{normalize_pqn}()},
+\code{\link{normalize_scale}()},
+\code{\link{normalize_sum}()},
+\code{\link{normalize_vsn}()}
 }
 \concept{normalization methods}

@@ -5,13 +5,13 @@
   }
   switch(
     method,
-    pca = .poplin_reduce_pca(x, ncomp = ncomp, ...),
-    tsne = .poplin_reduce_tsne(x, ncomp = ncomp, ...),
-    plsda = .poplin_reduce_plsda(x, y = y, ncomp = ncomp, ...)
+    pca = .reduce_pca(x, ncomp = ncomp, ...),
+    tsne = .reduce_tsne(x, ncomp = ncomp, ...),
+    plsda = .reduce_plsda(x, y = y, ncomp = ncomp, ...)
   )
 }
 
-.poplin_reduce_pca <- function(x, ncomp = 2, center = TRUE, scale = FALSE, ...) {
+.reduce_pca <- function(x, ncomp = 2, center = TRUE, scale = FALSE, ...) {
   if (ncomp > min(dim(x))) {
     stop("'ncomp' must be <= min(dim(x))")
   }
@@ -73,7 +73,7 @@
   out
 }
 
-.poplin_reduce_tsne <- function(x, ncomp = 2, normalize = TRUE, ...) {
+.reduce_tsne <- function(x, ncomp = 2, normalize = TRUE, ...) {
   if (!requireNamespace("Rtsne", quietly = TRUE)) {
     stop("Package 'Rtsne' is required. Please install and try again.")
   }
@@ -101,7 +101,7 @@
 }
 
 
-.poplin_reduce_plsda <- function(x, y, ncomp = 2, center = TRUE, scale = FALSE,
+.reduce_plsda <- function(x, y, ncomp = 2, center = TRUE, scale = FALSE,
                                  ...) {
   if (!requireNamespace("pls", quietly = TRUE)) {
     stop("Package 'pls' is required. Please install and try again.")

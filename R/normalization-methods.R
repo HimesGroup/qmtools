@@ -4,28 +4,28 @@
 ##' package provides a few data-driven normalization methods.
 ##' [poplin_normalize] is a wrapper for the following set of functions:
 ##' \describe{
-##' \item{\code{\link{poplin_normalize_sum}}:}{
+##' \item{\code{\link{normalize_sum}}:}{
 ##' sum normalization (TIC normalization)
 ##' }
-##' \item{\code{\link{poplin_normalize_mean}}:}{
+##' \item{\code{\link{normalize_mean}}:}{
 ##' mean normalization
 ##' }
-##' \item{\code{\link{poplin_normalize_median}}:}{
+##' \item{\code{\link{normalize_median}}:}{
 ##' median normalization
 ##' }
-##' \item{\code{\link{poplin_normalize_mad}}:}{
+##' \item{\code{\link{normalize_mad}}:}{
 ##' MAD (median absolute deviation) normalization
 ##' }
-##' \item{\code{\link{poplin_normalize_cyclicloess}}:}{
+##' \item{\code{\link{normalize_cyclicloess}}:}{
 ##' cyclic LOESS normalization
 ##' }
-##' \item{\code{\link{poplin_normalize_pqn}}:}{
+##' \item{\code{\link{normalize_pqn}}:}{
 ##' PQN (probabilistic quotient normalization)
 ##' }
-##' \item{\code{\link{poplin_normalize_vsn}}:}{
+##' \item{\code{\link{normalize_vsn}}:}{
 ##' VSN (variance stabilizing normalization)
 ##' }
-##' \item{\code{\link{poplin_normalize_scale}}:}{
+##' \item{\code{\link{normalize_scale}}:}{
 ##' feature-based scaling (e.g., auto, range, pareto, vast, level)
 ##' }
 ##' }
@@ -87,25 +87,25 @@ setMethod(
 ##' normalization as robust method to account for dilution of complex biological
 ##' mixtures. Application in 1H NMR metabonomics. Anal Chem. 2006 Jul
 ##' 1;78(13):4281-90. doi: 10.1021/ac051632c. PMID: 16808434.
-##' @name poplin_normalize_pqn
+##' @name normalize_pqn
 ##' @family normalization methods
 setMethod(
-  "poplin_normalize_pqn",
+  "normalize_pqn",
   "matrix",
   function(x, ref_samples = colnames(x), min_frac = 0.5,
            type = c("mean", "median")) {
-    .poplin_normalize_pqn(x, ref_samples = ref_samples, min_frac = min_frac,
+    .normalize_pqn(x, ref_samples = ref_samples, min_frac = min_frac,
                           type = type)
   }
 )
 
-##' @rdname poplin_normalize_pqn
+##' @rdname normalize_pqn
 setMethod(
-  "poplin_normalize_pqn",
+  "normalize_pqn",
   "poplin",
   function(x, poplin_in, poplin_out, ref_samples = colnames(x), min_frac = 0.5,
            type = c("mean", "median")) {
-    .poplin_extract_and_assign(x, .poplin_normalize_pqn,
+    .poplin_extract_and_assign(x, .normalize_pqn,
                                poplin_in, poplin_out, ref_samples = ref_samples,
                                min_frac = min_frac, type = type)
   }
@@ -127,22 +127,22 @@ setMethod(
 ##'   scales.
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
-##' @name poplin_normalize_sum
+##' @name normalize_sum
 ##' @family normalization methods
 setMethod(
-  "poplin_normalize_sum",
+  "normalize_sum",
   "matrix",
   function(x, restrict = FALSE, rescale = FALSE) {
-    .poplin_normalize_sum(x, restrict = restrict, rescale = rescale)
+    .normalize_sum(x, restrict = restrict, rescale = rescale)
   }
 )
 
-##' @rdname poplin_normalize_sum
+##' @rdname normalize_sum
 setMethod(
-  "poplin_normalize_sum",
+  "normalize_sum",
   "poplin",
   function(x, poplin_in, poplin_out, restrict = FALSE, rescale = FALSE) {
-    .poplin_extract_and_assign(x, .poplin_normalize_sum,
+    .poplin_extract_and_assign(x, .normalize_sum,
                                poplin_in, poplin_out,
                                restrict = restrict, rescale = rescale)
   }
@@ -164,22 +164,22 @@ setMethod(
 ##'   scales.
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
-##' @name poplin_normalize_mean
+##' @name normalize_mean
 ##' @family normalization methods
 setMethod(
-  "poplin_normalize_mean",
+  "normalize_mean",
   "matrix",
   function(x, restrict = FALSE, rescale = FALSE) {
-    .poplin_normalize_mean(x, restrict = restrict, rescale = rescale)
+    .normalize_mean(x, restrict = restrict, rescale = rescale)
   }
 )
 
-##' @rdname poplin_normalize_mean
+##' @rdname normalize_mean
 setMethod(
-  "poplin_normalize_mean",
+  "normalize_mean",
   "poplin",
   function(x, poplin_in, poplin_out, restrict = FALSE, rescale = FALSE) {
-    .poplin_extract_and_assign(x, .poplin_normalize_mean,
+    .poplin_extract_and_assign(x, .normalize_mean,
                                poplin_in, poplin_out,
                                restrict = restrict, rescale = rescale)
   }
@@ -201,22 +201,22 @@ setMethod(
 ##'   scales.
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
-##' @name poplin_normalize_median
+##' @name normalize_median
 ##' @family normalization methods
 setMethod(
-  "poplin_normalize_median",
+  "normalize_median",
   "matrix",
   function(x, restrict = FALSE, rescale = FALSE) {
-    .poplin_normalize_median(x, restrict = restrict, rescale = rescale)
+    .normalize_median(x, restrict = restrict, rescale = rescale)
   }
 )
 
-##' @rdname poplin_normalize_median
+##' @rdname normalize_median
 setMethod(
-  "poplin_normalize_median",
+  "normalize_median",
   "poplin",
   function(x, poplin_in, poplin_out, restrict = FALSE, rescale = FALSE) {
-    .poplin_extract_and_assign(x, .poplin_normalize_median,
+    .poplin_extract_and_assign(x, .normalize_median,
                                poplin_in, poplin_out,
                                restrict = restrict, rescale = rescale)
   }
@@ -239,40 +239,40 @@ setMethod(
 ##'   scales.
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
-##' @name poplin_normalize_mad
+##' @name normalize_mad
 ##' @family normalization methods
 setMethod(
-  "poplin_normalize_mad",
+  "normalize_mad",
   "matrix",
   function(x, restrict = FALSE, rescale = FALSE) {
-    .poplin_normalize_mad(x, restrict = restrict, rescale = rescale)
+    .normalize_mad(x, restrict = restrict, rescale = rescale)
   }
 )
 
-##' @rdname poplin_normalize_mad
+##' @rdname normalize_mad
 setMethod(
-  "poplin_normalize_mad",
+  "normalize_mad",
   "poplin",
   function(x, poplin_in, poplin_out, restrict = FALSE, rescale = FALSE) {
-    .poplin_extract_and_assign(x, .poplin_normalize_mad,
+    .poplin_extract_and_assign(x, .normalize_mad,
                                poplin_in, poplin_out,
                                restrict = restrict, rescale = rescale)
   }
 )
 
 ## setMethod(
-##   "poplin_normalize_euclidean",
+##   "normalize_euclidean",
 ##   "matrix",
 ##   function(x, restrict = FALSE, rescale = FALSE) {
-##     .poplin_normalize_euclidean(x, restrict = restrict, rescale = rescale)
+##     .normalize_euclidean(x, restrict = restrict, rescale = rescale)
 ##   }
 ## )
 
 ## setMethod(
-##   "poplin_normalize_euclidean",
+##   "normalize_euclidean",
 ##   "poplin",
 ##   function(x, poplin_in, poplin_out, restrict = FALSE, rescale = FALSE) {
-##     .poplin_extract_and_assign(x, .poplin_normalize_euclidean,
+##     .poplin_extract_and_assign(x, .normalize_euclidean,
 ##                                poplin_in, poplin_out,
 ##                                restrict = restrict, rescale = rescale)
 ##   }
@@ -286,7 +286,7 @@ setMethod(
 ##' \pkg{limma} package. The input \code{x} is expected to contain
 ##' log-transformed raw intensities. See Bolstad et al. (2003) and Ballman et
 ##' al. (2004) for details.
-##' 
+##'
 ##' @param x A matrix or \linkS4class{poplin} object.
 ##' @param poplin_in Name of a data matrix to retrieve.
 ##' @param poplin_out Name of a data matrix to store.
@@ -313,26 +313,26 @@ setMethod(
 ##' normalizing RNA arrays via linear models. Bioinformatics. 2004 Nov
 ##' 1;20(16):2778-86. doi: 10.1093/bioinformatics/bth327. Epub 2004 May 27.
 ##' PMID: 15166021.
-##' @name poplin_normalize_cyclicloess
+##' @name normalize_cyclicloess
 ##' @family normalization methods
 setMethod(
-  "poplin_normalize_cyclicloess",
+  "normalize_cyclicloess",
   "matrix",
   function(x, pre_log2 = TRUE, type = c("fast", "affy", "pairs"),
            span = 0.7, iterations = 3) {
-    .poplin_normalize_cyclicloess(x, pre_log2 = pre_log2, type = type,
+    .normalize_cyclicloess(x, pre_log2 = pre_log2, type = type,
                                   span = span, iterations = iterations,
                                   weights = NULL)
   }
 )
 
-##' @rdname poplin_normalize_cyclicloess
+##' @rdname normalize_cyclicloess
 setMethod(
-  "poplin_normalize_cyclicloess",
+  "normalize_cyclicloess",
   "poplin",
   function(x, poplin_in, poplin_out, pre_log2 = TRUE,
            type = c("fast", "affy", "pairs"), span = 0.7, iterations = 3) {
-    .poplin_extract_and_assign(x, .poplin_normalize_cyclicloess,
+    .poplin_extract_and_assign(x, .normalize_cyclicloess,
                                poplin_in, poplin_out,
                                pre_log2 = pre_log2, type = type,
                                span = span, iterations = iterations,
@@ -362,22 +362,22 @@ setMethod(
 ##' @param ... Additional argument passed to [vsn::vsnMatrix].
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
-##' @name poplin_normalize_vsn
+##' @name normalize_vsn
 ##' @family normalization methods
 setMethod(
-  "poplin_normalize_vsn",
+  "normalize_vsn",
   "matrix",
   function(x, meanSdPlot = FALSE, ...) {
-    .poplin_normalize_vsn(x, meanSdPlot = meanSdPlot, ...)
+    .normalize_vsn(x, meanSdPlot = meanSdPlot, ...)
   }
 )
 
-##' @rdname poplin_normalize_vsn
+##' @rdname normalize_vsn
 setMethod(
-  "poplin_normalize_vsn",
+  "normalize_vsn",
   "poplin",
   function(x, poplin_in, poplin_out, meanSdPlot = FALSE, ...) {
-    .poplin_extract_and_assign(x, .poplin_normalize_vsn,
+    .poplin_extract_and_assign(x, .normalize_vsn,
                                poplin_in, poplin_out,
                                meanSdPlot = meanSdPlot, ...)
   }
@@ -411,109 +411,109 @@ setMethod(
 ##' @param type A scaling method to be applied.
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
-##' @name poplin_normalize_scale
+##' @name normalize_scale
 ##' @family normalization methods
 setMethod(
-  "poplin_normalize_scale",
+  "normalize_scale",
   "matrix",
   function(x, type = c("auto", "range", "pareto", "vast", "level")) {
-    .poplin_normalize_scale(x, type = type)
+    .normalize_scale(x, type = type)
   }
 )
 
-##' @rdname poplin_normalize_scale
+##' @rdname normalize_scale
 setMethod(
-  "poplin_normalize_scale",
+  "normalize_scale",
   "poplin",
   function(x, poplin_in, poplin_out,
            type = c("auto", "range", "pareto", "vast", "level")) {
-    .poplin_extract_and_assign(x, .poplin_normalize_scale,
+    .poplin_extract_and_assign(x, .normalize_scale,
                                poplin_in, poplin_out, type = type)
   }
 )
 
 
 setMethod(
-  "poplin_normalize_auto",
+  "normalize_auto",
   "matrix",
   function(x, ...) {
-    .poplin_normalize_auto(x, ...)
+    .normalize_auto(x, ...)
   }
 )
 
 setMethod(
-  "poplin_normalize_auto",
+  "normalize_auto",
   "poplin",
   function(x, poplin_in, poplin_out, ...) {
-    .poplin_extract_and_assign(x, .poplin_normalize_auto,
+    .poplin_extract_and_assign(x, .normalize_auto,
                                poplin_in, poplin_out, ...)
   }
 )
 
 setMethod(
-  "poplin_normalize_range",
+  "normalize_range",
   "matrix",
   function(x, ...) {
-    .poplin_normalize_range(x, ...)
+    .normalize_range(x, ...)
   }
 )
 
 setMethod(
-  "poplin_normalize_range",
+  "normalize_range",
   "poplin",
   function(x, poplin_in, poplin_out, ...) {
-    .poplin_extract_and_assign(x, .poplin_normalize_range,
+    .poplin_extract_and_assign(x, .normalize_range,
                                poplin_in, poplin_out, ...)
   }
 )
 
 setMethod(
-  "poplin_normalize_pareto",
+  "normalize_pareto",
   "matrix",
   function(x, ...) {
-    .poplin_normalize_pareto(x, ...)
+    .normalize_pareto(x, ...)
   }
 )
 
 setMethod(
-  "poplin_normalize_pareto",
+  "normalize_pareto",
   "poplin",
   function(x, poplin_in, poplin_out, ...) {
-    .poplin_extract_and_assign(x, .poplin_normalize_pareto,
+    .poplin_extract_and_assign(x, .normalize_pareto,
                                poplin_in, poplin_out, ...)
   }
 )
 
 setMethod(
-  "poplin_normalize_vast",
+  "normalize_vast",
   "matrix",
   function(x, ...) {
-    .poplin_normalize_vast(x, ...)
+    .normalize_vast(x, ...)
   }
 )
 
 setMethod(
-  "poplin_normalize_vast",
+  "normalize_vast",
   "poplin",
   function(x, poplin_in, poplin_out, ...) {
-    .poplin_extract_and_assign(x, .poplin_normalize_vast,
+    .poplin_extract_and_assign(x, .normalize_vast,
                                poplin_in, poplin_out, ...)
   }
 )
 
 setMethod(
-  "poplin_normalize_level",
+  "normalize_level",
   "matrix",
   function(x, ...) {
-    .poplin_normalize_level(x, ...)
+    .normalize_level(x, ...)
   }
 )
 
 setMethod(
-  "poplin_normalize_level",
+  "normalize_level",
   "poplin",
   function(x, poplin_in, poplin_out, ...) {
-    .poplin_extract_and_assign(x, .poplin_normalize_level,
+    .poplin_extract_and_assign(x, .normalize_level,
                                poplin_in, poplin_out, ...)
   }
 )

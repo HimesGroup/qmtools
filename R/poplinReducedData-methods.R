@@ -4,7 +4,7 @@
 ##' object. These methods are intended to store and retrieve low-dimensional
 ##' representation (e.g., PCA, PLS-DA) of LC/MS data sets.
 ##'
-##' @section Getter methods:
+##' @section Getters:
 ##'
 ##' In the code snippets below, \code{x} is a \linkS4class{poplin} object.
 ##'
@@ -26,7 +26,7 @@
 ##' }
 ##' }
 ##'
-##' @section Setter methods:
+##' @section Setters:
 ##'
 ##' \describe{
 ##' \item{\code{poplin_reduced_names(x) <- value}:}{

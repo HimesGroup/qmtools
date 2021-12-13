@@ -29,4 +29,5 @@ Suggests:
     VIM,
     pcaMethods
 Depends: 
+    R (>= 2.10),
     SummarizedExperiment

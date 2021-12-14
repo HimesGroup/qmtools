@@ -117,7 +117,7 @@ setMethod(
 ##' @param normalize if \code{TRUE}, an input matrix is mean-centered and scaled
 ##'   so that the largest absolute of the centered matrix is equal to unity. See
 ##'   [Rtsne::normalize_input] for details.
-##' @param ... Additional argument passed to [Rtsne::Rtsne].
+##' @param ... Additional arguments passed to [Rtsne::Rtsne].
 ##' @return A poplin.tsne matrix or \linkS4class{poplin} object with the same
 ##'   number of rows as \code{ncol(x)} containing the dimension reduction
 ##'   result.
@@ -161,7 +161,7 @@ setMethod(
 ##' @param ncomp Output dimensionality.
 ##' @param center A logical indicating mean-centering prior to PLS-DA.
 ##' @param scale A logical indicating unit variance scaling prior to PLS-DA.
-##' @param ... Additional argument passed to [pls::plsr].
+##' @param ... Additional arguments passed to [pls::plsr].
 ##' @return A poplin.plsda matrix or \linkS4class{poplin} object with the same
 ##'   number of rows as \code{ncol(x)} containing the dimension reduction
 ##'   result.

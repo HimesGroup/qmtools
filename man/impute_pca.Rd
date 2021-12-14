@@ -20,7 +20,7 @@
 
 \item{type}{A method for performing PCA.}
 
-\item{...}{Additional argument passed to \link[pcaMethods:pca]{pcaMethods::pca}.}
+\item{...}{Additional arguments passed to \link[pcaMethods:pca]{pcaMethods::pca}.}
 
 \item{poplin_in}{Name of a data matrix to retrieve.}
 

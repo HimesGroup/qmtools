@@ -359,7 +359,7 @@ setMethod(
 ##' @param meanSdPlot If \code{TRUE}, the function shows [vsn::meanSdPlot] to
 ##'   visually verify whether there is a dependence of the standard deviation on
 ##'   the mean.
-##' @param ... Additional argument passed to [vsn::vsnMatrix].
+##' @param ... Additional arguments passed to [vsn::vsnMatrix].
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
 ##' @name normalize_vsn

@@ -16,7 +16,7 @@
 visually verify whether there is a dependence of the standard deviation on
 the mean.}
 
-\item{...}{Additional argument passed to \link[vsn:vsn2]{vsn::vsnMatrix}.}
+\item{...}{Additional arguments passed to \link[vsn:vsn2]{vsn::vsnMatrix}.}
 
 \item{poplin_in}{Name of a data matrix to retrieve.}
 

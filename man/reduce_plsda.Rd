@@ -29,7 +29,7 @@
 
 \item{scale}{A logical indicating unit variance scaling prior to PLS-DA.}
 
-\item{...}{Additional argument passed to \link[pls:mvr]{pls::plsr}.}
+\item{...}{Additional arguments passed to \link[pls:mvr]{pls::plsr}.}
 
 \item{poplin_in}{Name of a data matrix to retrieve.}
 

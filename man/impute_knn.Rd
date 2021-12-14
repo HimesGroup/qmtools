@@ -14,7 +14,7 @@
 
 \item{by}{Imputation by k-nearest features or by k-nearest samples.}
 
-\item{...}{Additional argument passed to \link[VIM:kNN]{VIM::kNN}.}
+\item{...}{Additional arguments passed to \link[VIM:kNN]{VIM::kNN}.}
 
 \item{poplin_in}{Name of a data matrix to retrieve.}
 

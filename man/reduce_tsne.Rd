@@ -18,7 +18,7 @@
 so that the largest absolute of the centered matrix is equal to unity. See
 \link[Rtsne:normalize_input]{Rtsne::normalize_input} for details.}
 
-\item{...}{Additional argument passed to \link[Rtsne:Rtsne]{Rtsne::Rtsne}.}
+\item{...}{Additional arguments passed to \link[Rtsne:Rtsne]{Rtsne::Rtsne}.}
 
 \item{poplin_in}{Name of a data matrix to retrieve.}
 

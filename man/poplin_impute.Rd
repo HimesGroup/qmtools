@@ -20,7 +20,7 @@
 
 \item{method}{A imputation method. Default is 'pqn'.}
 
-\item{...}{Argument passed to a specific imputation method.}
+\item{...}{Arguments passed to a specific imputation method.}
 
 \item{poplin_in}{Name of a data matrix to retrieve.}
 

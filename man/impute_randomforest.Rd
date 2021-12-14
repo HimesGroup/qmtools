@@ -12,7 +12,7 @@
 \arguments{
 \item{x}{A matrix or \linkS4class{poplin} object.}
 
-\item{...}{Additional argument passed to \link[missForest:missForest]{missForest::missForest}.}
+\item{...}{Additional arguments passed to \link[missForest:missForest]{missForest::missForest}.}
 
 \item{poplin_in}{Name of a data matrix to retrieve.}
 

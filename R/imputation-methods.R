@@ -21,7 +21,7 @@
 ##' @param method A imputation method. Default is 'pqn'.
 ##' @param poplin_in Name of a data matrix to retrieve.
 ##' @param poplin_out Name of a data matrix to store.
-##' @param ... Argument passed to a specific imputation method.
+##' @param ... Arguments passed to a specific imputation method.
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the imputed intensities.
 ##' @name poplin_impute
@@ -64,7 +64,7 @@ setMethod(
 ##' @param poplin_in Name of a data matrix to retrieve.
 ##' @param poplin_out Name of a data matrix to store.
 ##' @param by Imputation by k-nearest features or by k-nearest samples.
-##' @param ... Additional argument passed to [VIM::kNN].
+##' @param ... Additional arguments passed to [VIM::kNN].
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the imputed intensities.
 ##' @name impute_knn
@@ -106,7 +106,7 @@ setMethod(
 ##' @param x A matrix or \linkS4class{poplin} object.
 ##' @param poplin_in Name of a data matrix to retrieve.
 ##' @param poplin_out Name of a data matrix to store.
-##' @param ... Additional argument passed to [missForest::missForest].
+##' @param ... Additional arguments passed to [missForest::missForest].
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the imputed intensities.
 ##' @name impute_randomforest
@@ -148,7 +148,7 @@ setMethod(
 ##' @param poplin_in Name of a data matrix to retrieve.
 ##' @param poplin_out Name of a data matrix to store.
 ##' @param type A method for performing PCA.
-##' @param ... Additional argument passed to [pcaMethods::pca].
+##' @param ... Additional arguments passed to [pcaMethods::pca].
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the imputed intensities.
 ##' @name impute_pca

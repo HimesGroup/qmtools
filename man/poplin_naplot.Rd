@@ -10,8 +10,8 @@
   x,
   widths = NULL,
   heights = NULL,
-  grid_gap = 1,
   colors = viridis::viridis(2),
+  grid_gap = 1,
   hide_colorbar = TRUE,
   showticklabels = c(TRUE, FALSE),
   row_dend_left = FALSE,
@@ -23,8 +23,8 @@
   poplin_in,
   widths = NULL,
   heights = NULL,
-  grid_gap = 1,
   color = viridis::viridis(2),
+  grid_gap = 1,
   hide_colorbar = TRUE,
   showticklabels = c(TRUE, FALSE),
   row_dend_left = FALSE,
@@ -36,15 +36,17 @@
 
 \item{widths}{Relative widths of heatmap and dendrogram.}
 
-\item{grid_gap}{Gap between cells.}
+\item{heights}{Relative heights of heatmap and dendrogram.}
 
 \item{colors}{A vector of colors for heatmap.}
+
+\item{grid_gap}{Gap between cells.}
 
 \item{hide_colorbar}{Logical controlling whether the color bar (legend) is
 hidden.}
 
 \item{showticklabels}{A logical vector of length 2 (x-axis, y-axis). If
-\code{FALSE}, ticks are removed from the side of the plot.}
+\code{FALSE}, the ticks are removed from the sides of the plot.}
 
 \item{row_dend_left}{Logical controlling whether the row dendrogram is
 placed on the left on the plot.}
@@ -52,11 +54,9 @@ placed on the left on the plot.}
 \item{...}{Additional arguments passed to \link[heatmaply:heatmaply]{heatmaply::heatmaply}.}
 
 \item{poplin_in}{Name of a data matrix to retrieve.}
-
-\item{height}{Relative height of heatmap and dendrogram.}
 }
 \value{
-gtable of aligned plot.
+\code{gtable} of aligned plots.
 }
 \description{
 Visualize data for exploring missing value (NA) patterns. All values in a

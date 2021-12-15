@@ -9,11 +9,13 @@
 ##' @param widths Relative widths of heatmap and dendrogram.
 ##' @param heights Relative heights of heatmap and dendrogram.
 ##' @param colors A vector of colors for heatmap.
+##' @param label Logical controlling whether cell values are shown.
+##' @param digits The desired number of digits when \code{label = TRUE}.
 ##' @param grid_gap Gap between cells.
 ##' @param hide_colorbar Logical controlling whether the color bar (legend) is
 ##'   hidden.
 ##' @param showticklabels A logical vector of length 2 (x-axis, y-axis). If
-##'   \code{FALSE}, the ticks are removed from the side of the plot.
+##'   \code{FALSE}, the ticks are removed from the sides of the plot.
 ##' @param row_dend_left Logical controlling whether the row dendrogram is
 ##'   placed on the left on the plot.
 ##' @param ... Additional arguments passed to [heatmaply::heatmaply].
@@ -30,14 +32,18 @@ poplin_naplot <- function(x, ...) {
 ##' @export
 ##' @importFrom heatmaply is.na10 heatmaply
 poplin_naplot.default <- function(x, widths = NULL, heights = NULL,
-                                  colors = viridis::viridis(2), grid_gap = 1, 
-                                  hide_colorbar = TRUE,
+                                  colors = viridis::viridis(2),
+                                  label = FALSE, digits = 2,
+                                  grid_gap = 1, hide_colorbar = TRUE,
                                   showticklabels = c(TRUE, FALSE),
                                   row_dend_left = FALSE, ...) {
   p <- heatmaply(is.na10(x), colors = colors, grid_gap = grid_gap,
                  showticklabels = showticklabels,
                  row_dend_left = row_dend_left,
                  return_ppxpy = TRUE, plot_method = "ggplot", ...)
+  if (label) {
+    p$p <- p$p + geom_text(aes(label = format(value, digits = digits)))
+  }
   heatmaply:::arrange_plots(plots = p, widths = widths, heights = heights,
                             hide_colorbar = hide_colorbar,
                             row_dend_left = row_dend_left)
@@ -49,14 +55,16 @@ poplin_naplot.default <- function(x, widths = NULL, heights = NULL,
 ##' @rdname poplin_naplot
 ##' @export
 poplin_naplot.poplin <- function(x, poplin_in, widths = NULL, heights = NULL,
-                                 color = viridis::viridis(2), grid_gap = 1,
+                                 colors = viridis::viridis(2),
+                                 label = FALSE, digits = 2,
+                                 grid_gap = 1,
                                  hide_colorbar = TRUE,
                                  showticklabels = c(TRUE, FALSE),
                                  row_dend_left = FALSE, ...) {
   m <- .verify_and_extract_input(x, poplin_in)
   poplin_naplot.default(m, widths = widths, heigths = heights,
-                        color = color, grid_gap = grid_gap,
-                        hide_colorbar = hide_colorbar,
+                        colors = colors, label = label, digits = digits,
+                        grid_gap = grid_gap, hide_colorbar = hide_colorbar,
                         showticklabels = showticklabels,
                         row_dend_left = row_dend_left, ...)
 }

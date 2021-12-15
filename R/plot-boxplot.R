@@ -1,15 +1,30 @@
+##' Box plot
+##'
+##' Produce a box-and-whisker plot of the feature intensity values.
+##'
+##' @param x A matrix or \linkS4class{poplin} object.
+##' @param poplin_in Name of a data matrix to retrieve.
+##' @param pre_log2 If \code{TRUE}, feature intensities are log2-transformed
+##'   before plotting.
+##' @param violin If \code{TRUE}, a violin plot is drawn instead of the boxplot.
+##' @param ylab The title of y-axis of the plot.
+##' @return A ggplot object.
+##' @name poplin_boxplot
+NULL
+
 ##' @export
 poplin_boxplot <- function(x, ...) {
   UseMethod("poplin_boxplot")
 }
 
+##' @rdname poplin_boxplot
 ##' @export
 ##' @importFrom stats reshape
 ##' @importFrom ggplot2 geom_boxplot geom_violin
-poplin_boxplot.default <- function(x, group, log2 = FALSE, violin = FALSE,
+poplin_boxplot.default <- function(x, group, pre_log2 = FALSE, violin = FALSE,
                            ylab = "Intensity") {
   ## convert wide to long format to draw fig
-  if (log2) {
+  if (pre_log2) {
     x <- log2(x)
   }
   dt <- as.data.frame(t(x))
@@ -38,8 +53,11 @@ poplin_boxplot.default <- function(x, group, log2 = FALSE, violin = FALSE,
           axis.title.x = element_blank())
 }
 
+##' @rdname poplin_boxplot
 ##' @export
-poplin_boxplot.poplin <- function(x, poplin_in, ...) {
+poplin_boxplot.poplin <- function(x, poplin_in, group, pre_log2 = FALSE,
+                                  violin = FALSE, ylab = "Intensity") {
   m <- .verify_and_extract_input(x, poplin_in)
-  poplin_boxplot.default(m, ...)
+  poplin_boxplot.default(m, group = group, pre_log2 = pre_log2,
+                         violin = violin, ylab = ylab)
 }

@@ -24,7 +24,7 @@
 ##' @param row_dend_left Logical controlling whether the row dendrogram is
 ##'   placed on the left on the plot.
 ##' @param ... Additional arguments passed to [heatmaply::heatmaply].
-##' @return \code{gtable} of aligned plots.
+##' @return gtable of aligned plots.
 ##' @name poplin_corplot
 NULL
 
@@ -36,7 +36,6 @@ poplin_corplot <- function(x, ...) {
 
 ##' @rdname poplin_corplot
 ##' @export
-##' @importFrom heatmaply ggheatmap
 poplin_corplot.default <- function(x, unit = c("sample", "feature"),
                      use = c("everything", "all.obs", "complete.obs",
                              "na.or.complete", "pairwise.complete.obs"),

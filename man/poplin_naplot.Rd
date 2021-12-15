@@ -11,6 +11,8 @@
   widths = NULL,
   heights = NULL,
   colors = viridis::viridis(2),
+  label = FALSE,
+  digits = 2,
   grid_gap = 1,
   hide_colorbar = TRUE,
   showticklabels = c(TRUE, FALSE),
@@ -23,7 +25,9 @@
   poplin_in,
   widths = NULL,
   heights = NULL,
-  color = viridis::viridis(2),
+  colors = viridis::viridis(2),
+  label = FALSE,
+  digits = 2,
   grid_gap = 1,
   hide_colorbar = TRUE,
   showticklabels = c(TRUE, FALSE),
@@ -39,6 +43,10 @@
 \item{heights}{Relative heights of heatmap and dendrogram.}
 
 \item{colors}{A vector of colors for heatmap.}
+
+\item{label}{Logical controlling whether cell values are shown.}
+
+\item{digits}{The desired number of digits when \code{label = TRUE}.}
 
 \item{grid_gap}{Gap between cells.}
 
@@ -56,7 +64,7 @@ placed on the left on the plot.}
 \item{poplin_in}{Name of a data matrix to retrieve.}
 }
 \value{
-\code{gtable} of aligned plots.
+gtable of aligned plots.
 }
 \description{
 Visualize data for exploring missing value (NA) patterns. All values in a

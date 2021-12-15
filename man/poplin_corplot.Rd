@@ -34,6 +34,8 @@
   widths = NULL,
   heights = NULL,
   colors = viridis::viridis(n = 256, alpha = 1, begin = 0, end = 1, option = "viridis"),
+  label = FALSE,
+  digits = 2,
   grid_gap = 0,
   hide_colorbar = FALSE,
   showticklabels = c(TRUE, TRUE),
@@ -59,7 +61,7 @@ to be computed. Refer to \code{?cor} for details.}
 
 \item{colors}{A vector of colors for heatmap.}
 
-\item{label}{If \code{TRUE}, cell values are shown.}
+\item{label}{Logical controlling whether cell values are shown.}
 
 \item{digits}{The desired number of digits when \code{label = TRUE}.}
 
@@ -79,7 +81,7 @@ placed on the left on the plot.}
 \item{poplin_in}{Name of a data matrix to retrieve.}
 }
 \value{
-\code{gtable} of aligned plots.
+gtable of aligned plots.
 }
 \description{
 Visualize correlations between samples or features. All values in a

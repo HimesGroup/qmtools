@@ -50,17 +50,13 @@ setMethod(
 ##' Principal component analysis (PCA)
 ##'
 ##' Apply PCA to a matrix or \linkS4class{poplin} object. For the data without
-##' missing values, PCA is performed via a singular value decomposition.
+##' missing values, PCA is performed via singular value decomposition.
 ##' Otherwise, PCA is performed using the non-linear iterative partial least
 ##' squares (NIPALS) algorithm via [pcaMethods::nipalsPca] from the
 ##' \pkg{pcaMethods} package. NIPALS PCA can handle a small amount of missing
 ##' values.
 ##'
 ##' @references
-##' Shigeyuki Oba, Masa-aki Sato, Ichiro Takemasa, Morito Monden, Ken-ichi
-##' Matsubara, Shin Ishii, A Bayesian missing value estimation method for gene
-##' expression profile data, Bioinformatics, Volume 19, Issue 16, 1 November
-##' 2003, Pages 2088–2096, https://doi.org/10.1093/bioinformatics/btg287
 ##'
 ##' Wold, H. (1966). Estimation of principal components and related models by
 ##' iterative least squares. In P. R. Krishnajah (Ed.), Multivariate analysis

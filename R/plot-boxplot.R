@@ -4,6 +4,7 @@
 ##'
 ##' @param x A matrix or \linkS4class{poplin} object.
 ##' @param poplin_in Name of a data matrix to retrieve.
+##' @param group A discrete variable to visualize the grouping structure.
 ##' @param pre_log2 If \code{TRUE}, feature intensities are log2-transformed
 ##'   before plotting.
 ##' @param violin If \code{TRUE}, a violin plot is drawn instead of the boxplot.

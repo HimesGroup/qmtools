@@ -18,7 +18,7 @@
       stop("'", msg1, "' contains duplicates. ", msg2)
     }
     if (any(value_names %in% assay_names)) {
-      stop("'", msg1, "' must not overlap with assayNames(x). ", msg2)
+      stop("'", msg1, "' must not overlap with poplin_raw_names(x). ", msg2)
     }
   }
 }
@@ -29,7 +29,7 @@
   name_pool <- c(assayNames(x), poplin_data_names(x))
   if (!(name %in% name_pool)) {
     stop("data '", name, "' is not found in the poplin object.\n",
-         "Input must be one of c(assayNames(x), poplin_data_names(x).")
+         "Input must be one of c(poplin_raw_names(x), poplin_data_names(x).")
   }
   tryCatch(
     assay(x, name),

@@ -64,7 +64,7 @@ placed on the left on the plot.}
 \item{poplin_in}{Name of a data matrix to retrieve.}
 }
 \value{
-gtable of aligned plots.
+gtable of aligned plots
 }
 \description{
 Visualize data for exploring missing value (NA) patterns. All values in a

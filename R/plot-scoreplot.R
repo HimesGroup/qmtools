@@ -1,3 +1,36 @@
+##' Score plot of dimension-reduced data
+##'
+##' Visualize the data onto a lower-dimensional space using the [poplin_reduce]
+##' output.
+##'
+##' @param x A dimension-reduced data matrix produced by [poplin_reduce] or
+##'   \linkS4class{poplin} object containing dimension-reduced data.
+##' @param poplin_in Name of a dimension-reduced data matrix to retrieve.
+##' @param comp a numeric vector of length 2 indicating two components to plot.
+##' @param group A discrete variable to visualize the grouping structure.
+##' @param group_col A vector of colors with the same length of unique values in
+##'   \code{group}.
+##' @param point_size The size of points.
+##' @param point_shape_by_group Logical controlling whether each group have
+##'   different shapes of data points. Also can be a numeric vector with the
+##'   same length of unique values in \code{group} to manually set point shapes.
+##' @param label Logical controlling whether score labels are shown instead of
+##'   points.
+##' @param label_subset A character vector specifying a subset of score labels
+##'   to display.
+##' @param ellipse Logical controlling whether data ellipses are shown using
+##'   [ggplot2::stat_ellipse].
+##' @param xlab The title of x-axis of the plot.
+##' @param ylab The title of y-axis of the plot.
+##' @param ylab The title of y-axis of the plot.
+##' @param title The main title of the plot.
+##' @param legend Logical controlling whether the plot legend is shown.
+##' @param ... Arguments passed to the default method.
+##' @return A ggplot object.
+##' @seealso [poplin_reduce], [poplin_biplot].
+##' @name poplin_scoreplot
+NULL
+
 ##' @export
 ##' @importFrom ggplot2 ggplot aes geom_point geom_text stat_ellipse
 ##' @importFrom ggplot2 xlab ylab ggtitle theme_bw theme element_blank
@@ -6,6 +39,7 @@ poplin_scoreplot <- function(x, ...) {
   UseMethod("poplin_scoreplot")
 }
 
+##' @rdname poplin_scoreplot
 ##' @export
 poplin_scoreplot.default <- function(x, comp = c(1, 2), group,
                                 group_col = NULL,
@@ -93,6 +127,7 @@ poplin_scoreplot.default <- function(x, comp = c(1, 2), group,
   }
 }
 
+##' @rdname poplin_scoreplot
 ##' @export
 poplin_scoreplot.poplin.pca <- function(x, comp = c(1, 2),
                                         group, group_col = NULL,
@@ -127,6 +162,7 @@ poplin_scoreplot.poplin.pca <- function(x, comp = c(1, 2),
                            xlab = xlab, ylab = ylab, ...)
 }
 
+##' @rdname poplin_scoreplot
 ##' @export
 poplin_scoreplot.poplin.plsda <- function(x, comp = c(1, 2),
                                           group = attr(x, "Y.observed"),
@@ -160,6 +196,7 @@ poplin_scoreplot.poplin.plsda <- function(x, comp = c(1, 2),
                            xlab = xlab, ylab = ylab, ...)
 }
 
+##' @rdname poplin_scoreplot
 ##' @export
 poplin_scoreplot.poplin <- function(x, poplin_in, comp = 1:2, ...) {
   if (!(poplin_in %in% poplin_reduced_names(x))) {
@@ -167,5 +204,12 @@ poplin_scoreplot.poplin <- function(x, poplin_in, comp = 1:2, ...) {
          "Input must be one of poplin_reduced_names(x).")
   }
   m <- poplin_reduced(x, poplin_in)
+  if (is.null(colnames(m))) {
+    stop("colnames of 'poplin_reduced(x, poplin_in)' must be non-NULL.")
+  }
+  if (label && is.null(rownames(m))) {
+    stop("rownames of 'poplin_reduced(x, poplin_in)' ",
+         "'must be non-NULL if label = TRUE.")
+  } 
   poplin_scoreplot(m, comp = comp, ...)
 }

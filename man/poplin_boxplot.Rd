@@ -20,6 +20,8 @@
 \arguments{
 \item{x}{A matrix or \linkS4class{poplin} object.}
 
+\item{group}{A discrete variable to visualize the grouping structure.}
+
 \item{pre_log2}{If \code{TRUE}, feature intensities are log2-transformed
 before plotting.}
 

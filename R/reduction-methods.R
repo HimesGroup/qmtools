@@ -51,9 +51,10 @@ setMethod(
 ##'
 ##' Apply PCA to a matrix or \linkS4class{poplin} object. For the data without
 ##' missing values, PCA is performed via a singular value decomposition.
-##' Otherwise, Bayesian PCA is performed using [pcaMethods::bpca] from the
-##' \pkg{pcaMethods} package. Note that Bayesian PCA does not force
-##' orthogonality between factor loadings.
+##' Otherwise, PCA is performed using the non-linear iterative partial least
+##' squares (NIPALS) algorithm via [pcaMethods::nipalsPca] from the
+##' \pkg{pcaMethods} package. NIPALS PCA can handle a small amount of missing
+##' values.
 ##'
 ##' @references
 ##' Shigeyuki Oba, Masa-aki Sato, Ichiro Takemasa, Morito Monden, Ken-ichi
@@ -61,13 +62,17 @@ setMethod(
 ##' expression profile data, Bioinformatics, Volume 19, Issue 16, 1 November
 ##' 2003, Pages 2088–2096, https://doi.org/10.1093/bioinformatics/btg287
 ##'
+##' Wold, H. (1966). Estimation of principal components and related models by
+##' iterative least squares. In P. R. Krishnajah (Ed.), Multivariate analysis
+##' (pp. 391-420). NewYork: Academic Press.
+##'
 ##' @param x A matrix or \linkS4class{poplin} object.
 ##' @param poplin_in Name of a data matrix to retrieve.
 ##' @param poplin_out Name of a data matrix to store.
 ##' @param ncomp Output dimensionality.
 ##' @param center A logical indicating mean-centering prior to PCA.
 ##' @param scale A logical indicating unit variance scaling prior to PCA.
-##' @param ... Additional arguments passed to [pcaMethods::bpca].
+##' @param ... Additional arguments passed to [pcaMethods::nipalsPca].
 ##' @return A poplin.pca matrix or \linkS4class{poplin} object with the same
 ##'   number of rows as \code{ncol(x)} containing the dimension reduction
 ##'   result.

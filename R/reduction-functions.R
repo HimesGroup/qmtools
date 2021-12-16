@@ -26,15 +26,18 @@
   if (!anyNA(x)) {
     out <- .pca_svd(xt, ncomp = ncomp)
   } else {
-    cat("Missing values(s) in 'x'.\n")
+    miss_pct <- 100 * sum(is.na(x)) / prod(dim(x))
+    cat("Missing value(s) in 'x'.\n")
+    cat(format(miss_pct, digits = 2), "% of values are missing. ")
+    cat("Please consider missing value imputation.\n")
     if (!requireNamespace("pcaMethods", quietly = TRUE)) {
       stop(
         "Package 'pcaMethods' is required to perform PCA with missing values. ",
         "Please install and try again or impute missing values."
       )
     } else {
-      cat("Performing Bayesian PCA...\n")
-      out <- .pca_bayesian(xt, ncomp = ncomp)
+      cat("Performing NIPALS PCA...\n")
+      out <- .pca_nipals(xt, ncomp = ncomp)
     }
   }
   attr(out, "origD") <- dim(x)
@@ -65,6 +68,22 @@
   colnames(res@loadings) <- paste0("PC", 1:ncol(out))
   rownames(res@loadings) <- colnames(x)
   attr(out, "method") <- "PCA (Bayesian)"
+  attr(out, "ncomp") <- ncomp
+  attr(out, "R2") <- c(res@R2cum[1], diff(res@R2cum))
+  attr(out, "R2cum") <- res@R2cum
+  attr(out, "loadings") <- res@loadings
+  attr(out, "sdev") <- apply(res@scores, 2, sd)
+  out
+}
+
+.pca_nipals <- function(x, ncomp, ...) {
+  res <- pcaMethods::nipalsPca(Matrix = x, nPcs = ncomp, ...)
+  out <- res@scores
+  colnames(out) <- paste0("PC", 1:ncol(out))
+  rownames(out) <- rownames(x)
+  colnames(res@loadings) <- paste0("PC", 1:ncol(out))
+  rownames(res@loadings) <- colnames(x)
+  attr(out, "method") <- "PCA (NIPALS)"
   attr(out, "ncomp") <- ncomp
   attr(out, "R2") <- c(res@R2cum[1], diff(res@R2cum))
   attr(out, "R2cum") <- res@R2cum

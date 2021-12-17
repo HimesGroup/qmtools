@@ -49,7 +49,7 @@
 }
 \arguments{
 \item{x}{A dimension-reduced data matrix produced by \link{poplin_reduce} or
-\linkS4class{poplin} object.}
+\linkS4class{poplin} object containing dimension-reduced data.}
 
 \item{comp}{a numeric vector of length 2 indicating two components to plot.}
 
@@ -64,11 +64,11 @@
 different shapes of data points. Also can be a numeric vector with the
 same length of unique values in \code{group} to manually set point shapes.}
 
-\item{label}{Logical controlling whether text labels are shown instead of
+\item{label}{Logical controlling whether score labels are shown instead of
 points.}
 
-\item{label_subset}{A character vector to specify only a subset of text
-labels to display.}
+\item{label_subset}{A character vector specifying a subset of score labels
+to display.}
 
 \item{ellipse}{Logical controlling whether data ellipses are shown using
 \link[ggplot2:stat_ellipse]{ggplot2::stat_ellipse}.}
@@ -89,5 +89,9 @@ labels to display.}
 A ggplot object.
 }
 \description{
-Visualize the data onto a lower-dimensional space.
+Visualize the data onto a lower-dimensional space using the \link{poplin_reduce}
+output.
+}
+\seealso{
+\link{poplin_reduce}, \link{poplin_biplot}.
 }

@@ -1,8 +1,8 @@
 ##' FAAH knockout LC/MS data SummarizedExperiment
 ##'
 ##' A \linkS4class{SummarizedExperiment} object containing FAAH knockout LC/MS
-##' feature data from the \pkg{faahKO} (\code{faahko3} data) created with the
-##' \code{xcms::quantify} method.
+##' feature data from the \pkg{faahKO} created with the following code:
+##' \code{xcms::quantify(faahko3, filled = FALSE)}.
 ##'
 ##' @references
 ##'

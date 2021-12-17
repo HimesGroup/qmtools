@@ -26,7 +26,7 @@
 
 \item{scale}{A logical indicating unit variance scaling prior to PCA.}
 
-\item{...}{Additional arguments passed to \link[pcaMethods:bpca]{pcaMethods::bpca}.}
+\item{...}{Additional arguments passed to \link[pcaMethods:nipalsPca]{pcaMethods::nipalsPca}.}
 
 \item{poplin_in}{Name of a data matrix to retrieve.}
 
@@ -39,16 +39,16 @@ result.
 }
 \description{
 Apply PCA to a matrix or \linkS4class{poplin} object. For the data without
-missing values, PCA is performed via a singular value decomposition.
-Otherwise, Bayesian PCA is performed using \link[pcaMethods:bpca]{pcaMethods::bpca} from the
-\pkg{pcaMethods} package. Note that Bayesian PCA does not force
-orthogonality between factor loadings.
+missing values, PCA is performed via singular value decomposition.
+Otherwise, PCA is performed using the non-linear iterative partial least
+squares (NIPALS) algorithm via \link[pcaMethods:nipalsPca]{pcaMethods::nipalsPca} from the
+\pkg{pcaMethods} package. NIPALS PCA can handle a small amount of missing
+values.
 }
 \references{
-Shigeyuki Oba, Masa-aki Sato, Ichiro Takemasa, Morito Monden, Ken-ichi
-Matsubara, Shin Ishii, A Bayesian missing value estimation method for gene
-expression profile data, Bioinformatics, Volume 19, Issue 16, 1 November
-2003, Pages 2088–2096, https://doi.org/10.1093/bioinformatics/btg287
+Wold, H. (1966). Estimation of principal components and related models by
+iterative least squares. In P. R. Krishnajah (Ed.), Multivariate analysis
+(pp. 391-420). NewYork: Academic Press.
 }
 \seealso{
 Other data reduction methods: 

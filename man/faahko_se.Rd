@@ -12,8 +12,8 @@ faahko_se
 }
 \description{
 A \linkS4class{SummarizedExperiment} object containing FAAH knockout LC/MS
-feature data from the \pkg{faahKO} (\code{faahko3} data) created with the
-\code{xcms::quantify} method.
+feature data from the \pkg{faahKO} (\code{faahko3} data) created by the
+following code: \code{xcms::quantify(faahko3, filled = FALSE)}.
 }
 \examples{
 faahko_se

@@ -21,6 +21,7 @@ Imports:
     S4Vectors,
     stats
 Suggests:
+    xcms,
     limma,
     missForest,
     hexbin,

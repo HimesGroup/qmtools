@@ -195,6 +195,9 @@
 
 .check_dimnames <- function(reference, incoming, fun) {
   if (!is.null(incoming)) {
+    if (!(identical(dim(reference), dim(incoming)))) {
+      stop("The dimension of 'value' should be same as 'dim(x)'.")
+    }
     rownames_incoming <- rownames(incoming)
     colnames_incoming <- colnames(incoming)
     rownames_reference <- rownames(reference)

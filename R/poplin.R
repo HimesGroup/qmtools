@@ -118,11 +118,11 @@ setAs("SummarizedExperiment", "poplin", function(from) {
   nms <- assayNames(object)
   if (is.null(nms))
     nms <- character(length(assays(object, withDimnames=FALSE)))
-  coolcat("poplinRawData(%d): %s\n", nms)
+  coolcat("poplinRaw names(%d): %s\n", nms)
   ## poplin_data()
   coolcat("poplinData names(%d): %s\n", poplin_data_names(object))
   ## poplin_reduced()
-  coolcat("poplinReducedData names(%d): %s\n", poplin_reduced_names(object))
+  coolcat("poplinReduced names(%d): %s\n", poplin_reduced_names(object))
 }
 
 ##' @export

@@ -86,7 +86,7 @@ setReplaceMethod(
   function(x, check_dimnames = TRUE, ..., value) {
     if (check_dimnames) {
       for (v in seq_along(value)) {
-        value[[v]] <- .check_dimnames(x, value[[v]], fun ='poplin_data_list')
+        value[[v]] <- .check_dimnames(x, value[[v]], fun ='poplin_data_list<-')
       }
     }
     .check_name_duplicates(assayNames(x), names(value),
@@ -173,7 +173,9 @@ setReplaceMethod(
   "poplin_data",
   c("poplin", "numeric"),
   function(x, type, check_dimnames = TRUE, ..., value) {
-    value <- .check_dimnames(x, value, check_dimnames)
+    if (check_dimnames) {
+      value <- .check_dimnames(x, value, fun = 'poplin_data<-')
+    }
     .set_poplinData_data_integer(
       x, type, value,
       get_slot = poplinData,
@@ -196,7 +198,9 @@ setReplaceMethod(
     .check_name_duplicates(assayNames(x), type,
                            msg1 = "value",
                            msg2 = "Use a different name.")
-    value <- .check_dimnames(x, value, check_dimnames)
+    if (check_dimnames) {
+      value <- .check_dimnames(x, value, fun = "poplin_data<-")
+    }
     .set_poplinData_data_character(
       x, type, value,
       get_slot = poplinData,

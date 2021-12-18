@@ -12,7 +12,7 @@ faahko_poplin
 }
 \description{
 A \linkS4class{poplin} object containing FAAH knockout LC/MS feature data
-from the \pkg{faahKO} (\code{faahko3} data) created by coercing the
+from the \pkg{faahKO} package (\code{faahko3} data) created by coercing the
 \link{faahko_se} object.
 }
 \examples{

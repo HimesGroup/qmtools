@@ -107,7 +107,7 @@ test_that("poplinData setters/getters work with List'.", {
   ## Check different errors.
   expect_error(poplin_data_list(pp) <- list(d1, d2[1:10,]), "dimension")
   expect_error(poplin_data_list(pp) <- list(d1[, 1:10], d2), "dimension")
-  expect_error(poplin_data_list(pp) <- list(d1[1:10,], d2[,, 1:10]), "dimension")
+  expect_error(poplin_data_list(pp) <- list(d1[1:10,], d2[, 1:10]), "dimension")
 })
 
 test_that("poplinData setters/getters respond to dimnames.", {

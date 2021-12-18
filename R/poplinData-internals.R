@@ -196,41 +196,62 @@
 .check_dimnames <- function(reference, incoming, fun) {
   if (!is.null(incoming)) {
     if (!(identical(dim(reference), dim(incoming)))) {
-      stop("The dimension of 'value' should be same as 'dim(x)'.")
+      stop("'value' should have the dimension same as 'dim(x)'")
     }
+    ## if (!(identical(nrow(reference), nrow(incoming)))) {
+    ##   stop("'value' should have number of rows equal to 'nrow(x)'")
+    ## }
+    ## if (!(identical(ncol(reference), ncol(incoming)))) {
+    ##   stop("'value' should have number of columns equal to 'ncol(x)'")
+    ## }
     rownames_incoming <- rownames(incoming)
     colnames_incoming <- colnames(incoming)
     rownames_reference <- rownames(reference)
     colnames_reference <- colnames(reference)
-    if (!is.null(rownames_incoming)) {
-      if (!identical(rownames_incoming, rownames_reference)) {
-        stop(
-          "non-NULL 'rownames(value)' should be the same as 'rownames(x)' for '",
-          fun
-        )
-      }
-    } else {
-      tryCatch({
-        rownames(incoming) <- rownames_reference
-      }, error = function(e) {
-        stop("'value' should have number of rows equal to 'nrow(x)'")
-      })
+    if (!is.null(rownames_incoming) &&
+        !identical(rownames_incoming, rownames_reference)) {
+      stop(
+        "non-NULL 'rownames(value)' should be the same as 'rownames(x)' for '",
+        fun
+      )
     }
-    if (!is.null(colnames_incoming)) {
-      if (!identical(colnames_incoming, colnames_reference)) {
-        stop(
-          "non-NULL 'colnames(value)' should be the same as 'colnames(x)' for '",
-          fun
-        )
-      }
-    } else {
-      tryCatch({
-        colnames(incoming) <- colnames_reference
-      }, error = function(e) {
-        stop("'value' should have number of columns equal to 'ncol(x)'")
-      })
+    if (!is.null(colnames_incoming) &&
+        !identical(colnames_incoming, colnames_reference)) {
+      stop(
+        "non-NULL 'colnames(value)' should be the same as 'colnames(x)' for '",
+        fun
+      )
     }
   }
+  ##   if (!is.null(rownames_incoming)) {
+  ##     if (!identical(rownames_incoming, rownames_reference)) {
+  ##       stop(
+  ##         "non-NULL 'rownames(value)' should be the same as 'rownames(x)' for '",
+  ##         fun
+  ##       )
+  ##     }
+  ##   } else {
+  ##     tryCatch({
+  ##       rownames(incoming) <- rownames_reference
+  ##     }, error = function(e) {
+  ##       stop("'value' should have number of rows equal to 'nrow(x)'")
+  ##     })
+  ##   }
+  ##   if (!is.null(colnames_incoming)) {
+  ##     if (!identical(colnames_incoming, colnames_reference)) {
+  ##       stop(
+  ##         "non-NULL 'colnames(value)' should be the same as 'colnames(x)' for '",
+  ##         fun
+  ##       )
+  ##     }
+  ##   } else {
+  ##     tryCatch({
+  ##       colnames(incoming) <- colnames_reference
+  ##     }, error = function(e) {
+  ##       stop("'value' should have number of columns equal to 'ncol(x)'")
+  ##     })
+  ##   }
+  ## }
   incoming
 }
 

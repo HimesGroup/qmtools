@@ -87,7 +87,7 @@ setReplaceMethod(
   function(x, check_samplenames = TRUE, ..., value) {
     if (check_samplenames) {
       for (v in seq_along(value)) {
-        value[[v]] <- .check_samplenames(x, value[[v]], fun ='poplin_reduced_list')
+        value[[v]] <- .check_samplenames(x, value[[v]], fun ='poplin_reduced_list<-')
       }
     }
     value_names <- names(value)
@@ -177,7 +177,9 @@ setReplaceMethod(
   "poplin_reduced",
   c("poplin", "numeric"),
   function(x, type, check_samplenames = TRUE, ..., value) {
-    value <- .check_samplenames(x, value, check_samplenames)
+    if (check_samplenames) {
+      value <- .check_samplenames(x, value, fun = "poplin_reduced<-")
+    }
     .set_poplinReducedData_data_integer(
       x, type, value,
       get_slot = poplinReducedData,
@@ -196,7 +198,9 @@ setReplaceMethod(
       stop("Empty string is not allowed. ",
            "Use a different name for incoming data.")
     }
-    value <- .check_samplenames(x, value, check_samplenames)
+    if (check_samplenames) {
+      value <- .check_samplenames(x, value, fun = "poplin_reduced<-")
+    }
     .set_poplinReducedData_data_character(
       x, type, value,
       get_slot = poplinReducedData,

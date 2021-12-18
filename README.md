@@ -5,6 +5,7 @@
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/HimesGroup/poplin/workflows/R-CMD-check/badge.svg)](https://github.com/HimesGroup/poplin/actions)
 <!-- badges: end -->
 
 LC/MS data processing tools …

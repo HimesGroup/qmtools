@@ -23,7 +23,6 @@
   }
 }
 
-##' @importFrom SummarizedExperiment assayNames
 ##' @export
 .verify_and_extract_input <- function(x, name) {
   name_pool <- c(assayNames(x), poplin_data_names(x))

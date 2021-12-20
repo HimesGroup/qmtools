@@ -6,22 +6,22 @@
 ##' @param x A dimension-reduced data matrix produced by [poplin_reduce] or
 ##'   \linkS4class{poplin} object containing dimension-reduced data.
 ##' @param poplin_in Name of a dimension-reduced data matrix to retrieve.
-##' @param comp a numeric vector of length 2 indicating two components to plot.
+##' @param comp A numeric vector of length 2 indicating two components to plot.
 ##' @param group A discrete variable to visualize the grouping structure.
 ##' @param group_col A vector of colors with the same length of unique values in
 ##'   \code{group}.
-##' @param point_size The size of points.
+##' @param point_size Numeric value controlling the size of points.
 ##' @param point_shape_by_group Logical controlling whether each group have
 ##'   different shapes of data points. Also can be a numeric vector with the
 ##'   same length of unique values in \code{group} to manually set point shapes.
 ##' @param label Logical controlling whether score labels are shown instead of
 ##'   points.
+##' @param label_size Numeric value controlling the size of labels.
 ##' @param label_subset A character vector specifying a subset of score labels
 ##'   to display.
 ##' @param ellipse Logical controlling whether data ellipses are shown using
 ##'   [ggplot2::stat_ellipse].
 ##' @param xlab The title of x-axis of the plot.
-##' @param ylab The title of y-axis of the plot.
 ##' @param ylab The title of y-axis of the plot.
 ##' @param title The main title of the plot.
 ##' @param legend Logical controlling whether the plot legend is shown.
@@ -49,7 +49,7 @@ poplin_scoreplot.default <- function(x, comp = c(1, 2), group,
                                 label_subset = NULL,
                                 ellipse = FALSE,
                                 xlab = NULL, ylab = NULL,
-                                title = NULL, legend = TRUE) {
+                                title = NULL, legend = TRUE, ...) {
   if (max(comp) > ncol(x) || length(comp) != 2) {
     stop("Choose only two components within 1:ncol(x).")
   }
@@ -130,7 +130,7 @@ poplin_scoreplot.default <- function(x, comp = c(1, 2), group,
 ##' @rdname poplin_scoreplot
 ##' @export
 poplin_scoreplot.poplin.pca <- function(x, comp = c(1, 2),
-                                        group, group_col = NULL,
+                                        group, group_col = NULL, label = FALSE,
                                         xlab = NULL, ylab = NULL,
                                         ...) {
   if (max(comp) > ncol(x) || length(comp) != 2) {
@@ -158,7 +158,7 @@ poplin_scoreplot.poplin.pca <- function(x, comp = c(1, 2),
     )
   }
   poplin_scoreplot.default(x = x, comp = comp, group = group,
-                           group_col = group_col,
+                           group_col = group_col, label = label,
                            xlab = xlab, ylab = ylab, ...)
 }
 
@@ -166,7 +166,7 @@ poplin_scoreplot.poplin.pca <- function(x, comp = c(1, 2),
 ##' @export
 poplin_scoreplot.poplin.plsda <- function(x, comp = c(1, 2),
                                           group = attr(x, "Y.observed"),
-                                          group_col = NULL,
+                                          group_col = NULL, label = FALSE, 
                                           xlab = NULL, ylab = NULL, ...) {
   if (max(comp) > ncol(x) || length(comp) != 2) {
     stop("Choose only two components within 1:ncol(x).")
@@ -192,13 +192,15 @@ poplin_scoreplot.poplin.plsda <- function(x, comp = c(1, 2),
       prettyNum(attr(x, "explvar")[comp[2]], digits = 4), "%)")
   }
   poplin_scoreplot.default(x = x, comp = comp, group = group,
-                           group_col = group_col,
+                           group_col = group_col, label = label,
                            xlab = xlab, ylab = ylab, ...)
 }
 
 ##' @rdname poplin_scoreplot
 ##' @export
-poplin_scoreplot.poplin <- function(x, poplin_in, comp = 1:2, ...) {
+poplin_scoreplot.poplin <- function(x, poplin_in, comp = 1:2,
+                                    group, group_col = NULL, label = FALSE,
+                                    xlab = NULL, ylab = NULL, ...) {
   if (!(poplin_in %in% poplin_reduced_names(x))) {
     stop("'", poplin_in, "' is not found in the poplin object.\n",
          "Input must be one of poplin_reduced_names(x).")
@@ -210,6 +212,7 @@ poplin_scoreplot.poplin <- function(x, poplin_in, comp = 1:2, ...) {
   if (label && is.null(rownames(m))) {
     stop("rownames of 'poplin_reduced(x, poplin_in)' ",
          "'must be non-NULL if label = TRUE.")
-  } 
-  poplin_scoreplot(m, comp = comp, ...)
+  }
+  poplin_scoreplot(m, comp = comp, group = group, group_col = group_col,
+                   label = label, xlab = xlab, ylab = ylab, ...)
 }

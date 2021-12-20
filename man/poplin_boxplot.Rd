@@ -6,7 +6,14 @@
 \alias{poplin_boxplot.poplin}
 \title{Box plot}
 \usage{
-\method{poplin_boxplot}{default}(x, group, pre_log2 = FALSE, violin = FALSE, ylab = "Intensity")
+\method{poplin_boxplot}{default}(
+  x,
+  group,
+  pre_log2 = FALSE,
+  violin = FALSE,
+  ylab = "Intensity",
+  ...
+)
 
 \method{poplin_boxplot}{poplin}(
   x,
@@ -14,7 +21,8 @@
   group,
   pre_log2 = FALSE,
   violin = FALSE,
-  ylab = "Intensity"
+  ylab = "Intensity",
+  ...
 )
 }
 \arguments{
@@ -28,6 +36,8 @@ before plotting.}
 \item{violin}{If \code{TRUE}, a violin plot is drawn instead of the boxplot.}
 
 \item{ylab}{The title of y-axis of the plot.}
+
+\item{...}{Reserved for future use.}
 
 \item{poplin_in}{Name of a data matrix to retrieve.}
 }

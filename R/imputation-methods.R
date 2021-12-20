@@ -216,53 +216,53 @@ setMethod(
   }
 )
 
-setMethod(
-  "impute_halfmin",
-  "matrix",
-  function(x) {
-    .impute_halfmin(x)
-  }
-)
+## setMethod(
+##   "impute_halfmin",
+##   "matrix",
+##   function(x) {
+##     .impute_halfmin(x)
+##   }
+## )
 
-setMethod(
-  "impute_halfmin",
-  "poplin",
-  function(x, poplin_in, poplin_out) {
-    .poplin_extract_and_assign(x, .impute_halfmin,
-                               poplin_in, poplin_out)
-  }
-)
+## setMethod(
+##   "impute_halfmin",
+##   "poplin",
+##   function(x, poplin_in, poplin_out) {
+##     .poplin_extract_and_assign(x, .impute_halfmin,
+##                                poplin_in, poplin_out)
+##   }
+## )
 
-setMethod(
-  "impute_median",
-  "matrix",
-  function(x, ...) {
-    .impute_median(x, ...)
-  }
-)
+## setMethod(
+##   "impute_median",
+##   "matrix",
+##   function(x, ...) {
+##     .impute_median(x, ...)
+##   }
+## )
 
-setMethod(
-  "impute_median",
-  "poplin",
-  function(x, poplin_in, poplin_out, ...) {
-    .poplin_extract_and_assign(x, .impute_median,
-                               poplin_in, poplin_out, ...)
-  }
-)
+## setMethod(
+##   "impute_median",
+##   "poplin",
+##   function(x, poplin_in, poplin_out, ...) {
+##     .poplin_extract_and_assign(x, .impute_median,
+##                                poplin_in, poplin_out, ...)
+##   }
+## )
 
-setMethod(
-  "impute_mean",
-  "matrix",
-  function(x, ...) {
-    .impute_mean(x, ...)
-  }
-)
+## setMethod(
+##   "impute_mean",
+##   "matrix",
+##   function(x, ...) {
+##     .impute_mean(x, ...)
+##   }
+## )
 
-setMethod(
-  "impute_mean",
-  "poplin",
-  function(x, poplin_in, poplin_out, ...) {
-    .poplin_extract_and_assign(x, .poplin_impute_mean,
-                               poplin_in, poplin_out, ...)
-  }
-)
+## setMethod(
+##   "impute_mean",
+##   "poplin",
+##   function(x, poplin_in, poplin_out, ...) {
+##     .poplin_extract_and_assign(x, .impute_mean,
+##                                poplin_in, poplin_out, ...)
+##   }
+## )

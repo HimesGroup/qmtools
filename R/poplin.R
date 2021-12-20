@@ -19,10 +19,9 @@
 ##' @examples
 ##' nsamp <- 20
 ##' nfeature <- 1000
-##' m <- matrix(sample(1:100000, size = 200000), nrow = nsamp, ncol = nfeature)
+##' m <- matrix(sample(1:1000000, size = 200000), nrow = nsamp, ncol = nfeature)
 ##' poplin(m)
 ##' ## Coercion from an SummarizedExperiment object
-##' as(se, "poplin")
 ##'
 NULL
 
@@ -42,7 +41,7 @@ NULL
 ##' equal to \code{dim(x)}. End users are supposed to interact with this field
 ##' via [poplin_data]. }
 ##'
-##' \item{\code{poplinReducedData(x), \code{poplinReducedData(x) <- value}}:}{
+##' \item{\code{poplinReducedData(x)}, \code{poplinReducedData(x) <- value}:}{
 ##' Returns a \linkS4class{DataFrame} of matrices containing one or more
 ##' dimension-reduced data. \code{value} must be a \linkS4class{DataFrame} with
 ##' the dimension equal to \code{ncol(x)}. End users are supposed to interact
@@ -70,7 +69,7 @@ poplin <- function(intensity,  ...) {
 ##' @importClassesFrom S4Vectors DataFrame
 ##' @importFrom methods new
 ##' @importFrom BiocGenerics nrow ncol
-##' @importMethodsFrom SummarizedExperiment assay
+##' @importMethodsFrom SummarizedExperiment assays assayNames assay
 .se_to_poplin <- function(se) {
   old_validity <- S4Vectors:::disableValidity()
   if (!isTRUE(old_validity)) {

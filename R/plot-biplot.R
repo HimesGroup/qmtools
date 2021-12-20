@@ -12,12 +12,13 @@
 ##' @param group A discrete variable to visualize the grouping structure.
 ##' @param group_col A vector of colors with the same length of unique values in
 ##'   \code{group}.
-##' @param point_size The size of points.
+##' @param point_size Numeric value controlling the size of points.
 ##' @param point_shape_by_group Logical controlling whether each group have
 ##'   different shapes of data points. Also can be a numeric vector with the
 ##'   same length of unique values in \code{group} to manually set point shapes.
 ##' @param label Logical controlling whether score labels are shown instead of
 ##'   points.
+##' @param label_size Numeric value controlling the size of labels.
 ##' @param label_subset A character vector specifying a subset of score labels
 ##'   to display.
 ##' @param ellipse Logical controlling whether data ellipses are shown using
@@ -27,6 +28,7 @@
 ##' @param title The main title of the plot.
 ##' @param legend Logical controlling whether the plot legend is shown.
 ##' @param arrow_len Numeric value controlling the length of arrow head.
+##' @param arrow_col Character string indicating the color of arrows.
 ##' @param arrow_alpha Numeric value controlling the transparency of arrow.
 ##' @param arrow_label Logical controlling whether text labels for arrows are
 ##'   shown.
@@ -65,7 +67,7 @@ poplin_biplot.default <- function(x, y, comp = 1:2, group,
                                   arrow_label = TRUE, arrow_label_ext = 1.1,
                                   arrow_label_size = 3.88,
                                   arrow_label_col = "red",
-                                  arrow_label_subset = NULL) {
+                                  arrow_label_subset = NULL, ...) {
   p <- poplin_scoreplot(x, comp = comp, group = group,
                         group_col = group_col,
                         point_shape_by_group = point_shape_by_group,
@@ -102,7 +104,8 @@ poplin_biplot.default <- function(x, y, comp = 1:2, group,
     y$y_adj <- y[, names(y)[2]] * arrow_label_ext
     p <- p + geom_text(
                inherit.aes = FALSE,
-               data = y, aes(x = x_adj, y = y_adj, label = label),
+               ## data = y, aes(x = x_adj, y = y_adj, label = label),
+               data = y, aes(x = !!quote(x_adj), y = !!quote(y_adj), label = label),
                col = arrow_label_col, size = arrow_label_size
              )
   }
@@ -111,36 +114,39 @@ poplin_biplot.default <- function(x, y, comp = 1:2, group,
 
 ##' @rdname poplin_biplot
 ##' @export
-poplin_biplot.poplin.pca <- function(x, scale = 1, comp = 1:2, group, ...) {
+## poplin_biplot.poplin.pca <- function(x, scale = 1, comp = 1:2, group, ...) {
+poplin_biplot.poplin.pca <- function(x, comp = 1:2, group, label = FALSE, ...) {
   if (max(comp) > ncol(x) || length(comp) != 2) {
     stop("Choose two components within 1:ncol(x).")
   }
   comp <- sort(comp)
   n <- nrow(x)
   lam <- attr(x, "sdev")[comp] * sqrt(n)
-  if (scale < 0 || scale > 1)
-    warning("'scale' is outside [0, 1]")
-  if (scale != 0)
-    lam <- lam**scale
-  else lam <- 1
+  ## if (scale < 0 || scale > 1)
+  ##   warning("'scale' is outside [0, 1]")
+  ## if (scale != 0)
+  ##   lam <- lam**scale
+  ## else lam <- 1
   X <- t(t(x[, comp]) / lam)
   Y <- t(t(attr(x, "loadings")[, comp]) * lam)
-  poplin_biplot.default(X, Y, comp = 1:2, group = group, ...)
+  poplin_biplot.default(X, Y, comp = 1:2, group = group, label = label, ...)
 }
 
 ##' @rdname poplin_biplot
 ##' @export
 poplin_biplot.poplin.plsda <- function(x, comp = 1:2,
-                                       group = attr(x, "Y.observed"), ...) {
+                                       group = attr(x, "Y.observed"),
+                                       label = label, ...) {
   X <- x[, comp]
   Y <- attr(x, "loadings")[, comp]
-  poplin_biplot.default(X, Y, comp = 1:2, group = group, ...)
+  poplin_biplot.default(X, Y, comp = 1:2, group = group, label = label, ...)
 }
 
 
 ##' @rdname poplin_biplot
 ##' @export
-poplin_biplot.poplin <- function(x, poplin_in, comp = 1:2, ...) {
+poplin_biplot.poplin <- function(x, poplin_in, comp = 1:2, group,
+                                 label = FALSE, ...) {
   if (!(poplin_in %in% poplin_reduced_names(x))) {
     stop("'", poplin_in, "' is not found in the poplin object.\n",
          "Input must be one of poplin_reduced_names(x).")
@@ -153,7 +159,7 @@ poplin_biplot.poplin <- function(x, poplin_in, comp = 1:2, ...) {
     stop("rownames of 'poplin_reduced(x, poplin_in)' ",
          "'must be non-NULL if label = TRUE.")
   }
-  poplin_biplot(m, comp = comp, ...)
+  poplin_biplot(m, comp = comp, group = group, label = label, ...)
   ## if (inherits(m, "poplin.pca")) {
   ##   poplin_biplot.poplin.pca(m, comp = comp, ...)
   ## } else if (inherits(m, "poplin.plsda")) {

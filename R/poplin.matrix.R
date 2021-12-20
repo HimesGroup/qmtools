@@ -80,22 +80,22 @@ cbind.poplin.matrix <- function(..., deparse.level = 1) {
 ## }
 
 ##' @export
-summary.poplin.pca <- function(x, ...) {
-  cat("Call:", deparse(attr(x, "call")), "\n")
-  cat("Reduction method:", attr(x, "method"), "\n")
+summary.poplin.pca <- function(object, ...) {
+  cat("Call:", deparse(attr(object, "call")), "\n")
+  cat("Reduction method:", attr(object, "method"), "\n")
   cat("Input dimension: [",
-      attr(x, "origD")[1], ", ",
-      attr(x, "origD")[2], "]\n", sep = "")
-  cat("Input centered before PCA:", attr(x, "centered"), "\n")
-  cat("Input scaled before PCA:", attr(x, "scaled"), "\n")
-  cat("Number of PCs calculated:", attr(x, "ncomp"), "\n")
+      attr(object, "origD")[1], ", ",
+      attr(object, "origD")[2], "]\n", sep = "")
+  cat("Input centered before PCA:", attr(object, "centered"), "\n")
+  cat("Input scaled before PCA:", attr(object, "scaled"), "\n")
+  cat("Number of PCs calculated:", attr(object, "ncomp"), "\n")
   cat("Importance of PC(s):\n")
-  imp <- rbind(attr(x, "R2"), attr(x, "R2cum"))
+  imp <- rbind(attr(object, "R2"), attr(object, "R2cum"))
   rownames(imp) <- c("Proportion of Variance",
                      "Cumulative Proportion")
-  colnames(imp) <- paste0("PC", 1:attr(x, "ncomp"))
+  colnames(imp) <- paste0("PC", 1:attr(object, "ncomp"))
   print(imp, digits = 4)
-  invisible(x)
+  invisible(object)
 }
 
 ##' @export
@@ -117,35 +117,35 @@ print.poplin.matrix <- function(x, ...) {
 
 
 ##' @export
-summary.poplin.tsne <- function(x, ...) {
-  cat("Call:", deparse(attr(x, "call")), "\n")
-  cat("Reduction method:", attr(x, "method"), "\n")
+summary.poplin.tsne <- function(object, ...) {
+  cat("Call:", deparse(attr(object, "call")), "\n")
+  cat("Reduction method:", attr(object, "method"), "\n")
   cat("Input dimension: [",
-      attr(x, "origD")[1], ", ",
-      attr(x, "origD")[2], "]\n", sep = "")
-  cat("Input normalized before t-SNE:", attr(x, "normalized"), "\n")
-  cat("Dimension of the embedded spcae:", attr(x, "ncomp"), "\n")
-  cat("Perplexity:", attr(x, "perplexity"), "\n")
-  cat("Theta:", attr(x, "theta"), "\n")
-  cat("Eta:", attr(x, "eta"), "\n")
-  invisible(x)
+      attr(object, "origD")[1], ", ",
+      attr(object, "origD")[2], "]\n", sep = "")
+  cat("Input normalized before t-SNE:", attr(object, "normalized"), "\n")
+  cat("Dimension of the embedded spcae:", attr(object, "ncomp"), "\n")
+  cat("Perplexity:", attr(object, "perplexity"), "\n")
+  cat("Theta:", attr(object, "theta"), "\n")
+  cat("Eta:", attr(object, "eta"), "\n")
+  invisible(object)
 }
 
 ##' @export
-summary.poplin.plsda <- function(x, ...) {
-  cat("Call:", deparse(attr(x, "call")), "\n")
-  cat("Reduction method:", attr(x, "method"), "\n")
+summary.poplin.plsda <- function(object, ...) {
+  cat("Call:", deparse(attr(object, "call")), "\n")
+  cat("Reduction method:", attr(object, "method"), "\n")
   cat("X dimension: [",
-    attr(x, "origD")[1], ", ",
-    attr(x, "origD")[2], "]\n",
+    attr(object, "origD")[1], ", ",
+    attr(object, "origD")[2], "]\n",
     sep = ""
   )
-  cat("Y responses:", attr(x, "responses"), "\n")
-  cat("X, Y matrices centered before PLS-DA:", attr(x, "centered"), "\n")
-  cat("X scaled before PLS-DA:", attr(x, "scaled"), "\n")
-  cat("Number of components considered:", attr(x, "ncomp"), "\n")
+  cat("Y responses:", attr(object, "responses"), "\n")
+  cat("X, Y matrices centered before PLS-DA:", attr(object, "centered"), "\n")
+  cat("X scaled before PLS-DA:", attr(object, "scaled"), "\n")
+  cat("Number of components considered:", attr(object, "ncomp"), "\n")
   cat("Amount of X variance explained by each component:", "\n")
-  imp <- rbind(attr(x, "explvar"), cumsum(attr(x, "explvar")))
+  imp <- rbind(attr(object, "explvar"), cumsum(attr(object, "explvar")))
   rownames(imp) <- c("Explained %", "Cumulative %")
   print(imp, digits = 4)
   invisible(imp)

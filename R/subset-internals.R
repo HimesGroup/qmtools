@@ -11,7 +11,7 @@
 ## }
 .get_subset_index <- function(subset, names) {
   if (is.character(subset)) {
-    fmt <- paste0("<", class(x), ">[i,] index out of bounds: %s")
+    fmt <- "index out of bounds: %s"
     subset <- SummarizedExperiment:::.SummarizedExperiment.charbound(
                                        subset, names, fmt
                                      )

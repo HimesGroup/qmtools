@@ -6,7 +6,7 @@ Authors@R:
            family = "Joo",
            role = c("aut", "cre"),
            email = "jaehyunjoo@outlook.com")
-Description: pass
+Description: This is a LC/MS data processing package.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true

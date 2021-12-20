@@ -27,10 +27,9 @@ for data processing results (e.g., normalization, imputation) via
 \examples{
 nsamp <- 20
 nfeature <- 1000
-m <- matrix(sample(1:100000, size = 200000), nrow = nsamp, ncol = nfeature)
+m <- matrix(sample(1:1000000, size = 200000), nrow = nsamp, ncol = nfeature)
 poplin(m)
 ## Coercion from an SummarizedExperiment object
-as(se, "poplin")
 
 }
 \author{

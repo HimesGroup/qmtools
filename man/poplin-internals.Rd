@@ -19,7 +19,7 @@ results. \code{value} must be a \linkS4class{DataFrame} with the dimension
 equal to \code{dim(x)}. End users are supposed to interact with this field
 via \link{poplin_data}. }
 
-\item{\code{poplinReducedData(x), \code{poplinReducedData(x) <- value}}:}{
+\item{\code{poplinReducedData(x)}, \code{poplinReducedData(x) <- value}:}{
 Returns a \linkS4class{DataFrame} of matrices containing one or more
 dimension-reduced data. \code{value} must be a \linkS4class{DataFrame} with
 the dimension equal to \code{ncol(x)}. End users are supposed to interact

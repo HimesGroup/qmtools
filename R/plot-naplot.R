@@ -42,7 +42,7 @@ poplin_naplot.default <- function(x, widths = NULL, heights = NULL,
                  row_dend_left = row_dend_left,
                  return_ppxpy = TRUE, plot_method = "ggplot", ...)
   if (label) {
-    p$p <- p$p + geom_text(aes(label = format(value, digits = digits)))
+    p$p <- p$p + geom_text(aes(label = format(!!quote(value), digits = digits)))
   }
   heatmaply:::arrange_plots(plots = p, widths = widths, heights = heights,
                             hide_colorbar = hide_colorbar,

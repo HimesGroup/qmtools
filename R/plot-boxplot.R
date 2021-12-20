@@ -9,6 +9,7 @@
 ##'   before plotting.
 ##' @param violin If \code{TRUE}, a violin plot is drawn instead of the boxplot.
 ##' @param ylab The title of y-axis of the plot.
+##' @param ... Reserved for future use.
 ##' @return A ggplot object.
 ##' @name poplin_boxplot
 NULL
@@ -23,7 +24,7 @@ poplin_boxplot <- function(x, ...) {
 ##' @importFrom stats reshape
 ##' @importFrom ggplot2 geom_boxplot geom_violin
 poplin_boxplot.default <- function(x, group, pre_log2 = FALSE, violin = FALSE,
-                           ylab = "Intensity") {
+                           ylab = "Intensity", ...) {
   ## convert wide to long format to draw fig
   if (pre_log2) {
     x <- log2(x)
@@ -38,9 +39,9 @@ poplin_boxplot.default <- function(x, group, pre_log2 = FALSE, violin = FALSE,
                 times = cols, v.names = "value",
                 direction = "long", sep = "")
   if (missing(group)) {
-    p <- ggplot(dd, aes(x = id, y = value))
+    p <- ggplot(dd, aes(x = !!quote(id), y = !!quote(value)))
   } else {
-    p <- ggplot(dd, aes(x = id, y = value, fill = group))
+    p <- ggplot(dd, aes(x = !!quote(id), y = !!quote(value), fill = !!quote(group)))
   }
   if (violin) {
     p <- p + geom_violin()
@@ -57,8 +58,8 @@ poplin_boxplot.default <- function(x, group, pre_log2 = FALSE, violin = FALSE,
 ##' @rdname poplin_boxplot
 ##' @export
 poplin_boxplot.poplin <- function(x, poplin_in, group, pre_log2 = FALSE,
-                                  violin = FALSE, ylab = "Intensity") {
+                                  violin = FALSE, ylab = "Intensity", ...) {
   m <- .verify_and_extract_input(x, poplin_in)
   poplin_boxplot.default(m, group = group, pre_log2 = pre_log2,
-                         violin = violin, ylab = ylab)
+                         violin = violin, ylab = ylab, ...)
 }

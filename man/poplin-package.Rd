@@ -6,7 +6,7 @@
 \alias{poplin-package}
 \title{poplin: Reproducible analysis of metabolomics data}
 \description{
-pass
+This is a LC/MS data processing package.
 }
 \author{
 \strong{Maintainer}: Jaehyun Joo \email{jaehyunjoo@outlook.com}

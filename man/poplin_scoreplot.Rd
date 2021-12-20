@@ -22,7 +22,8 @@
   xlab = NULL,
   ylab = NULL,
   title = NULL,
-  legend = TRUE
+  legend = TRUE,
+  ...
 )
 
 \method{poplin_scoreplot}{poplin.pca}(
@@ -30,6 +31,7 @@
   comp = c(1, 2),
   group,
   group_col = NULL,
+  label = FALSE,
   xlab = NULL,
   ylab = NULL,
   ...
@@ -40,25 +42,36 @@
   comp = c(1, 2),
   group = attr(x, "Y.observed"),
   group_col = NULL,
+  label = FALSE,
   xlab = NULL,
   ylab = NULL,
   ...
 )
 
-\method{poplin_scoreplot}{poplin}(x, poplin_in, comp = 1:2, ...)
+\method{poplin_scoreplot}{poplin}(
+  x,
+  poplin_in,
+  comp = 1:2,
+  group,
+  group_col = NULL,
+  label = FALSE,
+  xlab = NULL,
+  ylab = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{A dimension-reduced data matrix produced by \link{poplin_reduce} or
 \linkS4class{poplin} object containing dimension-reduced data.}
 
-\item{comp}{a numeric vector of length 2 indicating two components to plot.}
+\item{comp}{A numeric vector of length 2 indicating two components to plot.}
 
 \item{group}{A discrete variable to visualize the grouping structure.}
 
 \item{group_col}{A vector of colors with the same length of unique values in
 \code{group}.}
 
-\item{point_size}{The size of points.}
+\item{point_size}{Numeric value controlling the size of points.}
 
 \item{point_shape_by_group}{Logical controlling whether each group have
 different shapes of data points. Also can be a numeric vector with the
@@ -66,6 +79,8 @@ same length of unique values in \code{group} to manually set point shapes.}
 
 \item{label}{Logical controlling whether score labels are shown instead of
 points.}
+
+\item{label_size}{Numeric value controlling the size of labels.}
 
 \item{label_subset}{A character vector specifying a subset of score labels
 to display.}

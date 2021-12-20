@@ -432,89 +432,88 @@ setMethod(
   }
 )
 
+## setMethod(
+##   "normalize_auto",
+##   "matrix",
+##   function(x, ...) {
+##     .normalize_auto(x, ...)
+##   }
+## )
 
-setMethod(
-  "normalize_auto",
-  "matrix",
-  function(x, ...) {
-    .normalize_auto(x, ...)
-  }
-)
+## setMethod(
+##   "normalize_auto",
+##   "poplin",
+##   function(x, poplin_in, poplin_out, ...) {
+##     .poplin_extract_and_assign(x, .normalize_auto,
+##                                poplin_in, poplin_out, ...)
+##   }
+## )
 
-setMethod(
-  "normalize_auto",
-  "poplin",
-  function(x, poplin_in, poplin_out, ...) {
-    .poplin_extract_and_assign(x, .normalize_auto,
-                               poplin_in, poplin_out, ...)
-  }
-)
+## setMethod(
+##   "normalize_range",
+##   "matrix",
+##   function(x, ...) {
+##     .normalize_range(x, ...)
+##   }
+## )
 
-setMethod(
-  "normalize_range",
-  "matrix",
-  function(x, ...) {
-    .normalize_range(x, ...)
-  }
-)
+## setMethod(
+##   "normalize_range",
+##   "poplin",
+##   function(x, poplin_in, poplin_out, ...) {
+##     .poplin_extract_and_assign(x, .normalize_range,
+##                                poplin_in, poplin_out, ...)
+##   }
+## )
 
-setMethod(
-  "normalize_range",
-  "poplin",
-  function(x, poplin_in, poplin_out, ...) {
-    .poplin_extract_and_assign(x, .normalize_range,
-                               poplin_in, poplin_out, ...)
-  }
-)
+## setMethod(
+##   "normalize_pareto",
+##   "matrix",
+##   function(x, ...) {
+##     .normalize_pareto(x, ...)
+##   }
+## )
 
-setMethod(
-  "normalize_pareto",
-  "matrix",
-  function(x, ...) {
-    .normalize_pareto(x, ...)
-  }
-)
+## setMethod(
+##   "normalize_pareto",
+##   "poplin",
+##   function(x, poplin_in, poplin_out, ...) {
+##     .poplin_extract_and_assign(x, .normalize_pareto,
+##                                poplin_in, poplin_out, ...)
+##   }
+## )
 
-setMethod(
-  "normalize_pareto",
-  "poplin",
-  function(x, poplin_in, poplin_out, ...) {
-    .poplin_extract_and_assign(x, .normalize_pareto,
-                               poplin_in, poplin_out, ...)
-  }
-)
+## setMethod(
+##   "normalize_vast",
+##   "matrix",
+##   function(x, ...) {
+##     .normalize_vast(x, ...)
+##   }
+## )
 
-setMethod(
-  "normalize_vast",
-  "matrix",
-  function(x, ...) {
-    .normalize_vast(x, ...)
-  }
-)
+## setMethod(
+##   "normalize_vast",
+##   "poplin",
+##   function(x, poplin_in, poplin_out, ...) {
+##     .poplin_extract_and_assign(x, .normalize_vast,
+##                                poplin_in, poplin_out, ...)
+##   }
+## )
 
-setMethod(
-  "normalize_vast",
-  "poplin",
-  function(x, poplin_in, poplin_out, ...) {
-    .poplin_extract_and_assign(x, .normalize_vast,
-                               poplin_in, poplin_out, ...)
-  }
-)
+## setMethod(
+##   "normalize_level",
+##   "matrix",
+##   function(x, ...) {
+##     .normalize_level(x, ...)
+##   }
+## )
 
-setMethod(
-  "normalize_level",
-  "matrix",
-  function(x, ...) {
-    .normalize_level(x, ...)
-  }
-)
-
-setMethod(
-  "normalize_level",
-  "poplin",
-  function(x, poplin_in, poplin_out, ...) {
-    .poplin_extract_and_assign(x, .normalize_level,
-                               poplin_in, poplin_out, ...)
-  }
-)
+## setMethod(
+##   "normalize_level",
+##   "poplin",
+##   function(x, poplin_in, poplin_out, ...) {
+##     .poplin_extract_and_assign(x, .normalize_level,
+##                                poplin_in, poplin_out, ...)
+##   }
+## )
 

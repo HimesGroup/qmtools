@@ -31,14 +31,15 @@
   arrow_label_ext = 1.1,
   arrow_label_size = 3.88,
   arrow_label_col = "red",
-  arrow_label_subset = NULL
+  arrow_label_subset = NULL,
+  ...
 )
 
-\method{poplin_biplot}{poplin.pca}(x, scale = 1, comp = 1:2, group, ...)
+\method{poplin_biplot}{poplin.pca}(x, comp = 1:2, group, label = FALSE, ...)
 
-\method{poplin_biplot}{poplin.plsda}(x, comp = 1:2, group = attr(x, "Y.observed"), ...)
+\method{poplin_biplot}{poplin.plsda}(x, comp = 1:2, group = attr(x, "Y.observed"), label = label, ...)
 
-\method{poplin_biplot}{poplin}(x, poplin_in, comp = 1:2, ...)
+\method{poplin_biplot}{poplin}(x, poplin_in, comp = 1:2, group, label = FALSE, ...)
 }
 \arguments{
 \item{x}{A dimension-reduced data matrix produced by \link{poplin_reduce} or
@@ -54,7 +55,7 @@
 \item{group_col}{A vector of colors with the same length of unique values in
 \code{group}.}
 
-\item{point_size}{The size of points.}
+\item{point_size}{Numeric value controlling the size of points.}
 
 \item{point_shape_by_group}{Logical controlling whether each group have
 different shapes of data points. Also can be a numeric vector with the
@@ -62,6 +63,8 @@ same length of unique values in \code{group} to manually set point shapes.}
 
 \item{label}{Logical controlling whether score labels are shown instead of
 points.}
+
+\item{label_size}{Numeric value controlling the size of labels.}
 
 \item{label_subset}{A character vector specifying a subset of score labels
 to display.}
@@ -78,6 +81,8 @@ to display.}
 \item{legend}{Logical controlling whether the plot legend is shown.}
 
 \item{arrow_len}{Numeric value controlling the length of arrow head.}
+
+\item{arrow_col}{Character string indicating the color of arrows.}
 
 \item{arrow_alpha}{Numeric value controlling the transparency of arrow.}
 

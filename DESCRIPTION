@@ -31,6 +31,6 @@ Suggests:
     pcaMethods,
     testthat (>= 3.0.0)
 Depends: 
-    R (>= 2.10),
+    R (>= 3.60),
     SummarizedExperiment
 Config/testthat/edition: 3

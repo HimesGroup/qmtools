@@ -21,7 +21,6 @@ Imports:
     S4Vectors,
     stats
 Suggests:
-    xcms,
     limma,
     missForest,
     hexbin,
@@ -31,6 +30,6 @@ Suggests:
     pcaMethods,
     testthat (>= 3.0.0)
 Depends: 
-    R (>= 3.60),
+    R (>= 3.6.0),
     SummarizedExperiment
 Config/testthat/edition: 3

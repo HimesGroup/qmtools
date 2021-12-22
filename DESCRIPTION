@@ -15,6 +15,7 @@ RoxygenNote: 7.1.2
 biocViews:
 Imports: 
     BiocGenerics,
+    rlang,
     ggplot2,
     heatmaply,
     methods,
@@ -22,12 +23,14 @@ Imports:
     stats
 Suggests:
     limma,
+    Biobase,
     missForest,
     hexbin,
     Rtsne,
     vsn,
     VIM,
     pcaMethods,
+    pls,
     testthat (>= 3.0.0)
 Depends: 
     R (>= 3.6.0),

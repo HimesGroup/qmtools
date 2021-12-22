@@ -144,12 +144,6 @@ setGeneric(
 
 ##' @export
 setGeneric(
-  "normalize_euclidean",
-  function(x, ...) standardGeneric("normalize_euclidean")
-)
-
-##' @export
-setGeneric(
   "normalize_cyclicloess",
   function(x, ...) standardGeneric("normalize_cyclicloess")
 )
@@ -158,36 +152,6 @@ setGeneric(
 setGeneric(
   "normalize_vsn",
   function(x, ...) standardGeneric("normalize_vsn")
-)
-
-##' @export
-setGeneric(
-  "normalize_auto",
-  function(x, ...) standardGeneric("normalize_auto")
-)
-
-##' @export
-setGeneric(
-  "normalize_range",
-  function(x, ...) standardGeneric("normalize_range")
-)
-
-##' @export
-setGeneric(
-  "normalize_pareto",
-  function(x, ...) standardGeneric("normalize_pareto")
-)
-
-##' @export
-setGeneric(
-  "normalize_vast",
-  function(x, ...) standardGeneric("normalize_vast")
-)
-
-##' @export
-setGeneric(
-  "normalize_level",
-  function(x, ...) standardGeneric("normalize_level")
 )
 
 ##' @export
@@ -211,24 +175,6 @@ setGeneric(
 setGeneric(
   "impute_knn",
   function(x, ...) standardGeneric("impute_knn")
-)
-
-##' @export
-setGeneric(
-  "impute_halfmin",
-  function(x, ...) standardGeneric("impute_halfmin")
-)
-
-##' @export
-setGeneric(
-  "impute_median",
-  function(x, ...) standardGeneric("impute_median")
-)
-
-##' @export
-setGeneric(
-  "impute_mean",
-  function(x, ...) standardGeneric("impute_mean")
 )
 
 ##' @export

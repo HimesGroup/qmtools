@@ -165,6 +165,9 @@
   if (!requireNamespace("vsn", quietly = TRUE)) {
     stop("Package 'vsn' is required. Please install and try again.")
   }
+  if (!requireNamespace("Biobase", quietly = TRUE)) {
+    stop("Package 'Biobase' is required. Please install and try again.")
+  }
   out <- suppressMessages(vsn::vsnMatrix(x = x, ...))
   if (meanSdPlot) {
     if (!requireNamespace("hexbin", quietly = TRUE)) {

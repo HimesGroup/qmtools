@@ -2,6 +2,8 @@
 % Please edit documentation in R/poplin.R
 \name{poplin-internals}
 \alias{poplin-internals}
+\alias{poplinData}
+\alias{poplinData<-}
 \title{Internal poplin fields}
 \description{
 Methods to get or set internal fields in a \linkS4class{poplin} object.

@@ -49,6 +49,11 @@ NULL
 ##'
 ##' }
 ##'
+##' @aliases
+##' poplinData
+##' poplinData<-
+##' poplinReducedData
+##' poplinReducedData<-
 ##' @seealso [poplin_data], [poplin_reduced]
 ##' @name poplin-internals
 NULL

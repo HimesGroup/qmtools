@@ -19,14 +19,14 @@ In the code snippets below, \code{...} represents multiple
 
 Take a sequence of poplin objects in \code{...} and combine by rows. Note
 that all objects in ... must have the exact same values for
-\link{poplin_data_list}. See \code{?}\link{rbind} for the interpretation of
+\code{poplin_data_list}. See \code{?}\link{rbind} for the interpretation of
 \code{deparse.level}.
 
 }
 \item{\code{cbind(..., deparse.level = 1)}:}{
 
 Take a sequence of poplin objects in \code{...} and combine by columns. Note
-that all objects in ... must have the same values of \link{poplin_reduced_names}.
+that all objects in ... must have the same values of \code{poplin_reduced_names}.
 Dimension reduction results with the same name across the objects will be
 combined row-wise to create the corresponding entry in the output object.
 See \code{?}\link{cbind} for the interpretation of \code{deparse.level}.
@@ -52,8 +52,8 @@ indices specifying the rows and columns to extract or replace. Indices can
 be a logical, integer, character vector, or empty (missing). \code{value}
 must be a poplin object with the dimension and assay elements consistent
 with the subset \code{x[i, j]} being replaced. \code{value} is also expected
-to have the same name and order of \link{poplin_data_names} (and
-\link{poplin_reduced_names} as well if \code{j} is specified) as \code{x}.}
+to have the same name and order of \code{poplin_data_names} (and
+\code{poplin_reduced_names} as well if \code{j} is specified) as \code{x}.}
 
 }
 }

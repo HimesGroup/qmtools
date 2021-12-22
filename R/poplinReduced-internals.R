@@ -1,29 +1,29 @@
-.get_poplinReducedData_names <- function(...) {
+.get_poplinReduced_names <- function(...) {
   .get_poplinData_names(...)
 }
 
-.set_poplinReducedData_names <- function(...) {
+.set_poplinReduced_names <- function(...) {
   .set_poplinData_names(...)
 }
 
 ##' @export
-.get_poplinReducedData_data_integer <- function(...) {
+.get_poplinReduced_data_integer <- function(...) {
   .get_poplinData_data_integer(...)
 }
 
 ##' @export
-.get_poplinReducedData_data_character <- function(...) {
+.get_poplinReduced_data_character <- function(...) {
   .get_poplinData_data_character(...)
 }
 
 ##' @export
-.get_poplinReducedData_data_missing <- function(...) {
+.get_poplinReduced_data_missing <- function(...) {
   .get_poplinData_data_missing(...)
 }
 
 
 ##' @export
-.set_poplinReducedData_data_integer <- function(x, type, value, get_slot,
+.set_poplinReduced_data_integer <- function(x, type, value, get_slot,
                                                 set_element_fun, funstr) {
   ## x <- updateObject(x)
 
@@ -53,7 +53,7 @@
 
 
 ##' @export
-.set_poplinReducedData_data_character <- function(x, type, value, get_slot,
+.set_poplinReduced_data_character <- function(x, type, value, get_slot,
                                                   set_element_fun, funstr) {
   ## x <- updateObject(x)
 
@@ -77,7 +77,7 @@
 }
 
 ##' @export
-.set_poplinReducedData_data_missing <- function(...) {
+.set_poplinReduced_data_missing <- function(...) {
   .set_poplinData_data_missing(...)
 }
 
@@ -85,7 +85,7 @@
 ##' @export
 ##' @importFrom methods as
 ##' @importFrom S4Vectors DataFrame I mcols mcols<- metadata metadata<-
-.set_poplinReducedData_datalist <- function(x, value, get_slot, set_element_fun,
+.set_poplinReduced_datalist <- function(x, value, get_slot, set_element_fun,
                                             funstr, name_pattern) {
   ## x <- updateObject(x)
 

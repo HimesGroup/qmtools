@@ -41,7 +41,7 @@ NULL
 ##' equal to \code{dim(x)}. End users are supposed to interact with this field
 ##' via [poplin_data]. }
 ##'
-##' \item{\code{poplinReducedData(x)}, \code{poplinReducedData(x) <- value}:}{
+##' \item{\code{poplinReduced(x)}, \code{poplinReduced(x) <- value}:}{
 ##' Returns a \linkS4class{DataFrame} of matrices containing one or more
 ##' dimension-reduced data. \code{value} must be a \linkS4class{DataFrame} with
 ##' the dimension equal to \code{ncol(x)}. End users are supposed to interact
@@ -52,8 +52,8 @@ NULL
 ##' @aliases
 ##' poplinData
 ##' poplinData<-
-##' poplinReducedData
-##' poplinReducedData<-
+##' poplinReduced
+##' poplinReduced<-
 ##' @seealso [poplin_data], [poplin_reduced]
 ##' @name poplin-internals
 NULL
@@ -87,7 +87,7 @@ poplin <- function(intensity,  ...) {
     "poplin",
     se,
     poplinData = new("DFrame", nrows = nrow(se)),
-    poplinReducedData = new("DFrame", nrows = ncol(se))
+    poplinReduced = new("DFrame", nrows = ncol(se))
   )
 }
 

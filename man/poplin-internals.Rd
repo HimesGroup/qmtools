@@ -4,6 +4,8 @@
 \alias{poplin-internals}
 \alias{poplinData}
 \alias{poplinData<-}
+\alias{poplinReduced}
+\alias{poplinReduced<-}
 \title{Internal poplin fields}
 \description{
 Methods to get or set internal fields in a \linkS4class{poplin} object.
@@ -21,7 +23,7 @@ results. \code{value} must be a \linkS4class{DataFrame} with the dimension
 equal to \code{dim(x)}. End users are supposed to interact with this field
 via \link{poplin_data}. }
 
-\item{\code{poplinReducedData(x)}, \code{poplinReducedData(x) <- value}:}{
+\item{\code{poplinReduced(x)}, \code{poplinReduced(x) <- value}:}{
 Returns a \linkS4class{DataFrame} of matrices containing one or more
 dimension-reduced data. \code{value} must be a \linkS4class{DataFrame} with
 the dimension equal to \code{ncol(x)}. End users are supposed to interact

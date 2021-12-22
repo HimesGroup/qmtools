@@ -4,14 +4,14 @@ setMethod("[", c("poplin", "ANY", "ANY"), function(x, i, j, ..., drop = TRUE) {
     ii <- .get_subset_index(i, rownames(x))
     poplinData(x) <- poplinData(x)[ii, , drop = FALSE]
     ## if (length(reducedDataList(x)) != 0L) {
-    ##   message("Row-subsetting operation: 'poplinReducedData' slot was reset.")
+    ##   message("Row-subsetting operation: 'poplinReduced' slot was reset.")
     ## }
-    ## poplinReducedData(x) <- new("DFrame", nrows = ncol(x))
+    ## poplinReduced(x) <- new("DFrame", nrows = ncol(x))
   }
   if (!missing(j)) {
     jj <- .get_subset_index(j, colnames(x))
     poplinData(x) <- .subset_columns(x, jj, get_slot = poplinData)
-    poplinReducedData(x) <- poplinReducedData(x)[jj, , drop = FALSE]
+    poplinReduced(x) <- poplinReduced(x)[jj, , drop = FALSE]
   }
   callNextMethod()
 })
@@ -38,8 +38,8 @@ setReplaceMethod(
         })
         poplinData(x) <- poplinData_left
       }
-      ## message("Row-subsetting operation: 'poplinReducedData' slot was reset.")
-      ## poplinReducedData(x) <- new("DFrame", nrows = ncol(x))
+      ## message("Row-subsetting operation: 'poplinReduced' slot was reset.")
+      ## poplinReduced(x) <- new("DFrame", nrows = ncol(x))
     }
 
     if (!missing(j)) {
@@ -62,18 +62,18 @@ setReplaceMethod(
             conditionMessage(err))
         })
       }
-      poplinReducedData_left <- poplinReducedData(x)
-      poplinReducedData_right <- poplinReducedData(value)
+      poplinReduced_left <- poplinReduced(x)
+      poplinReduced_right <- poplinReduced(value)
       tryCatch({
-        poplinReducedData_left[jj, ] <- poplinReducedData_right
+        poplinReduced_left[jj, ] <- poplinReduced_right
       }, error=function(err) {
         stop(
-          "failed to replace 'poplinReducedData' in '<", class(x), ">[,j] <- value'\n",
+          "failed to replace 'poplinReduced' in '<", class(x), ">[,j] <- value'\n",
           conditionMessage(err))
       })
 
       poplinData(x) <- poplinData_left
-      poplinReducedData(x) <- poplinReducedData_left
+      poplinReduced(x) <- poplinReduced_left
     }
     callNextMethod()
 })

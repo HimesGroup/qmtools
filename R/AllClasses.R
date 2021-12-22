@@ -5,7 +5,7 @@ setClass(
   "poplin",
   slots = c(
     poplinData = "DataFrame",
-    poplinReducedData = "DataFrame"
+    poplinReduced = "DataFrame"
   ),
   contains = "SummarizedExperiment"
 )

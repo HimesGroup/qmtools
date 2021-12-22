@@ -56,7 +56,7 @@
 NULL
 
 ## Need to think about how to handle metadata of poplinData(x) and
-## poplinReducedData(x) when data are combined
+## poplinReduced(x) when data are combined
 ## poplin class cbind and rbind
 setMethod("rbind", "poplin", function(..., deparse.level = 1) {
   old_validity <- S4Vectors:::disableValidity()
@@ -87,20 +87,20 @@ setMethod("rbind", "poplin", function(..., deparse.level = 1) {
     metadata(poplinData_all) <- list() # clean metadata; consistency with assay-via method
   })
   ## Utilize SE class for combining objects: see the SingleCellExperiment source
-  poplinReducedData_se <- lapply(args, function(x) .poplin_to_se_coldata(x))
+  poplinReduced_se <- lapply(args, function(x) .poplin_to_se_coldata(x))
   tryCatch({
-    poplinReducedData_all <- colData(do.call(rbind, poplinReducedData_se))
+    poplinReduced_all <- colData(do.call(rbind, poplinReduced_se))
   },
   error = function(err) {
     stop(
-      "failed to combine 'poplinReducedData' in 'rbind(<",
+      "failed to combine 'poplinReduced' in 'rbind(<",
       class(args[[1]]), ">)':\n  ", conditionMessage(err)
     )
   })
   ## Skip validity checks with check = FALSE for efficiency as modification
   ## cannot alter the validity of object
   BiocGenerics:::replaceSlots(out, poplinData = poplinData_all,
-                              poplinReducedData = poplinReducedData_all,
+                              poplinReduced = poplinReduced_all,
                               check = FALSE)
 })
 
@@ -129,18 +129,18 @@ setMethod("cbind", "poplin", function(..., deparse.level = 1) {
     )
   })
   tryCatch({
-    poplinReducedData_all <- do.call(rbind, lapply(args, poplinReducedData))
+    poplinReduced_all <- do.call(rbind, lapply(args, poplinReduced))
   },
   error = function(err) {
     stop(
-      "failed to combine 'poplinReducedData' in 'cbind(<",
+      "failed to combine 'poplinReduced' in 'cbind(<",
       class(args[[1]]), ">)':\n  ", conditionMessage(err)
     )
   })
   ## Skip validity checks with check = FALSE for efficiency as modification
   ## cannot alter the validity of object
   BiocGenerics:::replaceSlots(out, poplinData = poplinData_all,
-                              poplinReducedData = poplinReducedData_all,
+                              poplinReduced = poplinReduced_all,
                               check = FALSE)
 })
 

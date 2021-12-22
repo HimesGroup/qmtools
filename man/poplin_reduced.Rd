@@ -17,7 +17,7 @@ In the code snippets below, \code{x} is a \linkS4class{poplin} object.
 \describe{
 \item{\code{poplin_reduced_names(x)}:}{
 Return the names of all dimension-reduced data sets stored in
-\code{x@poplinReducedData}.
+\code{x@poplinReduced}.
 }
 \item{\code{poplin_reduced_list(x)}:}{
 Retrieves a named \linkS4class{List} of matrices containing one or more

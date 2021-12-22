@@ -2,7 +2,7 @@
 ## is more expensive, and generally best avoided.
 
 #################################################################################
-## poplinData and poplinReducedData
+## poplinData and poplinReduced
 #################################################################################
 
 ##' @export
@@ -19,14 +19,14 @@ setGeneric(
 
 ##' @export
 setGeneric(
-  "poplinReducedData",
-  function(x) standardGeneric("poplinReducedData")
+  "poplinReduced",
+  function(x) standardGeneric("poplinReduced")
 )
 
 ##' @export
 setGeneric(
-  "poplinReducedData<-",
-  function(x, value) standardGeneric("poplinReducedData<-")
+  "poplinReduced<-",
+  function(x, value) standardGeneric("poplinReduced<-")
 )
 
 

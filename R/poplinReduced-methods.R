@@ -11,7 +11,7 @@
 ##' \describe{
 ##' \item{\code{poplin_reduced_names(x)}:}{
 ##' Return the names of all dimension-reduced data sets stored in
-##' \code{x@poplinReducedData}.
+##' \code{x@poplinReduced}.
 ##' }
 ##' \item{\code{poplin_reduced_list(x)}:}{
 ##' Retrieves a named \linkS4class{List} of matrices containing one or more
@@ -57,12 +57,12 @@
 NULL
 
 ##' @export
-setMethod("poplinReducedData", "poplin", function(x) x@poplinReducedData)
+setMethod("poplinReduced", "poplin", function(x) x@poplinReduced)
 
 
 ##' @export
-setReplaceMethod("poplinReducedData", "poplin", function(x, value) {
-  x@poplinReducedData <- value
+setReplaceMethod("poplinReduced", "poplin", function(x, value) {
+  x@poplinReduced <- value
   x
 })
 
@@ -72,7 +72,7 @@ setMethod(
   "poplin_reduced_list",
   "poplin",
   function(x) {
-    value <- as(poplinReducedData(x), "SimpleList")
+    value <- as(poplinReduced(x), "SimpleList")
     for (i in seq_along(value)) {
       rownames(value[[i]]) <- colnames(x)
     }
@@ -95,10 +95,10 @@ setReplaceMethod(
       stop("'names(value)' contains duplicates. ",
            "Use different names for incoming data.")
     }
-    .set_poplinReducedData_datalist(
+    .set_poplinReduced_datalist(
       x, value,
-      get_slot = poplinReducedData,
-      set_element_fun = `poplinReducedData<-`,
+      get_slot = poplinReduced,
+      set_element_fun = `poplinReduced<-`,
       funstr = "poplin_reduced_list",
       name_pattern = "reduced")
   }
@@ -109,7 +109,7 @@ setMethod(
   "poplin_reduced_names",
   "poplin",
   function(x) {
-    .get_poplinReducedData_names(x, get_slot = poplinReducedData)
+    .get_poplinReduced_names(x, get_slot = poplinReduced)
   }
 )
 
@@ -122,10 +122,10 @@ setReplaceMethod(
       stop("'value' contains duplicates. ",
            "Use unique names.")
     }
-    .set_poplinReducedData_names(
+    .set_poplinReduced_names(
       x, value,
-      get_slot = poplinReducedData,
-      set_element_fun = `poplinReducedData<-`,
+      get_slot = poplinReduced,
+      set_element_fun = `poplinReduced<-`,
       name_pattern = "reduced"
     )
   }
@@ -136,9 +136,9 @@ setMethod(
   "poplin_reduced",
   c("poplin", "numeric"),
   function(x, type) {
-    .get_poplinReducedData_data_integer(
+    .get_poplinReduced_data_integer(
       x, type,
-      get_slot = poplinReducedData,
+      get_slot = poplinReduced,
       funstr = "poplin_reduced"
     )
   }
@@ -149,9 +149,9 @@ setMethod(
   "poplin_reduced",
   c("poplin", "character"),
   function(x, type) {
-    .get_poplinReducedData_data_character(
+    .get_poplinReduced_data_character(
       x, type,
-      get_slot = poplinReducedData,
+      get_slot = poplinReduced,
       funstr ="poplin_reduced",
       namestr = "poplin_reduced_names"
     )
@@ -163,7 +163,7 @@ setMethod(
   "poplin_reduced",
   c("poplin", "missing"),
   function(x, type) {
-    .get_poplinReducedData_data_missing(
+    .get_poplinReduced_data_missing(
       x,
       base_fun = poplin_reduced,
       name_fun = poplin_reduced_names,
@@ -180,10 +180,10 @@ setReplaceMethod(
     if (check_samplenames) {
       value <- .check_samplenames(x, value, fun = "poplin_reduced<-")
     }
-    .set_poplinReducedData_data_integer(
+    .set_poplinReduced_data_integer(
       x, type, value,
-      get_slot = poplinReducedData,
-      set_element_fun = `poplinReducedData<-`,
+      get_slot = poplinReduced,
+      set_element_fun = `poplinReduced<-`,
       funstr = "poplin_reduced"
     )
   }
@@ -201,10 +201,10 @@ setReplaceMethod(
     if (check_samplenames) {
       value <- .check_samplenames(x, value, fun = "poplin_reduced<-")
     }
-    .set_poplinReducedData_data_character(
+    .set_poplinReduced_data_character(
       x, type, value,
-      get_slot = poplinReducedData,
-      set_element_fun = `poplinReducedData<-`,
+      get_slot = poplinReduced,
+      set_element_fun = `poplinReduced<-`,
       funstr = "poplin_reduced"
     )
   }
@@ -215,7 +215,7 @@ setReplaceMethod(
   "poplin_reduced",
   c("poplin", "missing"),
   function(x, type, check_samplenames = TRUE, ..., value) {
-    .set_poplinReducedData_data_missing(
+    .set_poplinReduced_data_missing(
       x, value,
       base_fun = `poplin_reduced<-`,
       name_fun = poplin_reduced_names,

@@ -51,6 +51,12 @@
 ##' }
 ##'
 ##' @name poplin_data
+##' @aliases
+##' poplin_data<-
+##' poplin_data_list
+##' poplin_data_list<-
+##' poplin_data_names
+##' poplin_data_names<-
 ##' @docType methods
 ##' @seealso [poplin_raw], [poplin_reduced]
 NULL

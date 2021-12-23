@@ -135,27 +135,27 @@
     }
     samplenames_incoming <- rownames(incoming)
     samplenames_reference <- colnames(reference)
-    if (!is.null(samplenames_incoming) &&
-        !identical(samplenames_incoming, samplenames_reference)) {
-          stop(
-            "non-NULL 'rownames(value)' should be the same as 'colnames(x)' for '",
-            fun
-          )
-    }
-    ## if (!is.null(samplenames_incoming)) {
-    ##   if (!identical(samplenames_incoming, samplenames_reference)) {
-    ##     stop(
-    ##       "non-NULL 'rownames(value)' should be the same as 'colnames(x)' for '",
-    ##       fun
-    ##     )
-    ##   }
-    ## } else {
-    ##   tryCatch({
-    ##     rownames(incoming) <- samplenames_reference
-    ##   }, error = function(e) {
-    ##     stop("'value' should have number of rows equal to 'ncol(x)'")
-    ##   })
+    ## if (!is.null(samplenames_incoming) &&
+    ##     !identical(samplenames_incoming, samplenames_reference)) {
+    ##       stop(
+    ##         "non-NULL 'rownames(value)' should be the same as 'colnames(x)' for '",
+    ##         fun
+    ##       )
     ## }
+    if (!is.null(samplenames_incoming)) {
+      if (!identical(samplenames_incoming, samplenames_reference)) {
+        stop(
+          "non-NULL 'rownames(value)' should be the same as 'colnames(x)' for '",
+          fun
+        )
+      }
+    } else {
+      tryCatch({
+        rownames(incoming) <- samplenames_reference
+      }, error = function(e) {
+        stop("'value' should have number of rows equal to 'ncol(x)'")
+      })
+    }
   }
   incoming
 }

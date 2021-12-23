@@ -3,6 +3,11 @@
 \docType{methods}
 \name{poplin_data}
 \alias{poplin_data}
+\alias{poplin_data<-}
+\alias{poplin_data_list}
+\alias{poplin_data_list<-}
+\alias{poplin_data_names}
+\alias{poplin_data_names<-}
 \title{Poplin data methods}
 \description{
 Methods to get or set data processing results in a \linkS4class{poplin}

@@ -2,7 +2,7 @@
 ## is more expensive, and generally best avoided.
 
 #################################################################################
-## poplinData and poplinReduced
+## poplinData
 #################################################################################
 
 ##' @export
@@ -15,18 +15,6 @@ setGeneric(
 setGeneric(
   "poplinData<-",
   function(x, value) standardGeneric("poplinData<-")
-)
-
-##' @export
-setGeneric(
-  "poplinReduced",
-  function(x) standardGeneric("poplinReduced")
-)
-
-##' @export
-setGeneric(
-  "poplinReduced<-",
-  function(x, value) standardGeneric("poplinReduced<-")
 )
 
 
@@ -66,6 +54,22 @@ setGeneric(
   function(x, type, check_dimnames = TRUE, ..., value) standardGeneric("poplin_data<-")
 )
 
+#################################################################################
+## poplinReduced
+#################################################################################
+
+##' @export
+setGeneric(
+  "poplinReduced",
+  function(x) standardGeneric("poplinReduced")
+)
+
+##' @export
+setGeneric(
+  "poplinReduced<-",
+  function(x, value) standardGeneric("poplinReduced<-")
+)
+
 
 ##' @export
 setGeneric(
@@ -101,6 +105,46 @@ setGeneric(
 setGeneric(
   "poplin_reduced<-",
   function(x, type, check_samplenames = TRUE, ..., value) standardGeneric("poplin_reduced<-")
+)
+
+#################################################################################
+## poplinRaw
+#################################################################################
+
+##' @export
+setGeneric(
+  "poplin_raw_list",
+  function(x, ...) standardGeneric("poplin_raw_list")
+)
+
+##' @export
+setGeneric(
+  "poplin_raw_list<-",
+  function(x, check_dimnames = TRUE, ..., value) standardGeneric("poplin_raw_list<-")
+)
+
+##' @export
+setGeneric(
+  "poplin_raw_names",
+  function(x, ...) standardGeneric("poplin_raw_names")
+)
+
+##' @export
+setGeneric(
+  "poplin_raw_names<-",
+  function(x, ..., value) standardGeneric("poplin_raw_names<-")
+)
+
+##' @export
+setGeneric(
+  "poplin_raw",
+  function(x, type, ...) standardGeneric("poplin_raw")
+)
+
+##' @export
+setGeneric(
+  "poplin_raw<-",
+  function(x, type, check_dimnames = TRUE, ..., value) standardGeneric("poplin_raw<-")
 )
 
 #################################################################################

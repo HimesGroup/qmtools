@@ -74,7 +74,7 @@ poplin <- function(intensity,  ...) {
 ##' @importClassesFrom S4Vectors DataFrame
 ##' @importFrom methods new
 ##' @importFrom BiocGenerics nrow ncol
-##' @importMethodsFrom SummarizedExperiment assays assayNames assay
+##' @importMethodsFrom SummarizedExperiment assays assayNames assay assays<- assayNames<- assay<-
 .se_to_poplin <- function(se) {
   old_validity <- S4Vectors:::disableValidity()
   if (!isTRUE(old_validity)) {

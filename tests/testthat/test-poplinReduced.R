@@ -142,6 +142,23 @@ test_that("poplin_reduced setter assigns 'reduced1' for an unnamed object.", {
   expect_identical(poplin_reduced_names(pp), "reduced1")
 })
 
+test_that("poplin_reduced setter assigns colnames(x) when rownames(value) =  NULL.", {
+  pp <- faahko_poplin
+  d1_null <- d1
+  rownames(d1_null) <- NULL
+
+  expect_error(poplin_reduced(pp, "null") <- d1_null, NA)
+  expect_identical(rownames(poplin_reduced(pp, "null")), colnames(pp))
+  expect_error(poplin_reduced_list(pp) <- list(null = d1_null), NA)
+  expect_identical(rownames(poplin_reduced(pp, "null")), colnames(pp))
+
+  rownames(d1_null) <- 1:nrow(d1_null)
+  expect_error(poplin_reduced(pp, "null") <- d1_null, "non-NULL")
+  expect_error(poplin_reduced_list(pp) <- list(null = d1_null), "non-NULL")
+
+})
+
+
 test_that("poplin_reduced_names setter/getters work correctly.", {
   pp <- faahko_poplin
   expect_warning(poplin_reduced_list(pp) <- list(d1, d2), "NULL")

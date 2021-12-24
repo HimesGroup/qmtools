@@ -13,6 +13,10 @@
 ##' @return A poplin object
 ##' @author Jaehyun Joo
 ##' @name poplin-class
+##' @aliases
+##' poplin
+##' poplin-class
+##' coerce,SummarizedExperiment,poplin-method
 ##' @usage
 ##' ## Constructor
 ##' poplin(intensity, ...)
@@ -50,10 +54,12 @@ NULL
 ##' }
 ##'
 ##' @aliases
-##' poplinData
-##' poplinData<-
-##' poplinReduced
-##' poplinReduced<-
+##' poplinData poplinReduced
+##' poplinData,poplin-method
+##' poplinReduced,poplin-method
+##' poplinData<- poplinReduced<-
+##' poplinData<-,poplin-method
+##' poplinReduced<-,poplin-method
 ##' @seealso [poplin_data], [poplin_reduced]
 ##' @name poplin-internals
 NULL
@@ -129,6 +135,20 @@ setAs("SummarizedExperiment", "poplin", function(from) {
   coolcat("poplinReduced names(%d): %s\n", poplin_reduced_names(object))
 }
 
-##' @export
 setMethod("show", "poplin", .poplin_show)
+
+
+setMethod("poplinReduced", "poplin", function(x) x@poplinReduced)
+
+setReplaceMethod("poplinReduced", "poplin", function(x, value) {
+  x@poplinReduced <- value
+  x
+})
+
+setMethod("poplinData", "poplin", function(x) x@poplinData)
+
+setReplaceMethod("poplinData", "poplin", function(x, value) {
+  x@poplinData <- value
+  x
+})
 

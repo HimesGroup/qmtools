@@ -2,6 +2,7 @@
 % Please edit documentation in R/reduction-methods.R
 \name{poplin_reduce}
 \alias{poplin_reduce}
+\alias{poplin_reduce,matrix-method}
 \alias{poplin_reduce,poplin-method}
 \title{Dimension reduction methods}
 \usage{

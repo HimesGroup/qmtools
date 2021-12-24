@@ -2,6 +2,7 @@
 % Please edit documentation in R/normalization-methods.R
 \name{normalize_pqn}
 \alias{normalize_pqn}
+\alias{normalize_pqn,matrix-method}
 \alias{normalize_pqn,poplin-method}
 \title{Probabilistic quotient normalization (PQN)}
 \usage{

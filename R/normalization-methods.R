@@ -37,6 +37,10 @@
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
 ##' @name poplin_normalize
+##' @aliases
+##' poplin_normalize
+##' poplin_normalize,matrix-method
+##' poplin_normalize,poplin-method
 ##' @family normalization methods
 setMethod(
   "poplin_normalize",
@@ -88,6 +92,10 @@ setMethod(
 ##' mixtures. Application in 1H NMR metabonomics. Anal Chem. 2006 Jul
 ##' 1;78(13):4281-90. doi: 10.1021/ac051632c. PMID: 16808434.
 ##' @name normalize_pqn
+##' @aliases
+##' normalize_pqn
+##' normalize_pqn,matrix-method
+##' normalize_pqn,poplin-method
 ##' @family normalization methods
 setMethod(
   "normalize_pqn",
@@ -128,6 +136,10 @@ setMethod(
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
 ##' @name normalize_sum
+##' @aliases
+##' normalize_sum
+##' normalize_sum,matrix-method
+##' normalize_sum,poplin-method
 ##' @family normalization methods
 setMethod(
   "normalize_sum",
@@ -165,6 +177,10 @@ setMethod(
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
 ##' @name normalize_mean
+##' @aliases
+##' normalize_mean
+##' normalize_mean,matrix-method
+##' normalize_mean,poplin-method
 ##' @family normalization methods
 setMethod(
   "normalize_mean",
@@ -202,6 +218,10 @@ setMethod(
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
 ##' @name normalize_median
+##' @aliases
+##' normalize_median
+##' normalize_median,matrix-method
+##' normalize_median,poplin-method
 ##' @family normalization methods
 setMethod(
   "normalize_median",
@@ -240,6 +260,10 @@ setMethod(
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
 ##' @name normalize_mad
+##' @aliases
+##' normalize_mad
+##' normalize_mad,matrix-method
+##' normalize_mad,poplin-method
 ##' @family normalization methods
 setMethod(
   "normalize_mad",
@@ -314,6 +338,10 @@ setMethod(
 ##' 1;20(16):2778-86. doi: 10.1093/bioinformatics/bth327. Epub 2004 May 27.
 ##' PMID: 15166021.
 ##' @name normalize_cyclicloess
+##' @aliases
+##' normalize_cyclicloess
+##' normalize_cyclicloess,matrix-method
+##' normalize_cyclicloess,poplin-method
 ##' @family normalization methods
 setMethod(
   "normalize_cyclicloess",
@@ -363,6 +391,10 @@ setMethod(
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
 ##' @name normalize_vsn
+##' @aliases
+##' normalize_vsn
+##' normalize_vsn,matrix-method
+##' normalize_vsn,poplin-method
 ##' @family normalization methods
 setMethod(
   "normalize_vsn",
@@ -412,6 +444,10 @@ setMethod(
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
 ##' @name normalize_scale
+##' @aliases
+##' normalize_scale
+##' normalize_scale,matrix-method
+##' normalize_scale,poplin-method
 ##' @family normalization methods
 setMethod(
   "normalize_scale",

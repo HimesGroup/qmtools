@@ -28,11 +28,19 @@
 ##' }
 ##' @name poplin_raw
 ##' @aliases
-##' poplin_raw<-
-##' poplin_raw_list
-##' poplin_raw_list<-
-##' poplin_raw_names
-##' poplin_raw_names<-
+##' poplin_raw poplin_raw_list poplin_raw_names
+##' poplin_raw,poplin,missing-method
+##' poplin_raw,poplin,numeric-method
+##' poplin_raw,poplin,character-method
+##' poplin_raw_list,poplin-method
+##' poplin_raw_names,poplin-method
+##' poplin_raw<- poplin_raw_list<- poplin_raw_names<-
+##' poplin_raw poplin_raw_list poplin_raw_names
+##' poplin_raw<-,poplin,missing-method
+##' poplin_raw<-,poplin,numeric-method
+##' poplin_raw<-,poplin,character-method
+##' poplin_raw_list<-,poplin-method
+##' poplin_raw_names<-,poplin,character-method
 ##' @seealso [poplin_data], [poplin_reduced]
 NULL
 
@@ -64,9 +72,10 @@ setMethod(
 })
 
 setReplaceMethod(
-  "poplin_raw_names", "poplin",
+  "poplin_raw_names", c("poplin", "character"),
   function(x, ..., value) {
-    value <- .replace_empty_names(value, N, msg = "value",
+    N <- length(assayNames(x))
+    value <- .replace_empty_names(value, N = N, msg = "value",
                                   name_pattern = "raw")
     `assayNames<-`(x = x, ..., value = value)
 })

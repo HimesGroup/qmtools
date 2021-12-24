@@ -2,6 +2,7 @@
 % Please edit documentation in R/reduction-methods.R
 \name{reduce_tsne}
 \alias{reduce_tsne}
+\alias{reduce_tsne,matrix-method}
 \alias{reduce_tsne,poplin-method}
 \title{t-distributed stochastic neighbor embedding (t-SNE)}
 \usage{

@@ -2,11 +2,21 @@
 % Please edit documentation in R/poplinRaw-methods.R
 \name{poplin_raw}
 \alias{poplin_raw}
-\alias{poplin_raw<-}
 \alias{poplin_raw_list}
-\alias{poplin_raw_list<-}
 \alias{poplin_raw_names}
+\alias{poplin_raw,poplin,missing-method}
+\alias{poplin_raw,poplin,numeric-method}
+\alias{poplin_raw,poplin,character-method}
+\alias{poplin_raw_list,poplin-method}
+\alias{poplin_raw_names,poplin-method}
+\alias{poplin_raw<-}
+\alias{poplin_raw_list<-}
 \alias{poplin_raw_names<-}
+\alias{poplin_raw<-,poplin,missing-method}
+\alias{poplin_raw<-,poplin,numeric-method}
+\alias{poplin_raw<-,poplin,character-method}
+\alias{poplin_raw_list<-,poplin-method}
+\alias{poplin_raw_names<-,poplin,character-method}
 \title{Raw data methods}
 \description{
 Methods to get or set raw intensity data. These methods are simply aliases

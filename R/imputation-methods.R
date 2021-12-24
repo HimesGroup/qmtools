@@ -25,6 +25,10 @@
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the imputed intensities.
 ##' @name poplin_impute
+##' @aliases
+##' poplin_impute
+##' poplin_impute,matrix-method
+##' poplin_impute,poplin-method
 ##' @family imputation methods
 setMethod(
   "poplin_impute",
@@ -68,6 +72,10 @@ setMethod(
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the imputed intensities.
 ##' @name impute_knn
+##' @aliases
+##' impute_knn
+##' impute_knn,matrix-method
+##' impute_knn,poplin-method
 ##' @family imputation methods
 setMethod(
   "impute_knn",
@@ -110,6 +118,10 @@ setMethod(
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the imputed intensities.
 ##' @name impute_randomforest
+##' @aliases
+##' impute_randomforest
+##' impute_randomforest,matrix-method
+##' impute_randomforest,poplin-method
 ##' @family imputation methods
 setMethod(
   "impute_randomforest",
@@ -152,6 +164,10 @@ setMethod(
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the imputed intensities.
 ##' @name impute_pca
+##' @aliases
+##' impute_pca
+##' impute_pca,matrix-method
+##' impute_pca,poplin-method
 ##' @family imputation methods
 setMethod(
   "impute_pca",
@@ -197,6 +213,10 @@ setMethod(
 ##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the imputed intensities.
 ##' @name impute_simple
+##' @aliases
+##' impute_simple
+##' impute_simple,matrix-method
+##' impute_simple,poplin-method
 ##' @family imputation methods
 setMethod(
   "impute_simple",

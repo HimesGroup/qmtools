@@ -2,6 +2,7 @@
 % Please edit documentation in R/imputation-methods.R
 \name{impute_randomforest}
 \alias{impute_randomforest}
+\alias{impute_randomforest,matrix-method}
 \alias{impute_randomforest,poplin-method}
 \title{Random forest imputation}
 \usage{

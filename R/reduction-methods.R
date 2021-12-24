@@ -25,6 +25,10 @@
 ##' @return A matrix or \linkS4class{poplin} object with the same number of rows
 ##'   as \code{ncol(x)} containing the dimension reduction result.
 ##' @name poplin_reduce
+##' @aliases
+##' poplin_reduce
+##' poplin_reduce,matrix-method
+##' poplin_reduce,poplin-method
 ##' @family data reduction methods
 setMethod(
   "poplin_reduce",
@@ -73,6 +77,10 @@ setMethod(
 ##'   number of rows as \code{ncol(x)} containing the dimension reduction
 ##'   result.
 ##' @name reduce_pca
+##' @aliases
+##' reduce_pca
+##' reduce_pca,matrix-method
+##' reduce_pca,poplin-method
 ##' @family data reduction methods
 setMethod(
   "reduce_pca",
@@ -123,6 +131,10 @@ setMethod(
 ##'   number of rows as \code{ncol(x)} containing the dimension reduction
 ##'   result.
 ##' @name reduce_tsne
+##' @aliases
+##' reduce_tsne
+##' reduce_tsne,matrix-method
+##' reduce_tsne,poplin-method
 ##' @family data reduction methods
 setMethod(
   "reduce_tsne",
@@ -155,7 +167,6 @@ setMethod(
 ##'  2.8-0. https://CRAN.R-project.org/package=pls
 ##'
 ##' @param x A matrix or \linkS4class{poplin} object.
-##' @param method A dimension reduction method. Default is 'pca'.
 ##' @param poplin_in Name of a data matrix to retrieve.
 ##' @param poplin_out Name of a data matrix to store.
 ##' @param y A factor vector for discrete outcome.
@@ -167,6 +178,10 @@ setMethod(
 ##'   number of rows as \code{ncol(x)} containing the dimension reduction
 ##'   result.
 ##' @name reduce_plsda
+##' @aliases
+##' reduce_plsda
+##' reduce_plsda,matrix-method
+##' reduce_plsda,poplin-method
 ##' @family data reduction methods
 setMethod(
   "reduce_plsda",

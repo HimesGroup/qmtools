@@ -2,6 +2,7 @@
 % Please edit documentation in R/normalization-methods.R
 \name{normalize_scale}
 \alias{normalize_scale}
+\alias{normalize_scale,matrix-method}
 \alias{normalize_scale,poplin-method}
 \title{Feature-based scaling}
 \usage{

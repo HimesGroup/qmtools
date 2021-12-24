@@ -3,11 +3,21 @@
 \docType{methods}
 \name{poplin_reduced}
 \alias{poplin_reduced}
-\alias{poplin_reduced<-}
 \alias{poplin_reduced_list}
-\alias{poplin_reduced_list<-}
 \alias{poplin_reduced_names}
+\alias{poplin_reduced,poplin,missing-method}
+\alias{poplin_reduced,poplin,numeric-method}
+\alias{poplin_reduced,poplin,character-method}
+\alias{poplin_reduced_list,poplin-method}
+\alias{poplin_reduced_names,poplin-method}
+\alias{poplin_reduced<-}
+\alias{poplin_reduced_list<-}
 \alias{poplin_reduced_names<-}
+\alias{poplin_reduced<-,poplin,missing-method}
+\alias{poplin_reduced<-,poplin,numeric-method}
+\alias{poplin_reduced<-,poplin,character-method}
+\alias{poplin_reduced_list<-,poplin-method}
+\alias{poplin_reduced_names<-,poplin,character-method}
 \title{Dimension-reduced data methods}
 \description{
 Methods to get or set dimension reduction results in a \linkS4class{poplin}

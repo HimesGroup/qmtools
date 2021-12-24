@@ -2,6 +2,7 @@
 % Please edit documentation in R/normalization-methods.R
 \name{normalize_mean}
 \alias{normalize_mean}
+\alias{normalize_mean,matrix-method}
 \alias{normalize_mean,poplin-method}
 \title{Mean normalization}
 \usage{

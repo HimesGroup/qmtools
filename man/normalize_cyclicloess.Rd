@@ -2,6 +2,7 @@
 % Please edit documentation in R/normalization-methods.R
 \name{normalize_cyclicloess}
 \alias{normalize_cyclicloess}
+\alias{normalize_cyclicloess,matrix-method}
 \alias{normalize_cyclicloess,poplin-method}
 \title{Cyclic LOESS normalization}
 \usage{

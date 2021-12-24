@@ -3,9 +3,13 @@
 \name{poplin-internals}
 \alias{poplin-internals}
 \alias{poplinData}
-\alias{poplinData<-}
 \alias{poplinReduced}
+\alias{poplinData,poplin-method}
+\alias{poplinReduced,poplin-method}
+\alias{poplinData<-}
 \alias{poplinReduced<-}
+\alias{poplinData<-,poplin-method}
+\alias{poplinReduced<-,poplin-method}
 \title{Internal poplin fields}
 \description{
 Methods to get or set internal fields in a \linkS4class{poplin} object.

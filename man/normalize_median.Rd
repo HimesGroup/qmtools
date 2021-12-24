@@ -2,6 +2,7 @@
 % Please edit documentation in R/normalization-methods.R
 \name{normalize_median}
 \alias{normalize_median}
+\alias{normalize_median,matrix-method}
 \alias{normalize_median,poplin-method}
 \title{Median normalization}
 \usage{

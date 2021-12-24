@@ -53,24 +53,22 @@
 ##' }
 ##' @name poplin_reduced
 ##' @aliases
-##' poplin_reduced<-
-##' poplin_reduced_list
-##' poplin_reduced_list<-
-##' poplin_reduced_names
-##' poplin_reduced_names<-
+##' poplin_reduced poplin_reduced_list poplin_reduced_names
+##' poplin_reduced,poplin,missing-method
+##' poplin_reduced,poplin,numeric-method
+##' poplin_reduced,poplin,character-method
+##' poplin_reduced_list,poplin-method
+##' poplin_reduced_names,poplin-method
+##' poplin_reduced<- poplin_reduced_list<- poplin_reduced_names<-
+##' poplin_reduced poplin_reduced_list poplin_reduced_names
+##' poplin_reduced<-,poplin,missing-method
+##' poplin_reduced<-,poplin,numeric-method
+##' poplin_reduced<-,poplin,character-method
+##' poplin_reduced_list<-,poplin-method
+##' poplin_reduced_names<-,poplin,character-method
 ##' @docType methods
 ##' @seealso [poplin_raw], [poplin_data]
 NULL
-
-##' @export
-setMethod("poplinReduced", "poplin", function(x) x@poplinReduced)
-
-
-##' @export
-setReplaceMethod("poplinReduced", "poplin", function(x, value) {
-  x@poplinReduced <- value
-  x
-})
 
 ##' @importClassesFrom S4Vectors SimpleList
 ##' @export

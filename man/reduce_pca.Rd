@@ -2,6 +2,7 @@
 % Please edit documentation in R/reduction-methods.R
 \name{reduce_pca}
 \alias{reduce_pca}
+\alias{reduce_pca,matrix-method}
 \alias{reduce_pca,poplin-method}
 \title{Principal component analysis (PCA)}
 \usage{

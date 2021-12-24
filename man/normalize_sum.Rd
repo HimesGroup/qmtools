@@ -2,6 +2,7 @@
 % Please edit documentation in R/normalization-methods.R
 \name{normalize_sum}
 \alias{normalize_sum}
+\alias{normalize_sum,matrix-method}
 \alias{normalize_sum,poplin-method}
 \title{Sum normalization (TIC normalization)}
 \usage{

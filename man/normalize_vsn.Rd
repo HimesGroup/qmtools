@@ -2,6 +2,7 @@
 % Please edit documentation in R/normalization-methods.R
 \name{normalize_vsn}
 \alias{normalize_vsn}
+\alias{normalize_vsn,matrix-method}
 \alias{normalize_vsn,poplin-method}
 \title{Variance stabilizing normalization (VSN)}
 \usage{

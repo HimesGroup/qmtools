@@ -2,6 +2,7 @@
 % Please edit documentation in R/imputation-methods.R
 \name{impute_pca}
 \alias{impute_pca}
+\alias{impute_pca,matrix-method}
 \alias{impute_pca,poplin-method}
 \title{Principal component analysis (PCA) imputation}
 \usage{

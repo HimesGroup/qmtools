@@ -3,11 +3,21 @@
 \docType{methods}
 \name{poplin_data}
 \alias{poplin_data}
-\alias{poplin_data<-}
 \alias{poplin_data_list}
-\alias{poplin_data_list<-}
 \alias{poplin_data_names}
+\alias{poplin_data,poplin,missing-method}
+\alias{poplin_data,poplin,numeric-method}
+\alias{poplin_data,poplin,character-method}
+\alias{poplin_data_list,poplin-method}
+\alias{poplin_data_names,poplin-method}
+\alias{poplin_data<-}
+\alias{poplin_data_list<-}
 \alias{poplin_data_names<-}
+\alias{poplin_data<-,poplin,missing-method}
+\alias{poplin_data<-,poplin,numeric-method}
+\alias{poplin_data<-,poplin,character-method}
+\alias{poplin_data_list<-,poplin-method}
+\alias{poplin_data_names<-,poplin,character-method}
 \title{Poplin data methods}
 \description{
 Methods to get or set data processing results in a \linkS4class{poplin}

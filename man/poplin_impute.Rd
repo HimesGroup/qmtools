@@ -2,6 +2,7 @@
 % Please edit documentation in R/imputation-methods.R
 \name{poplin_impute}
 \alias{poplin_impute}
+\alias{poplin_impute,matrix-method}
 \alias{poplin_impute,poplin-method}
 \title{Imputation methods}
 \usage{

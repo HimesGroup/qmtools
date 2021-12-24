@@ -2,6 +2,7 @@
 % Please edit documentation in R/imputation-methods.R
 \name{impute_simple}
 \alias{impute_simple}
+\alias{impute_simple,matrix-method}
 \alias{impute_simple,poplin-method}
 \title{Simple univariate imputation}
 \usage{

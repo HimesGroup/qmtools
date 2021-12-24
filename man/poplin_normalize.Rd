@@ -2,6 +2,7 @@
 % Please edit documentation in R/normalization-methods.R
 \name{poplin_normalize}
 \alias{poplin_normalize}
+\alias{poplin_normalize,matrix-method}
 \alias{poplin_normalize,poplin-method}
 \title{Normalization methods}
 \usage{

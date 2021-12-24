@@ -2,6 +2,7 @@
 % Please edit documentation in R/normalization-methods.R
 \name{normalize_mad}
 \alias{normalize_mad}
+\alias{normalize_mad,matrix-method}
 \alias{normalize_mad,poplin-method}
 \title{Median absolute deviation (MAD) normalization}
 \usage{

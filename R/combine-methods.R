@@ -52,6 +52,11 @@
 ##' @importFrom BiocGenerics rbind cbind
 ##' @importFrom SummarizedExperiment Assays
 ##' @name poplin-combine/subset
+##' @aliases
+##' cbind,poplin-method
+##' rbind,poplin-method
+##' [,poplin,ANY,ANY,ANY-method
+##' [<-,poplin,ANY,ANY,poplin-method
 ##' @docType methods
 NULL
 

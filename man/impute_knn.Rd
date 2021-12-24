@@ -2,6 +2,7 @@
 % Please edit documentation in R/imputation-methods.R
 \name{impute_knn}
 \alias{impute_knn}
+\alias{impute_knn,matrix-method}
 \alias{impute_knn,poplin-method}
 \title{K-nearest neighbor (KNN) imputation}
 \usage{

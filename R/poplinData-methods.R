@@ -52,23 +52,22 @@
 ##'
 ##' @name poplin_data
 ##' @aliases
-##' poplin_data<-
-##' poplin_data_list
-##' poplin_data_list<-
-##' poplin_data_names
-##' poplin_data_names<-
+##' poplin_data poplin_data_list poplin_data_names
+##' poplin_data,poplin,missing-method
+##' poplin_data,poplin,numeric-method
+##' poplin_data,poplin,character-method
+##' poplin_data_list,poplin-method
+##' poplin_data_names,poplin-method
+##' poplin_data<- poplin_data_list<- poplin_data_names<-
+##' poplin_data poplin_data_list poplin_data_names
+##' poplin_data<-,poplin,missing-method
+##' poplin_data<-,poplin,numeric-method
+##' poplin_data<-,poplin,character-method
+##' poplin_data_list<-,poplin-method
+##' poplin_data_names<-,poplin,character-method
 ##' @docType methods
 ##' @seealso [poplin_raw], [poplin_reduced]
 NULL
-
-##' @export
-setMethod("poplinData", "poplin", function(x) x@poplinData)
-
-##' @export
-setReplaceMethod("poplinData", "poplin", function(x, value) {
-  x@poplinData <- value
-  x
-})
 
 ##' @importClassesFrom S4Vectors SimpleList
 ##' @export

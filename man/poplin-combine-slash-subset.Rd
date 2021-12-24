@@ -3,6 +3,10 @@
 \docType{methods}
 \name{poplin-combine/subset}
 \alias{poplin-combine/subset}
+\alias{cbind,poplin-method}
+\alias{rbind,poplin-method}
+\alias{[,poplin,ANY,ANY,ANY-method}
+\alias{[<-,poplin,ANY,ANY,poplin-method}
 \title{Combining or subsetting poplin objects}
 \description{
 Methods to combine multiple \linkS4class{poplin} objects by row or column,

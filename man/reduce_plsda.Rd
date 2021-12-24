@@ -2,6 +2,7 @@
 % Please edit documentation in R/reduction-methods.R
 \name{reduce_plsda}
 \alias{reduce_plsda}
+\alias{reduce_plsda,matrix-method}
 \alias{reduce_plsda,poplin-method}
 \title{Partial least squares-discriminant analysis (PLS-DA)}
 \usage{
@@ -34,8 +35,6 @@
 \item{poplin_in}{Name of a data matrix to retrieve.}
 
 \item{poplin_out}{Name of a data matrix to store.}
-
-\item{method}{A dimension reduction method. Default is 'pca'.}
 }
 \value{
 A poplin.plsda matrix or \linkS4class{poplin} object with the same

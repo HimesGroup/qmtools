@@ -2,6 +2,31 @@
 ## Taken from SingleCellExperiment package (09/18/2021)
 ## Just rename it to poplin.class and extend it for print functions
 #################################################################################
+##' The poplin.matrix class
+##'
+##' A matrix class that retains its attributes upon being subsetted or combined.
+##' It is a simply renamed version of \code{reduced.dim.matrix} in the
+##' \pkg{SingleCellExperiment}. This is useful for storing metadata about a
+##' dimensionality reduction result alongside the matrix, and for ensuring that
+##' the metadata persists when the matrix is stored inside
+##' [poplin_reduced_list].
+##'
+##' @references
+##'
+##' Amezquita, R.A., Lun, A.T.L., Becht, E. et al. Orchestrating single-cell
+##' analysis with Bioconductor. Nat Methods 17, 137–145 (2020).
+##' https://doi.org/10.1038/s41592-019-0654-x
+##'
+##' @name poplin.matrix
+##' @aliases
+##' poplin.matrix
+##' poplin.matrix-class
+##' [.poplin.matrix
+##' rbind.poplin.matrix
+##' cbind.poplin.matrix
+##' @keywords internal
+NULL
+
 
 poplin.matrix <- function(x, tag, ...) {
   class(x) <- c(tag, "poplin.matrix", "matrix")

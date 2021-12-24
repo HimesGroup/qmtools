@@ -2,6 +2,8 @@
 % Please edit documentation in R/poplin.R
 \name{poplin-class}
 \alias{poplin-class}
+\alias{poplin}
+\alias{coerce,SummarizedExperiment,poplin-method}
 \title{The poplin class}
 \usage{
 ## Constructor

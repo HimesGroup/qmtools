@@ -31,9 +31,6 @@ setReplaceMethod(
 
         tryCatch({
           poplinData_left[ii, ] <- poplinData_right
-          for (k in seq_len(ncol(poplinData_left))) {
-            rownames(poplinData_left[[k]])[ii] <- rownames(value)
-          }
         }, error=function(err) {
           stop(
             "failed to replace 'poplinData' in '<", class(x), ">[i,] <- value'\n",
@@ -51,9 +48,6 @@ setReplaceMethod(
       if (missing(i)) {
         tryCatch({
           poplinData_left <- .replace_columns(x, jj, poplinData, value)
-          for (k in seq_len(ncol(poplinData_left))) {
-            colnames(poplinData_left[[k]])[jj] <- colnames(value)
-          }
         }, error=function(err) {
           stop(
             "failed to replace 'poplinData' in '<", class(x), ">[,j] <- value'\n",
@@ -62,10 +56,6 @@ setReplaceMethod(
       } else {
         tryCatch({
           poplinData_left <- .replace_columns(x, jj, poplinData, value, ii)
-          for (k in seq_len(ncol(poplinData_left))) {
-            rownames(poplinData_left[[k]])[ii] <- rownames(value)
-            colnames(poplinData_left[[k]])[jj] <- colnames(value)
-          }
         }, error=function(err) {
           stop(
             "failed to replace 'poplinData' in '<", class(x), ">[,j] <- value'\n",
@@ -76,9 +66,6 @@ setReplaceMethod(
       poplinReduced_right <- poplinReduced(value)
       tryCatch({
         poplinReduced_left[jj, ] <- poplinReduced_right
-        for (k in seq_len(ncol(poplinReduced_left))) {
-          rownames(poplinReduced_left[[k]])[jj] <- colnames(value)
-        }
       }, error=function(err) {
         stop(
           "failed to replace 'poplinReduced' in '<", class(x), ">[,j] <- value'\n",

@@ -1,6 +1,7 @@
-d1 <- matrix(1, nrow = ncol(faahko_poplin), 2)
+nm <- prod(dim(faahko_poplin))
+d1 <- matrix(rnorm(nm), nrow = ncol(faahko_poplin), 2)
 rownames(d1) <- colnames(faahko_poplin)
-d2 <- matrix(2, nrow = ncol(faahko_poplin), 2)
+d2 <- matrix(rnorm(nm), nrow = ncol(faahko_poplin), 2)
 rownames(d2) <- colnames(faahko_poplin)
 
 test_that("poplinReducedData setters/getters work with character 'type'.", {

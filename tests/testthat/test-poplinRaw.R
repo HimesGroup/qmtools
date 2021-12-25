@@ -5,10 +5,11 @@ test_that("poplin_raw is the alias of assay.", {
   expect_equal(poplin_raw(d, "raw_filled"), assay(d, "raw_filled"))
 })
 
-d1 <- matrix(1, nrow = nrow(faahko_poplin), ncol = ncol(faahko_poplin))
+nm <- prod(dim(faahko_poplin))
+d1 <- matrix(rnorm(nm), nrow = nrow(faahko_poplin), ncol = ncol(faahko_poplin))
 rownames(d1) <- rownames(faahko_poplin)
 colnames(d1) <- colnames(faahko_poplin)
-d2 <- matrix(2, nrow = nrow(faahko_poplin), ncol = ncol(faahko_poplin))
+d2 <- matrix(rnorm(nm), nrow = nrow(faahko_poplin), ncol = ncol(faahko_poplin))
 rownames(d2) <- rownames(faahko_poplin)
 colnames(d2) <- colnames(faahko_poplin)
 

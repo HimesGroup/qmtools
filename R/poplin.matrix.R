@@ -29,7 +29,11 @@ NULL
 
 
 poplin.matrix <- function(x, tag, ...) {
-  class(x) <- c(tag, "poplin.matrix", "matrix")
+  if (missing(tag)) {
+    class(x) <- c("poplin.matrix", "matrix")
+  } else {
+    class(x) <- c(tag, "poplin.matrix", "matrix")
+  }
   mostattributes(x) <- c(attributes(x), list(...))
   x
 }

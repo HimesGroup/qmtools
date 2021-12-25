@@ -3,6 +3,10 @@
   SummarizedExperiment(colData = poplinReduced(x))
 }
 
+.poplin_to_se_rowdata <- function(x) {
+  SummarizedExperiment(rowData = poplinReduced(x))
+}
+
 ##' @importFrom SummarizedExperiment Assays
 .poplin_to_assays <- function(x) {
   Assays(poplin_data_list(x))

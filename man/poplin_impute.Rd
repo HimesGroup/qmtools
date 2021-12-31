@@ -6,29 +6,31 @@
 \alias{poplin_impute,poplin-method}
 \title{Imputation methods}
 \usage{
-\S4method{poplin_impute}{matrix}(x, method = c("knn", "pca", "randomforest", "simple"), ...)
+\S4method{poplin_impute}{matrix}(x, method = c("knn", "randomforest", "pca", "univariate"), ...)
 
 \S4method{poplin_impute}{poplin}(
   x,
-  method = c("knn", "pca", "randomforest", "simple"),
-  poplin_in,
-  poplin_out,
+  method = c("knn", "randomforest", "pca", "univariate"),
+  xin,
+  xout,
   ...
 )
 }
 \arguments{
-\item{x}{A matrix or \linkS4class{poplin} object.}
+\item{x}{a matrix or \linkS4class{poplin} object.}
 
-\item{method}{A imputation method. Default is 'pqn'.}
+\item{method}{the imputation method to be used, defaulting to "knn".}
 
-\item{...}{Arguments passed to a specific imputation method.}
+\item{...}{arguments passed to a specific imputation method.}
 
-\item{poplin_in}{Name of a data matrix to retrieve.}
+\item{xin}{character specifying the name of data to retrieve from \code{x}
+when \code{x} is a poplin object.}
 
-\item{poplin_out}{Name of a data matrix to store.}
+\item{xout}{character specifying the name of data to store in \code{x} when
+\code{x} is a poplin object.}
 }
 \value{
-A matrix or \linkS4class{poplin} object of the same dimension as
+a matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the imputed intensities.
 }
 \description{
@@ -36,18 +38,29 @@ Missing values are frequently found in metabolomics data. The \pkg{poplin}
 package provides a few options to handle them.
 \link{poplin_impute} is a wrapper for the following set of functions:
 \describe{
+\item{\code{\link{impute_randomforest}}:}{
+random forest imputation
+}
 \item{\code{\link{impute_knn}}:}{
 k-nearest neighbor (KNN) imputation
 }
 \item{\code{\link{impute_pca}}:}{
 principal component analysis (PCA) imputation
 }
-\item{\code{\link{impute_randomforest}}:}{
-random forest imputation
+\item{\code{\link{impute_univariate}}:}{
+univariate imputation (e.g., half-minimum, mean, median)
 }
-\item{\code{\link{impute_simple}}:}{
-simple univariate imputation (e.g., half-minimum, mean, median)
 }
+}
+\examples{
+
+if (requireNamespace("VIM", quietly = TRUE)) {
+ ## poplin object
+ poplin_impute(faahko_poplin, method = "knn", xin = "raw", xout = "knn")
+
+ ## matrix
+ m <- poplin_raw(faahko_poplin, "raw")
+ poplin_impute(m, method = "knn")
 }
 }
 \seealso{
@@ -55,6 +68,6 @@ Other imputation methods:
 \code{\link{impute_knn}()},
 \code{\link{impute_pca}()},
 \code{\link{impute_randomforest}()},
-\code{\link{impute_simple}()}
+\code{\link{impute_univariate}()}
 }
 \concept{imputation methods}

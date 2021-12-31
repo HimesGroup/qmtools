@@ -6,39 +6,47 @@
 \alias{impute_pca,poplin-method}
 \title{Principal component analysis (PCA) imputation}
 \usage{
-\S4method{impute_pca}{matrix}(x, type = c("bpca", "ppca", "nipals", "svdImpute"), ...)
+\S4method{impute_pca}{matrix}(x, type = c("nipals", "bpca", "ppca", "svdImpute"), ...)
 
-\S4method{impute_pca}{poplin}(
-  x,
-  poplin_in,
-  poplin_out,
-  type = c("bpca", "ppca", "nipals", "svdImpute"),
-  ...
-)
+\S4method{impute_pca}{poplin}(x, xin, xout, type = c("nipals", "bpca", "ppca", "svdImpute"), ...)
 }
 \arguments{
-\item{x}{A matrix or \linkS4class{poplin} object.}
+\item{x}{a matrix or \linkS4class{poplin} object.}
 
-\item{type}{A method for performing PCA.}
+\item{type}{the method to perform PCA.}
 
-\item{...}{Additional arguments passed to \link[pcaMethods:pca]{pcaMethods::pca}.}
+\item{...}{additional arguments passed to \link[pcaMethods]{pca}.}
 
-\item{poplin_in}{Name of a data matrix to retrieve.}
+\item{xin}{character specifying the name of data to retrieve from \code{x}
+when \code{x} is a poplin object.}
 
-\item{poplin_out}{Name of a data matrix to store.}
+\item{xout}{character specifying the name of data to store in \code{x} when
+\code{x} is a poplin object.}
 }
 \value{
-A matrix or \linkS4class{poplin} object of the same dimension as
+a matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the imputed intensities.
 }
 \description{
 Apply PCA imputation to a matrix or \linkS4class{poplin} object. This is a
-interface to the \link[pcaMethods:pca]{pcaMethods::pca} from the \pkg{pcaMethods} package. Here,
-features are interpreted as variables and samples as observations.
-Pre-processing of input (centering, scaling) may be necessary. See the
-documentation of \link[pcaMethods:pca]{pcaMethods::pca} and \link[pcaMethods:prep]{pcaMethods::prep}. Note that the PCA
+interface to the \link[pcaMethods]{pca} function from the \pkg{pcaMethods}
+package. Here, features are interpreted as variables and samples as
+observations. Pre-processing of input (centering, scaling) may be necessary.
+See the documentation of \link[pcaMethods]{pca}. Note that the PCA
 imputation could yield negative feature values that need to be
 post-processed.
+}
+\examples{
+
+if (requireNamespace("pcaMethods", quietly = TRUE)) {
+  ## poplin object
+  impute_pca(faahko_poplin, xin = "raw", xout = "ppca", type = "ppca",
+             center = TRUE, scale = "uv")
+
+  ## matrix
+  m <- poplin_raw(faahko_poplin, "raw")
+  impute_pca(m, type = "ppca", center = TRUE, scale = "uv")
+}
 }
 \references{
 Stacklies, W., Redestig, H., Scholz, M., Walther, D. and Selbig, J.
@@ -49,7 +57,7 @@ data. Bioinformatics, 2007, 23, 1164-1167
 Other imputation methods: 
 \code{\link{impute_knn}()},
 \code{\link{impute_randomforest}()},
-\code{\link{impute_simple}()},
+\code{\link{impute_univariate}()},
 \code{\link{poplin_impute}()}
 }
 \concept{imputation methods}

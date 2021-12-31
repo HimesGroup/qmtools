@@ -10,22 +10,24 @@
 
 \S4method{normalize_scale}{poplin}(
   x,
-  poplin_in,
-  poplin_out,
+  xin,
+  xout,
   type = c("auto", "range", "pareto", "vast", "level")
 )
 }
 \arguments{
-\item{x}{A matrix or \linkS4class{poplin} object.}
+\item{x}{a matrix or \linkS4class{poplin} object.}
 
-\item{type}{A scaling method to be applied.}
+\item{type}{the scaling method to be applied.}
 
-\item{poplin_in}{Name of a data matrix to retrieve.}
+\item{xin}{character specifying the name of data to retrieve from \code{x}
+when \code{x} is a poplin object.}
 
-\item{poplin_out}{Name of a data matrix to store.}
+\item{xout}{character specifying the name of data to store in \code{x} when
+\code{x} is a poplin object.}
 }
 \value{
-A matrix or \linkS4class{poplin} object of the same dimension as
+a matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the normalized intensities.
 }
 \description{
@@ -44,6 +46,15 @@ variation as a scaling factor.
 }
 Note that each feature is mean-centered prior to division. See van den Berg
 et al. (2006) for details.
+}
+\examples{
+
+## poplin object
+normalize_scale(faahko_poplin, xin = "knn", xout = "knn_auto", type = "auto")
+
+## matrix
+m <- poplin_data(faahko_poplin, "knn")
+normalize_scale(m, "pareto")
 }
 \references{
 van den Berg RA, Hoefsloot HC, Westerhuis JA, Smilde AK, van der Werf MJ.

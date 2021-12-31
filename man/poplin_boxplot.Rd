@@ -17,7 +17,7 @@
 
 \method{poplin_boxplot}{poplin}(
   x,
-  poplin_in,
+  xin,
   group,
   pre_log2 = FALSE,
   violin = FALSE,
@@ -26,24 +26,38 @@
 )
 }
 \arguments{
-\item{x}{A matrix or \linkS4class{poplin} object.}
+\item{x}{a matrix or \linkS4class{poplin} object.}
 
-\item{group}{A discrete variable to visualize the grouping structure.}
+\item{group}{a discrete variable to visualize the grouping structure.}
 
-\item{pre_log2}{If \code{TRUE}, feature intensities are log2-transformed
-before plotting.}
+\item{pre_log2}{logical controlling whether feature intensities are
+log2-transformed before visualization.}
 
-\item{violin}{If \code{TRUE}, a violin plot is drawn instead of the boxplot.}
+\item{violin}{logical controlling whether a violin plot is drawn instead of
+the boxplot.}
 
-\item{ylab}{The title of y-axis of the plot.}
+\item{ylab}{the title of y-axis of the plot.}
 
-\item{...}{Reserved for future use.}
+\item{...}{reserved for future use.}
 
-\item{poplin_in}{Name of a data matrix to retrieve.}
+\item{xin}{character specifying the name of data to retrieve from \code{x}
+when \code{x} is a poplin object}
 }
 \value{
-A ggplot object.
+a ggplot object.
 }
 \description{
 Produce a box-and-whisker plot of the feature intensity values.
+}
+\examples{
+
+## sample group variable
+group <- colData(faahko_poplin)$sample_group
+
+## poplin object
+poplin_boxplot(faahko_poplin, xin = "knn_cyclic", group = group)
+
+## matrix
+m <- poplin_data(faahko_poplin, "knn_cyclic")
+poplin_boxplot(m, group = group)
 }

@@ -8,43 +8,53 @@
 \usage{
 \S4method{reduce_plsda}{matrix}(x, y, ncomp = 2, center = TRUE, scale = FALSE, ...)
 
-\S4method{reduce_plsda}{poplin}(
-  x,
-  poplin_in,
-  poplin_out,
-  y,
-  ncomp = 2,
-  center = TRUE,
-  scale = FALSE,
-  ...
-)
+\S4method{reduce_plsda}{poplin}(x, xin, xout, y, ncomp = 2, center = TRUE, scale = FALSE, ...)
 }
 \arguments{
-\item{x}{A matrix or \linkS4class{poplin} object.}
+\item{x}{a matrix or \linkS4class{poplin} object.}
 
-\item{y}{A factor vector for discrete outcome.}
+\item{y}{a factor vector for discrete outcome.}
 
-\item{ncomp}{Output dimensionality.}
+\item{ncomp}{output dimensionality.}
 
-\item{center}{A logical indicating mean-centering prior to PLS-DA.}
+\item{center}{logical indicating mean-centering prior to PLS-DA.}
 
-\item{scale}{A logical indicating unit variance scaling prior to PLS-DA.}
+\item{scale}{logical indicating unit variance scaling prior to PLS-DA.}
 
-\item{...}{Additional arguments passed to \link[pls:mvr]{pls::plsr}.}
+\item{...}{additional arguments passed to \link[pls]{plsr}.}
 
-\item{poplin_in}{Name of a data matrix to retrieve.}
+\item{xin}{character specifying the name of data to retrieve from \code{x}
+when \code{x} is a poplin object.}
 
-\item{poplin_out}{Name of a data matrix to store.}
+\item{xout}{character specifying the name of data to store in \code{x} when
+\code{x} is a poplin object.}
 }
 \value{
-A poplin.plsda matrix or \linkS4class{poplin} object with the same
-number of rows as \code{ncol(x)} containing the dimension reduction
-result.
+a poplin.plsda or \linkS4class{poplin} object with the same number of
+rows as \code{ncol(x)} containing the dimension reduction result.
+poplin.plsda is a matrix containing custom attributes used to summarize and
+visualize the PLS-DA result.
 }
 \description{
 Apply PLS-DA to a matrix or \linkS4class{poplin} object. It performs
-standard PLS for classification using \link[pls:mvr]{pls::plsr}. If the \pkg{pls} is not
-installed, this function will stop with a note about install the package.
+standard PLS for classification using the \link[pls]{plsr} function from the
+\pkg{pls} package.
+}
+\examples{
+
+if (requireNamespace("pls", quietly = TRUE)) {
+  ## response vector
+  y <- factor(colData(faahko_poplin)$sample_group, levels = c("WT", "KO"))
+
+  ## poplin object
+  out <- reduce_plsda(faahko_poplin, xin = "knn_cyclic", xout = "plsda", y = y)
+  summary(poplin_reduced(out, "plsda"))
+
+  ## matrix
+  m <- poplin_data(faahko_poplin, "knn_cyclic")
+  out <- reduce_plsda(m, y = y, ncomp = 3)
+  summary(out)
+}
 }
 \references{
 Kristian Hovde Liland, Bjørn-Helge Mevik and Ron Wehrens (2021). pls:

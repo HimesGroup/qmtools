@@ -16,8 +16,8 @@
 
 \S4method{normalize_cyclicloess}{poplin}(
   x,
-  poplin_in,
-  poplin_out,
+  xin,
+  xout,
   pre_log2 = TRUE,
   type = c("fast", "affy", "pairs"),
   span = 0.7,
@@ -25,24 +25,26 @@
 )
 }
 \arguments{
-\item{x}{A matrix or \linkS4class{poplin} object.}
+\item{x}{a matrix or \linkS4class{poplin} object.}
 
-\item{pre_log2}{If \code{TRUE}, feature intensities are log2-transformed
-before normalization.}
+\item{pre_log2}{logical controlling whether feature intensities are
+log2-transformed before normalization.}
 
-\item{type}{Character string specifying which variant of the cyclic LOESS
+\item{type}{character specifying which variant of the cyclic LOESS
 method to use.}
 
-\item{span}{Span of LOESS smoothing window, between 0 and 1.}
+\item{span}{span of LOESS smoothing window, between 0 and 1.}
 
-\item{iterations}{Number of times to cycle through all pairs of columns.}
+\item{iterations}{number of times to cycle through all pairs of columns.}
 
-\item{poplin_in}{Name of a data matrix to retrieve.}
+\item{xin}{character specifying the name of data to retrieve from \code{x}
+when \code{x} is a poplin object.}
 
-\item{poplin_out}{Name of a data matrix to store.}
+\item{xout}{character specifying the name of data to store in \code{x} when
+\code{x} is a poplin object.}
 }
 \value{
-A matrix or \linkS4class{poplin} object of the same dimension as
+a matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the normalized intensities.
 }
 \description{
@@ -51,6 +53,17 @@ This is an interface to the \link[limma:normalizeCyclicLoess]{limma::normalizeCy
 \pkg{limma} package. The input \code{x} is expected to contain
 log-transformed raw intensities. See Bolstad et al. (2003) and Ballman et
 al. (2004) for details.
+}
+\examples{
+
+if (requireNamespace("limma", quietly = TRUE)) {
+  ## poplin object
+  normalize_cyclicloess(faahko_poplin, xin = "knn", xout = "knn_cyclic",
+                       pre_log2 = TRUE)
+  ## matrix
+  m <- poplin_data(faahko_poplin, "knn")
+  normalize_cyclicloess(m, pre_log2 = TRUE)
+}
 }
 \references{
 Ritchie ME, Phipson B, Wu D, Hu Y, Law CW, Shi W, Smyth GK. limma powers

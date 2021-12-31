@@ -1,4 +1,4 @@
-pp <- faahko_poplin
+pp <- empty
 nm <- prod(dim(pp))
 poplin_data(pp, "d1") <- matrix(rnorm(nm), nrow = nrow(pp), ncol = ncol(pp))
 poplin_data(pp, "d2") <- matrix(rnorm(nm), nrow = nrow(pp), ncol = ncol(pp))

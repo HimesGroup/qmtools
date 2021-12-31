@@ -8,28 +8,41 @@
 \usage{
 \S4method{impute_knn}{matrix}(x, by = c("feature", "sample"), ...)
 
-\S4method{impute_knn}{poplin}(x, poplin_in, poplin_out, by = c("feature", "sample"), ...)
+\S4method{impute_knn}{poplin}(x, xin, xout, by = c("feature", "sample"), ...)
 }
 \arguments{
-\item{x}{A matrix or \linkS4class{poplin} object.}
+\item{x}{a matrix or \linkS4class{poplin} object.}
 
-\item{by}{Imputation by k-nearest features or by k-nearest samples.}
+\item{by}{character controlling whether the imputation is performed by
+k-nearest features or by k-nearest samples. Either "feature" or "sample".}
 
-\item{...}{Additional arguments passed to \link[VIM:kNN]{VIM::kNN}.}
+\item{...}{additional arguments passed to \link[VIM]{kNN}.}
 
-\item{poplin_in}{Name of a data matrix to retrieve.}
+\item{xin}{character specifying the name of data to retrieve from \code{x}
+when \code{x} is a poplin object.}
 
-\item{poplin_out}{Name of a data matrix to store.}
+\item{xout}{character specifying the name of data to store in \code{x} when
+\code{x} is a poplin object.}
 }
 \value{
-A matrix or \linkS4class{poplin} object of the same dimension as
+a matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the imputed intensities.
 }
 \description{
 Apply k-nearest neighbor (KNN) imputation to a matrix or
-\linkS4class{poplin} object. This is an interface to the \link[VIM:kNN]{VIM::kNN} from the
-\pkg{VIM} package. Since it is based on Gower's distance, standardization of
-input data prior to KNN imputation would not affect the result.
+\linkS4class{poplin} object. This is an interface to the \link[VIM]{kNN}
+function from the \pkg{VIM} package. Since it is based on Gower's distance,
+Standardization of input data before imputation would not affect the result.
+}
+\examples{
+if (requireNamespace("VIM", quietly = TRUE)) {
+  ## poplin object
+  impute_knn(faahko_poplin, xin = "raw", xout = "knn")
+
+  ## matrix
+  m <- poplin_raw(faahko_poplin, "raw")
+  impute_knn(m)
+}
 }
 \references{
 Alexander Kowarik, Matthias Templ (2016). Imputation with the R Package VIM.
@@ -42,7 +55,7 @@ Properties. Biometrics, 27(4), 857–871. https://doi.org/10.2307/2528823
 Other imputation methods: 
 \code{\link{impute_pca}()},
 \code{\link{impute_randomforest}()},
-\code{\link{impute_simple}()},
+\code{\link{impute_univariate}()},
 \code{\link{poplin_impute}()}
 }
 \concept{imputation methods}

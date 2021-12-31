@@ -8,23 +8,25 @@
 \usage{
 \S4method{normalize_vsn}{matrix}(x, meanSdPlot = FALSE, ...)
 
-\S4method{normalize_vsn}{poplin}(x, poplin_in, poplin_out, meanSdPlot = FALSE, ...)
+\S4method{normalize_vsn}{poplin}(x, xin, xout, meanSdPlot = FALSE, ...)
 }
 \arguments{
-\item{x}{A matrix or \linkS4class{poplin} object.}
+\item{x}{a matrix or \linkS4class{poplin} object.}
 
-\item{meanSdPlot}{If \code{TRUE}, the function shows \link[vsn:meanSdPlot]{vsn::meanSdPlot} to
-visually verify whether there is a dependence of the standard deviation on
-the mean.}
+\item{meanSdPlot}{Logical controlling whether the function displays
+\link[vsn]{meanSdPlot} from the \pkg{vsn} package to visually check a
+dependence of the standard deviation on the mean.}
 
-\item{...}{Additional arguments passed to \link[vsn:vsn2]{vsn::vsnMatrix}.}
+\item{...}{additional arguments passed to \link[vsn:vsn2]{vsn::vsnMatrix}.}
 
-\item{poplin_in}{Name of a data matrix to retrieve.}
+\item{xin}{character specifying the name of data to retrieve from \code{x}
+when \code{x} is a poplin object.}
 
-\item{poplin_out}{Name of a data matrix to store.}
+\item{xout}{character specifying the name of data to store in \code{x} when
+\code{x} is a poplin object.}
 }
 \value{
-A matrix or \linkS4class{poplin} object of the same dimension as
+a matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the normalized intensities.
 }
 \description{

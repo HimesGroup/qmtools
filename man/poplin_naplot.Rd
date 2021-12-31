@@ -22,7 +22,7 @@
 
 \method{poplin_naplot}{poplin}(
   x,
-  poplin_in,
+  xin,
   widths = NULL,
   heights = NULL,
   colors = viridis::viridis(2),
@@ -36,32 +36,33 @@
 )
 }
 \arguments{
-\item{x}{A matrix or \linkS4class{poplin} object.}
+\item{x}{a matrix or \linkS4class{poplin} object.}
 
-\item{widths}{Relative widths of heatmap and dendrogram.}
+\item{widths}{relative widths of heatmap and dendrogram.}
 
-\item{heights}{Relative heights of heatmap and dendrogram.}
+\item{heights}{relative heights of heatmap and dendrogram.}
 
-\item{colors}{A vector of colors for heatmap.}
+\item{colors}{a vector of colors for heatmap.}
 
-\item{label}{Logical controlling whether cell values are shown.}
+\item{label}{logical controlling whether cell values are shown.}
 
-\item{digits}{The desired number of digits when \code{label = TRUE}.}
+\item{digits}{the desired number of digits when \code{label = TRUE}.}
 
-\item{grid_gap}{Gap between cells.}
+\item{grid_gap}{numeric specifying the gap between cells.}
 
-\item{hide_colorbar}{Logical controlling whether the color bar (legend) is
+\item{hide_colorbar}{logical controlling whether the color bar (legend) is
 hidden.}
 
-\item{showticklabels}{A logical vector of length 2 (x-axis, y-axis). If
+\item{showticklabels}{a logical vector of length 2 (x-axis, y-axis). If
 \code{FALSE}, the ticks are removed from the sides of the plot.}
 
-\item{row_dend_left}{Logical controlling whether the row dendrogram is
+\item{row_dend_left}{logical controlling whether the row dendrogram is
 placed on the left on the plot.}
 
-\item{...}{Additional arguments passed to \link[heatmaply:heatmaply]{heatmaply::heatmaply}.}
+\item{...}{additional arguments passed to \link[heatmaply:heatmaply]{heatmaply::heatmaply}.}
 
-\item{poplin_in}{Name of a data matrix to retrieve.}
+\item{xin}{character specifying the name of data to retrieve from \code{x}
+when \code{x} is a poplin object.}
 }
 \value{
 gtable of aligned plots
@@ -70,4 +71,13 @@ gtable of aligned plots
 Visualize data for exploring missing value (NA) patterns. All values in a
 data matrix are recoded (1: missing; 0: non-missing) and visualized by
 rectangles.
+}
+\examples{
+
+## poplin object
+poplin_naplot(faahko_poplin, xin = "raw")
+
+## matrix
+m <- poplin_raw(faahko_poplin, "raw")
+poplin_naplot(m)
 }

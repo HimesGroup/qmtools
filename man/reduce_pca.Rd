@@ -8,43 +8,49 @@
 \usage{
 \S4method{reduce_pca}{matrix}(x, ncomp = 2, center = TRUE, scale = FALSE, ...)
 
-\S4method{reduce_pca}{poplin}(
-  x,
-  poplin_in,
-  poplin_out,
-  ncomp = 2,
-  center = TRUE,
-  scale = FALSE,
-  ...
-)
+\S4method{reduce_pca}{poplin}(x, xin, xout, ncomp = 2, center = TRUE, scale = FALSE, ...)
 }
 \arguments{
-\item{x}{A matrix or \linkS4class{poplin} object.}
+\item{x}{a matrix or \linkS4class{poplin} object.}
 
-\item{ncomp}{Output dimensionality.}
+\item{ncomp}{output dimensionality.}
 
-\item{center}{A logical indicating mean-centering prior to PCA.}
+\item{center}{logical indicating mean-centering prior to PCA.}
 
-\item{scale}{A logical indicating unit variance scaling prior to PCA.}
+\item{scale}{logical indicating unit variance scaling prior to PCA.}
 
-\item{...}{Additional arguments passed to \link[pcaMethods:nipalsPca]{pcaMethods::nipalsPca}.}
+\item{...}{additional arguments passed to \link[pcaMethods]{nipalsPca}.}
 
-\item{poplin_in}{Name of a data matrix to retrieve.}
+\item{xin}{character specifying the name of data to retrieve from \code{x}
+when \code{x} is a poplin object.}
 
-\item{poplin_out}{Name of a data matrix to store.}
+\item{xout}{character specifying the name of data to store in \code{x} when
+\code{x} is a poplin object.}
 }
 \value{
-A poplin.pca matrix or \linkS4class{poplin} object with the same
-number of rows as \code{ncol(x)} containing the dimension reduction
-result.
+a poplin.pca or \linkS4class{poplin} object with the same number of
+rows as \code{ncol(x)} containing the dimension reduction result.
+poplin.pca is a matrix containing custom attributes used to summarize and
+visualize the PCA result.
 }
 \description{
 Apply PCA to a matrix or \linkS4class{poplin} object. For the data without
 missing values, PCA is performed via singular value decomposition.
 Otherwise, PCA is performed using the non-linear iterative partial least
-squares (NIPALS) algorithm via \link[pcaMethods:nipalsPca]{pcaMethods::nipalsPca} from the
-\pkg{pcaMethods} package. NIPALS PCA can handle a small amount of missing
-values.
+squares (NIPALS) algorithm via the \link[pcaMethods]{nipalsPca} function
+from the \pkg{pcaMethods} package. NIPALS PCA can handle a small amount of
+missing values.
+}
+\examples{
+
+## poplin object
+out <- reduce_pca(faahko_poplin, xin = "knn_cyclic", xout = "pca")
+summary(poplin_reduced(out, "pca"))
+
+## matrix
+m <- poplin_data(faahko_poplin, "knn_cyclic")
+out <- reduce_pca(m, ncomp = 3)
+summary(out)
 }
 \references{
 Wold, H. (1966). Estimation of principal components and related models by

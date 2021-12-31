@@ -8,33 +8,33 @@
 \usage{
 \S4method{poplin_normalize}{matrix}(
   x,
-  method = c("pqn", "sum", "mean", "median", "mad", "euclidean", "cyclicloess", "vsn",
-    "scale"),
+  method = c("pqn", "sum", "mean", "median", "mad", "cyclicloess", "vsn", "scale"),
   ...
 )
 
 \S4method{poplin_normalize}{poplin}(
   x,
-  method = c("pqn", "sum", "mean", "median", "mad", "euclidean", "cyclicloess", "vsn",
-    "scale"),
-  poplin_in,
-  poplin_out,
+  method = c("pqn", "sum", "mean", "median", "mad", "cyclicloess", "vsn", "scale"),
+  xin,
+  xout,
   ...
 )
 }
 \arguments{
-\item{x}{A matrix or \linkS4class{poplin} object.}
+\item{x}{a matrix or \linkS4class{poplin} object.}
 
-\item{method}{A normalization method. Default is 'pqn'.}
+\item{method}{the normalization method to be used, defaulting to "pqn".}
 
-\item{...}{Argument passed to a specific normalization method.}
+\item{...}{arguments passed to a specific normalization method.}
 
-\item{poplin_in}{Name of a data matrix to retrieve.}
+\item{xin}{character specifying the name of data to retrieve from \code{x}
+when \code{x} is a poplin object.}
 
-\item{poplin_out}{Name of a data matrix to store.}
+\item{xout}{character specifying the name of data to store in \code{x} when
+\code{x} is a poplin object.}
 }
 \value{
-A matrix or \linkS4class{poplin} object of the same dimension as
+a matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the normalized intensities.
 }
 \description{
@@ -42,8 +42,11 @@ Data normalization aims to reduce unwanted variations. The \pkg{poplin}
 package provides a few data-driven normalization methods.
 \link{poplin_normalize} is a wrapper for the following set of functions:
 \describe{
+\item{\code{\link{normalize_pqn}}:}{
+PQN (probabilistic quotient normalization)
+}
 \item{\code{\link{normalize_sum}}:}{
-sum normalization (TIC normalization)
+sum normalization
 }
 \item{\code{\link{normalize_mean}}:}{
 mean normalization
@@ -57,9 +60,6 @@ MAD (median absolute deviation) normalization
 \item{\code{\link{normalize_cyclicloess}}:}{
 cyclic LOESS normalization
 }
-\item{\code{\link{normalize_pqn}}:}{
-PQN (probabilistic quotient normalization)
-}
 \item{\code{\link{normalize_vsn}}:}{
 VSN (variance stabilizing normalization)
 }
@@ -67,6 +67,15 @@ VSN (variance stabilizing normalization)
 feature-based scaling (e.g., auto, range, pareto, vast, level)
 }
 }
+}
+\examples{
+
+## poplin object
+poplin_normalize(faahko_poplin, method = "pqn", xin = "knn", xout = "knn_pqn")
+
+## matrix
+m <- poplin_data(faahko_poplin, "knn")
+poplin_normalize(m)
 }
 \seealso{
 Other normalization methods: 

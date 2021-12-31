@@ -153,7 +153,7 @@ setGeneric(
 ##'@export
 setGeneric(
   "poplin_normalize",
-  function(x, method, ...) standardGeneric("poplin_normalize")
+  function(x, ...) standardGeneric("poplin_normalize")
 )
 
 ##' @export
@@ -212,7 +212,7 @@ setGeneric(
 ##' @export
 setGeneric(
   "poplin_impute",
-  function(x, method, ...) standardGeneric("poplin_impute")
+  function(x, ...) standardGeneric("poplin_impute")
 )
 
 ##' @export
@@ -223,8 +223,8 @@ setGeneric(
 
 ##' @export
 setGeneric(
-  "impute_simple",
-  function(x, ...) standardGeneric("impute_simple")
+  "impute_univariate",
+  function(x, ...) standardGeneric("impute_univariate")
 )
 
 ##' @export
@@ -246,7 +246,7 @@ setGeneric(
 ##' @export
 setGeneric(
   "poplin_reduce",
-  function(x, method, ...) standardGeneric("poplin_reduce")
+  function(x, ...) standardGeneric("poplin_reduce")
 )
 
 ##' @export

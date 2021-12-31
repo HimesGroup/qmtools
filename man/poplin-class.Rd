@@ -7,31 +7,39 @@
 \title{The poplin class}
 \usage{
 ## Constructor
-poplin(intensity, ...)
+poplin(..., poplin_data_list = list(), poplin_reduced_list = list())
 }
 \arguments{
-\item{intensity}{Peak intensity matrix where rows represent features and
-columns represent samples.}
+\item{...}{arguments passed to the \link{SummarizedExperiment} constructor.}
 
-\item{...}{Arguments passed to the \link{SummarizedExperiment} constructor.}
+\item{poplin_data_list}{a list of matrix-like objects containing data
+processing results.}
+
+\item{poplin_reduced_list}{a list of matrix-like objects containing dimension
+reduction results.}
 }
 \value{
-A poplin object
+a poplin object
 }
 \description{
 The poplin class is designed to process LC/MS data. It is an extension of
 the standard SummarizedExperiment class, and supports additional containers
 for data processing results (e.g., normalization, imputation) via
-\link{poplin_data} and dimension reduction results (PCA, PLS-DA) via
-\link{poplin_reduced}. A poplin object also can be created by coercing from a
-\linkS4class{SummarizedExperiment} object.
+\link{poplin_data_list} and dimension reduction results (PCA, PLS-DA) via
+\link{poplin_reduced_list}.
 }
 \examples{
-nsamp <- 20
-nfeature <- 1000
-m <- matrix(sample(1:1000000, size = 200000), nrow = nsamp, ncol = nfeature)
-poplin(m)
+nsamp <- 10
+nfeature <- 200
+intensity <- rlnorm(nsamp * nfeature, 10, 1)
+m <- matrix(intensity, nrow = nfeature, ncol = nsamp)
+rownames(m) <- paste0("F", 1:nrow(m))
+colnames(m) <- paste0("S", 1:ncol(m))
+poplin(assays = list(raw = m))
+
 ## Coercion from an SummarizedExperiment object
+se <- SummarizedExperiment(assays = list(raw = m))
+as(se, "poplin")
 
 }
 \author{

@@ -1,8 +1,9 @@
 test_that("poplin_raw is the alias of assay.", {
-  expect_equal(poplin_raw_names(d), assayNames(d))
-  expect_equal(poplin_raw_list(d), assays(d))
-  expect_equal(poplin_raw(d, "raw"), assay(d, "raw"))
-  expect_equal(poplin_raw(d, "raw_filled"), assay(d, "raw_filled"))
+  pp <- empty
+  expect_equal(poplin_raw_names(pp), assayNames(pp))
+  expect_equal(poplin_raw_list(pp), assays(pp))
+  expect_equal(poplin_raw(pp, "raw"), assay(pp, "raw"))
+  expect_equal(poplin_raw(pp, "raw_filled"), assay(pp, "raw_filled"))
 })
 
 nm <- prod(dim(faahko_poplin))
@@ -14,7 +15,7 @@ rownames(d2) <- rownames(faahko_poplin)
 colnames(d2) <- colnames(faahko_poplin)
 
 test_that("poplinRaw setters/getters work with character 'type'.", {
-  pp <- faahko_poplin
+  pp <- empty 
   poplin_raw_list(pp) <- SimpleList()
   poplin_raw(pp, "d1") <- d1
   expect_identical(poplin_raw(pp, "d1"), d1)
@@ -47,7 +48,7 @@ test_that("poplinRaw setters/getters work with character 'type'.", {
 })
 
 test_that("poplinRaw setters/getters work with numeric 'type'.", {
-  pp <- faahko_poplin
+  pp <- empty 
   poplin_raw_list(pp) <- SimpleList()
   expect_error(poplin_raw(pp), "invalid subscript")
   expect_error(poplin_raw(pp, 2), "invalid subscript")
@@ -87,7 +88,7 @@ test_that("poplinRaw setters/getters work with numeric 'type'.", {
 })
 
 test_that("poplinRaw setters/getters work with List'.", {
-  pp <- faahko_poplin
+  pp <- empty 
   poplin_raw_list(pp) <- SimpleList()
   poplin_raw_list(pp) <- list(d1 = d1, d2 = d2)
   expect_identical(poplin_raw_names(pp), c("d1", "d2"))
@@ -115,7 +116,7 @@ test_that("poplinRaw setters/getters work with List'.", {
 })
 
 test_that("poplinRaw setters/getters respond to dimnames.", {
-  pp <- faahko_poplin
+  pp <- empty 
   poplin_raw_list(pp) <- SimpleList()
   expect_warning(poplin_raw(pp, "d1") <- d1, NA) # no warning
   expect_warning(poplin_raw(pp, "d2") <- d2, NA) # no warning
@@ -139,7 +140,7 @@ test_that("poplinRaw setters/getters respond to dimnames.", {
 })
 
 test_that("poplinRaw setters/getters preserve mcols and metadata.", {
-  pp <- faahko_poplin
+  pp <- empty
   poplin_raw_list(pp) <- SimpleList()
   stuff <- List(d1=d1, d2=d2)
   mcols(stuff)$A <- c("one", "two")
@@ -153,14 +154,14 @@ test_that("poplinRaw setters/getters preserve mcols and metadata.", {
 
 
 test_that("poplin_raw setter assigns 'raw1' for an unnamed object.", {
-  pp <- faahko_poplin
+  pp <- empty
   poplin_raw_list(pp) <- SimpleList()
   poplin_raw(pp) <- d1
   expect_identical(poplin_raw_names(pp), "raw1")
 })
 
 test_that("poplin_raw setter assigns dimnames(x) when dimnames(value) =  NULL.", {
-  pp <- faahko_poplin
+  pp <- empty
   poplin_raw_list(pp) <- SimpleList()
   d1_null <- d1
   rownames(d1_null) <- NULL
@@ -178,7 +179,7 @@ test_that("poplin_raw setter assigns dimnames(x) when dimnames(value) =  NULL.",
 })
 
 test_that("poplin_raw_names setter/getters work correctly.", {
-  pp <- faahko_poplin
+  pp <- empty
   poplin_raw_list(pp) <- SimpleList()
   expect_warning(poplin_raw_list(pp) <- list(d1, d2), "NULL")
   expect_identical(poplin_raw_names(pp), c("raw1", "raw2"))

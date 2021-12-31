@@ -8,31 +8,40 @@
 \usage{
 \S4method{normalize_mad}{matrix}(x, restrict = FALSE, rescale = FALSE)
 
-\S4method{normalize_mad}{poplin}(x, poplin_in, poplin_out, restrict = FALSE, rescale = FALSE)
+\S4method{normalize_mad}{poplin}(x, xin, xout, restrict = FALSE, rescale = FALSE)
 }
 \arguments{
-\item{x}{A matrix or \linkS4class{poplin} object.}
+\item{x}{a matrix or \linkS4class{poplin} object.}
 
-\item{restrict}{If \code{TRUE}, any feature with missing values is excluded
-from the calculation of normalization factors.}
+\item{restrict}{logical controlling whether any feature with missing values
+is excluded from the calculation of normalization factors.}
 
-\item{rescale}{If \code{TRUE}, normalized intensities are multiplied by the
-median of normalization factors to make look similar to their original
-scales.}
+\item{rescale}{logical controlling whether the normalized intensities are
+multiplied by the median of normalization factors to make look similar to
+their original scales.}
 
-\item{poplin_in}{Name of a data matrix to retrieve.}
+\item{xin}{character specifying the name of data to retrieve from \code{x}
+when \code{x} is a poplin object.}
 
-\item{poplin_out}{Name of a data matrix to store.}
+\item{xout}{character specifying the name of data to store in \code{x} when
+\code{x} is a poplin object.}
 }
 \value{
-A matrix or \linkS4class{poplin} object of the same dimension as
+a matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the normalized intensities.
 }
 \description{
 Apply median absolute deviation (MAD) normalization to a matrix or
-\linkS4class{poplin} object. For each sample, feature intensities are scaled
-by its MAD. The MAD of intensity values for individual samples will be one
-as a result.
+\linkS4class{poplin} object. For each sample, feature intensities are
+divided by its MAD.
+}
+\examples{
+## poplin object
+normalize_mad(faahko_poplin, xin = "knn", xout = "knn_mad")
+
+## matrix
+m <- poplin_data(faahko_poplin, "knn")
+normalize_mad(m, rescale = TRUE)
 }
 \seealso{
 Other normalization methods: 

@@ -30,19 +30,18 @@ In the code snippets below, \code{x} is a \linkS4class{poplin} object.
 
 \item{\code{poplin_raw_names(x), poplin_raw_names(x) <- value}:}{ Get or set
 the names of raw intensity data sets. \code{value} must be a character
-vector to be assigned. This is an alias of
-\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::assayNames}. }
+vector to be assigned. This is an alias of \code{assayNames(x)}. }
 
 \item{\code{poplin_raw_list(x), poplin_raw_list(x) <- value}:}{ Get or set
 the raw intensity data sets. \code{value} must be a named \linkS4class{List}
 of matrices in which each element has the same dimension as \code{x}. This
-is an alias of \link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::assays}. }
+is an alias of \code{assays(x)}. }
 
 \item{\code{poplin_raw(x, i), poplin_raw(x, i) <- value}:}{ Get or set the
 \code{i}-th element of raw intensity data sets. It is a convenient
 alternative to \code{poplin_raw_list(x)[[i]]}. \code{value} must be a matrix
 with the same dimension as \code{x}. If \code{i} is missing, the first entry
-is retrieved or replaced. This is an alias of \link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::assay}.
+is retrieved or replaced. This is an alias of \code{assay(x, i)}.
 }
 
 }

@@ -36,15 +36,15 @@
   )
 }
 
-.poplin_extract_and_assign <- function(x, fun, poplin_in, poplin_out, ...) {
-  m <- .verify_and_extract_input(x, poplin_in)
-  poplin_data(x, poplin_out) <- fun(m, ...)
+.poplin_extract_and_assign <- function(x, fun, xin, xout, ...) {
+  m <- .verify_and_extract_input(x, xin)
+  poplin_data(x, xout) <- fun(m, ...)
   x
 }
 
-.reduced_extract_and_assign <- function(x, fun, poplin_in, poplin_out, ...) {
-  m <- .verify_and_extract_input(x, poplin_in)
-  poplin_reduced(x, poplin_out) <- fun(m, ...)
+.reduced_extract_and_assign <- function(x, fun, xin, xout, ...) {
+  m <- .verify_and_extract_input(x, xin)
+  poplin_reduced(x, xout) <- fun(m, ...)
   x
 }
 

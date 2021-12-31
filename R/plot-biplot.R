@@ -3,46 +3,59 @@
 ##' Visualize an overlay of a score plot and a loading plot using the
 ##' [poplin_reduce] output.
 ##'
-##' @param x A dimension-reduced data matrix produced by [poplin_reduce] or
+##' @param x a dimension-reduced data matrix produced by [poplin_reduce] or
 ##'   \linkS4class{poplin} object containing dimension-reduced data.
-##' @param y A data matrix for loadings. Not required for the [reduce_pca] and
+##' @param xin character specifying the name of data to retrieve from \code{x}
+##'   when \code{x} is a poplin object
+##' @param y a data matrix for loadings. Not required for the [reduce_pca] and
 ##'   [reduce_plsda] outputs.
-##' @param poplin_in Name of a dimension-reduced data matrix to retrieve.
-##' @param comp A numeric vector of length 2 indicating two components to plot.
-##' @param group A discrete variable to visualize the grouping structure.
+##' @param comp a numeric vector of length 2 indicating two components to plot.
+##' @param group a discrete variable to visualize the grouping structure.
 ##' @param group_col A vector of colors with the same length of unique values in
 ##'   \code{group}.
-##' @param point_size Numeric value controlling the size of points.
-##' @param point_shape_by_group Logical controlling whether each group have
+##' @param point_size numeric controlling the size of points.
+##' @param point_shape_by_group logical controlling whether each group have
 ##'   different shapes of data points. Also can be a numeric vector with the
 ##'   same length of unique values in \code{group} to manually set point shapes.
-##' @param label Logical controlling whether score labels are shown instead of
+##' @param label logical controlling whether score labels are shown instead of
 ##'   points.
-##' @param label_size Numeric value controlling the size of labels.
-##' @param label_subset A character vector specifying a subset of score labels
+##' @param label_size numeric controlling the size of labels.
+##' @param label_subset a character vector specifying a subset of score labels
 ##'   to display.
-##' @param ellipse Logical controlling whether data ellipses are shown using
-##'   [ggplot2::stat_ellipse].
-##' @param xlab The title of x-axis of the plot.
-##' @param ylab The title of y-axis of the plot.
-##' @param title The main title of the plot.
-##' @param legend Logical controlling whether the plot legend is shown.
-##' @param arrow_len Numeric value controlling the length of arrow head.
-##' @param arrow_col Character string indicating the color of arrows.
-##' @param arrow_alpha Numeric value controlling the transparency of arrow.
-##' @param arrow_label Logical controlling whether text labels for arrows are
+##' @param ellipse logical controlling whether data ellipses are shown using
+##'   the \link[ggplot2]{stat_ellipse} function from the \pkg{ggplot2} package.
+##' @param xlab the title of x-axis of the plot.
+##' @param ylab the title of y-axis of the plot.
+##' @param title the main title of the plot.
+##' @param legend logical controlling whether the plot legend is shown.
+##' @param arrow_len numeric controlling the length of arrow head.
+##' @param arrow_col character indicating the color of arrows.
+##' @param arrow_alpha numeric controlling the transparency of arrow.
+##' @param arrow_label logical controlling whether text labels for arrows are
 ##'   shown.
-##' @param arrow_label_ext Numeric value controlling the scalar extension for
+##' @param arrow_label_ext numeric controlling the scalar extension for
 ##'   arrow labels.
-##' @param arrow_label_size Numeric value controlling the size of arrow labels.
-##' @param arrow_label_col Character string indicating the color of arrow
+##' @param arrow_label_size numeric value controlling the size of arrow labels.
+##' @param arrow_label_col character indicating the color of arrow labels.
 ##'   labels.
-##' @param arrow_label_subset A character vector specifying a subset of arrow
+##' @param arrow_label_subset a character vector specifying a subset of arrow
 ##'   labels to display.
-##' @param ... Arguments passed to the default method.
-##' @return A ggplot object.
+##' @param ... arguments passed to the default method.
+##' @return a ggplot object.
 ##' @seealso [poplin_reduce], [poplin_scoreplot].
 ##' @name poplin_biplot
+##' @examples
+##'
+##' ## sample group variable
+##' group <- colData(faahko_poplin)$sample_group
+##'
+##' ## poplin object
+##' poplin_biplot(faahko_poplin, xin = "pca", group = group)
+##'
+##' ## matrix
+##' m <- poplin_reduced(faahko_poplin, "pca")
+##' poplin_biplot(m, group = group, arrow_col = "orange",
+##'               arrow_label_subset = rownames(faahko_poplin)[1:10])
 NULL
 
 ##' @importFrom ggplot2 geom_segment scale_x_continuous scale_y_continuous sec_axis
@@ -145,18 +158,18 @@ poplin_biplot.poplin.plsda <- function(x, comp = 1:2,
 
 ##' @rdname poplin_biplot
 ##' @export
-poplin_biplot.poplin <- function(x, poplin_in, comp = 1:2, group,
+poplin_biplot.poplin <- function(x, xin, comp = 1:2, group,
                                  label = FALSE, ...) {
-  if (!(poplin_in %in% poplin_reduced_names(x))) {
-    stop("'", poplin_in, "' is not found in the poplin object.\n",
+  if (!(xin %in% poplin_reduced_names(x))) {
+    stop("'", xin, "' is not found in the poplin object.\n",
          "Input must be one of poplin_reduced_names(x).")
   }
-  m <- poplin_reduced(x, poplin_in)
+  m <- poplin_reduced(x, xin)
   if (is.null(colnames(m))) {
-    stop("colnames of 'poplin_reduced(x, poplin_in)' must be non-NULL.")
+    stop("colnames of 'poplin_reduced(x, xin)' must be non-NULL.")
   }
   if (label && is.null(rownames(m))) {
-    stop("rownames of 'poplin_reduced(x, poplin_in)' ",
+    stop("rownames of 'poplin_reduced(x, xin)' ",
          "'must be non-NULL if label = TRUE.")
   }
   poplin_biplot(m, comp = comp, group = group, label = label, ...)

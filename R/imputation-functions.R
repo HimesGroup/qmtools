@@ -1,5 +1,5 @@
 .poplin_impute <- function(x,
-                           method = c("knn", "randomforest", "pca", "simple"),
+                           method = c("knn", "randomforest", "pca", "univariate"),
                            ...) {
   method <- match.arg(method)
   switch(
@@ -7,10 +7,7 @@
     knn = .impute_knn(x, ...),
     randomforest = .impute_randomforest(x, ...),
     pca = .impute_pca(x, ...),
-    ## halfmin = .impute_halfmin(x, ...),
-    ## median = .impute_median(x, ...),
-    ## mean = .impute_mean(x, ...),
-    simple = .impute_simple(x, ...)
+    univariate = .impute_univariate(x, ...)
     )
 }
 
@@ -40,7 +37,7 @@
 }
 
 ## Bayesian PCA imputation
-.impute_pca <- function(x, type = c("bpca", "ppca", "nipals", "svdImpute"), ...) {
+.impute_pca <- function(x, type = c("nipals", "bpca", "ppca", "svdImpute"), ...) {
   if (!requireNamespace("pcaMethods", quietly = TRUE)) {
     stop("Package 'pcaMethods' is required. Please install and try again.")
   }
@@ -49,7 +46,7 @@
 }
 
 ## Simple univariate imputation
-.impute_simple <- function(x, type = c("halfmin", "median", "mean")) {
+.impute_univariate <- function(x, type = c("halfmin", "median", "mean")) {
   type <- match.arg(type)
   switch(
     type,

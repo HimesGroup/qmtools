@@ -8,30 +8,40 @@
 \usage{
 \S4method{normalize_mean}{matrix}(x, restrict = FALSE, rescale = FALSE)
 
-\S4method{normalize_mean}{poplin}(x, poplin_in, poplin_out, restrict = FALSE, rescale = FALSE)
+\S4method{normalize_mean}{poplin}(x, xin, xout, restrict = FALSE, rescale = FALSE)
 }
 \arguments{
-\item{x}{A matrix or \linkS4class{poplin} object.}
+\item{x}{a matrix or \linkS4class{poplin} object.}
 
-\item{restrict}{If \code{TRUE}, any feature with missing values is excluded
-from the calculation of normalization factors.}
+\item{restrict}{logical controlling whether any feature with missing values
+is excluded from the calculation of normalization factors.}
 
-\item{rescale}{If \code{TRUE}, normalized intensities are multiplied by the
-median of normalization factors to make look similar to their original
-scales.}
+\item{rescale}{logical controlling whether the normalized intensities are
+multiplied by the median of normalization factors to make look similar to
+their original scales.}
 
-\item{poplin_in}{Name of a data matrix to retrieve.}
+\item{xin}{character specifying the name of data to retrieve from \code{x}
+when \code{x} is a poplin object.}
 
-\item{poplin_out}{Name of a data matrix to store.}
+\item{xout}{character specifying the name of data to store in \code{x} when
+\code{x} is a poplin object.}
 }
 \value{
-A matrix or \linkS4class{poplin} object of the same dimension as
+a matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the normalized intensities.
 }
 \description{
 Apply mean normalization to a matrix or \linkS4class{poplin} object. For
 each sample, feature intensities are divided by its mean. The mean of
 intensity values for individual samples will be one as a result.
+}
+\examples{
+## poplin object
+normalize_mean(faahko_poplin, xin = "knn", xout = "knn_mean")
+
+## matrix
+m <- poplin_data(faahko_poplin, "knn")
+normalize_mean(m, rescale = TRUE)
 }
 \seealso{
 Other normalization methods: 

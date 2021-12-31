@@ -4,8 +4,8 @@ rownames(d1) <- colnames(faahko_poplin)
 d2 <- matrix(rnorm(nm), nrow = ncol(faahko_poplin), 2)
 rownames(d2) <- colnames(faahko_poplin)
 
-test_that("poplinReducedData setters/getters work with character 'type'.", {
-  pp <- faahko_poplin
+test_that("poplinReduced setters/getters work with character 'type'.", {
+  pp <- empty
   poplin_reduced(pp, "d1") <- d1
   expect_identical(poplin_reduced(pp, "d1"), d1)
   expect_identical(poplin_reduced_list(pp), SimpleList(d1 = d1))
@@ -33,8 +33,8 @@ test_that("poplinReducedData setters/getters work with character 'type'.", {
   expect_error(poplin_reduced(pp, 1) <- "hello", "number of rows")
 })
 
-test_that("poplinReducedData setters/getters work with numeric 'type'.", {
-  pp <- faahko_poplin
+test_that("poplinReduced setters/getters work with numeric 'type'.", {
+  pp <- empty
   expect_error(poplin_reduced(pp), "no available entries")
   expect_error(poplin_reduced(pp, 2), "invalid subscript")
   expect_error(poplin_reduced(pp, "d1"), "invalid subscript")
@@ -72,8 +72,8 @@ test_that("poplinReducedData setters/getters work with numeric 'type'.", {
 })
 
 
-test_that("poplinData setters/getters work with List'.", {
-  pp <- faahko_poplin
+test_that("poplinReduced setters/getters work with List'.", {
+  pp <- empty
   poplin_reduced_list(pp) <- list(d1 = d1, d2 = d2)
   expect_identical(poplin_reduced_names(pp), c("d1", "d2"))
   expect_identical(poplin_reduced(pp, "d1"), d1)
@@ -107,8 +107,8 @@ test_that("poplinData setters/getters work with List'.", {
   expect_error(poplin_reduced_list(pp) <- list(d1[1:10, ], d2[1:10, ]), "number of rows")
 })
 
-test_that("poplinReducedData setters/getters respond to dimnames.", {
-  pp <- faahko_poplin
+test_that("poplinReduced setters/getters respond to dimnames.", {
+  pp <- empty
   expect_warning(poplin_reduced(pp, "d1") <- d1, NA) # no warning
   expect_warning(poplin_reduced(pp, "d2") <- d2, NA) # no warning
   expect_identical(rownames(poplin_reduced(pp)), colnames(pp))
@@ -125,8 +125,8 @@ test_that("poplinReducedData setters/getters respond to dimnames.", {
   expect_error(poplin_reduced(pp, "d1") <- d2, NA)
 })
 
-test_that("poplinReducedData setters/getters preserve mcols and metadata.", {
-  pp <- faahko_poplin
+test_that("poplinReduced setters/getters preserve mcols and metadata.", {
+  pp <- empty
   stuff <- List(d1=d1, d2=d2)
   mcols(stuff)$A <- c("one", "two")
   metadata(stuff)$B <- "three"
@@ -138,13 +138,13 @@ test_that("poplinReducedData setters/getters preserve mcols and metadata.", {
 })
 
 test_that("poplin_reduced setter assigns 'reduced1' for an unnamed object.", {
-  pp <- faahko_poplin
+  pp <- empty
   poplin_reduced(pp) <- d1
   expect_identical(poplin_reduced_names(pp), "reduced1")
 })
 
 test_that("poplin_reduced setter assigns colnames(x) when rownames(value) =  NULL.", {
-  pp <- faahko_poplin
+  pp <- empty
   d1_null <- d1
   rownames(d1_null) <- NULL
 
@@ -161,7 +161,7 @@ test_that("poplin_reduced setter assigns colnames(x) when rownames(value) =  NUL
 
 
 test_that("poplin_reduced_names setter/getters work correctly.", {
-  pp <- faahko_poplin
+  pp <- empty
   expect_warning(poplin_reduced_list(pp) <- list(d1, d2), "NULL")
   expect_identical(poplin_reduced_names(pp), c("reduced1", "reduced2"))
 

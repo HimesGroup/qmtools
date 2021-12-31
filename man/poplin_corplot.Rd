@@ -26,7 +26,7 @@
 
 \method{poplin_corplot}{poplin}(
   x,
-  poplin_in,
+  xin,
   unit = c("sample", "feature"),
   use = c("everything", "all.obs", "complete.obs", "na.or.complete",
     "pairwise.complete.obs"),
@@ -44,41 +44,42 @@
 )
 }
 \arguments{
-\item{x}{A matrix or \linkS4class{poplin} object.}
+\item{x}{a matrix or \linkS4class{poplin} object.}
 
-\item{unit}{A character string specifying whether a correlation matrix is
-computed based on samples or features. One of "sample" or "feature".}
+\item{unit}{character specifying whether a correlation matrix is
+computed based on samples or features.}
 
-\item{use}{A method for computing correlations in the presence of missing
+\item{use}{the method to compute correlations in the presence of missing
 values. Refer to \code{?cor} for details.}
 
-\item{method}{A character string specifying which correlation coefficient is
+\item{method}{character specifying which correlation coefficient is
 to be computed. Refer to \code{?cor} for details.}
 
-\item{widths}{Relative widths of heatmap and dendrogram.}
+\item{widths}{relative widths of heatmap and dendrogram.}
 
-\item{heights}{Relative heights of heatmap and dendrogram.}
+\item{heights}{relative heights of heatmap and dendrogram.}
 
-\item{colors}{A vector of colors for heatmap.}
+\item{colors}{a vector of colors for heatmap.}
 
-\item{label}{Logical controlling whether cell values are shown.}
+\item{label}{logical controlling whether cell values are shown.}
 
-\item{digits}{The desired number of digits when \code{label = TRUE}.}
+\item{digits}{the desired number of digits when \code{label = TRUE}.}
 
-\item{grid_gap}{Gap between cells.}
+\item{grid_gap}{numeric specifying the gap between cells.}
 
-\item{hide_colorbar}{Logical controlling whether the color bar (legend) is
+\item{hide_colorbar}{logical controlling whether the color bar (legend) is
 hidden.}
 
-\item{showticklabels}{A logical vector of length 2 (x-axis, y-axis). If
+\item{showticklabels}{a logical vector of length 2 (x-axis, y-axis). If
 \code{FALSE}, the ticks are removed from the sides of the plot.}
 
-\item{row_dend_left}{Logical controlling whether the row dendrogram is
+\item{row_dend_left}{logical controlling whether the row dendrogram is
 placed on the left on the plot.}
 
-\item{...}{Additional arguments passed to \link[heatmaply:heatmaply]{heatmaply::heatmaply}.}
+\item{...}{additional arguments passed to \link[heatmaply:heatmaply]{heatmaply::heatmaply}.}
 
-\item{poplin_in}{Name of a data matrix to retrieve.}
+\item{xin}{character specifying the name of data to retrieve from \code{x}
+when \code{x} is a poplin object.}
 }
 \value{
 gtable of aligned plots.
@@ -86,4 +87,13 @@ gtable of aligned plots.
 \description{
 Visualize correlations between samples or features. All values in a
 correlation matrix are visualized by rectangles.
+}
+\examples{
+
+## poplin object
+poplin_corplot(faahko_poplin, xin = "knn_cyclic")
+
+## matrix
+m <- poplin_data(faahko_poplin, "knn_cyclic")
+poplin_corplot(m, label = TRUE)
 }

@@ -8,26 +8,39 @@
 \usage{
 \S4method{impute_randomforest}{matrix}(x, ...)
 
-\S4method{impute_randomforest}{poplin}(x, poplin_in, poplin_out, ...)
+\S4method{impute_randomforest}{poplin}(x, xin, xout, ...)
 }
 \arguments{
-\item{x}{A matrix or \linkS4class{poplin} object.}
+\item{x}{a matrix or \linkS4class{poplin} object.}
 
-\item{...}{Additional arguments passed to \link[missForest:missForest]{missForest::missForest}.}
+\item{...}{additional arguments passed to \link[missForest]{missForest}.}
 
-\item{poplin_in}{Name of a data matrix to retrieve.}
+\item{xin}{character specifying the name of data to retrieve from \code{x}
+when \code{x} is a poplin object.}
 
-\item{poplin_out}{Name of a data matrix to store.}
+\item{xout}{character specifying the name of data to store in \code{x} when
+\code{x} is a poplin object.}
 }
 \value{
-A matrix or \linkS4class{poplin} object of the same dimension as
+a matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the imputed intensities.
 }
 \description{
 Apply random forest imputation to a matrix or \linkS4class{poplin} object.
-This is an interface to the \link[missForest:missForest]{missForest::missForest} from the
-\pkg{missForest} package. Since random forest is a tree-based method, it can
-be performed with raw intensities - invariant to monotonic transformations.
+This is an interface to the \link[missForest]{missForest} function from the
+\pkg{missForest} package. Since the random forest is a tree-based method, it
+is invariant to monotonic transformations.
+}
+\examples{
+
+if (requireNamespace("missForest", quietly = TRUE)) {
+  ## poplin object
+  impute_randomforest(faahko_poplin, xin = "raw", xout = "rf")
+
+  ## matrix
+  m <- poplin_raw(faahko_poplin, xin = "raw")
+  impute_randomforest(m)
+}
 }
 \references{
 Daniel J. Stekhoven (2013). missForest: Nonparametric Missing Value
@@ -40,7 +53,7 @@ value imputation for mixed-type data. Bioinformatics, 28(1), 112-118.
 Other imputation methods: 
 \code{\link{impute_knn}()},
 \code{\link{impute_pca}()},
-\code{\link{impute_simple}()},
+\code{\link{impute_univariate}()},
 \code{\link{poplin_impute}()}
 }
 \concept{imputation methods}

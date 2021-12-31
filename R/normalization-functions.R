@@ -1,11 +1,11 @@
 ##' @importFrom stats cor fitted lowess median model.matrix na.omit prcomp predict residuals sd
 .poplin_normalize <- function(x,
+                              ## method must be in the same sequence as in poplin_normalize
                               method = c("pqn",  "sum", "mean", "median",
-                                         "mad", "euclidean", "cyclicloess",
-                                         "vsn", "scale"),
+                                         "mad", "cyclicloess", "vsn", "scale"),
            ...) {
-    method <- match.arg(method)
-    .normalize_fun_dispatch(x, method = method, ...)
+  method <- match.arg(method)
+  .normalize_fun_dispatch(x, method = method, ...)
 }
 
 
@@ -17,14 +17,8 @@
     mean = .normalize_mean(x = x, ...),
     mad = .normalize_mad(x = x, ...),
     median = .normalize_median(x = x, ...),
-    ## euclidean = .normalize_euclidean(x = x, ...),
     cyclicloess = .normalize_cyclicloess(x = x, ...),
     vsn = .normalize_vsn(x = x, ...),
-    ## auto = .normalize_auto(x = x, ...),
-    ## range = .normalize_range(x = x, ...),
-    ## pareto = .normalize_pareto(x = x, ...),
-    ## vast = .normalize_vast(x = x, ...),
-    ## level = .normalize_level(x = x, ...),
     scale = .normalize_scale(x = x, ...)
   )
 }

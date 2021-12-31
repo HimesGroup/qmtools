@@ -12,8 +12,8 @@ faahko_poplin
 }
 \description{
 A \linkS4class{poplin} object containing FAAH knockout LC/MS feature data
-from the \pkg{faahKO} package (\code{faahko3} data) created by coercing the
-\link{faahko_se} object.
+from the \pkg{faahKO} package (\code{faahko3} data) created using the
+\code{faahko3} data.
 }
 \examples{
 faahko_poplin

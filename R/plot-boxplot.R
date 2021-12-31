@@ -2,16 +2,29 @@
 ##'
 ##' Produce a box-and-whisker plot of the feature intensity values.
 ##'
-##' @param x A matrix or \linkS4class{poplin} object.
-##' @param poplin_in Name of a data matrix to retrieve.
-##' @param group A discrete variable to visualize the grouping structure.
-##' @param pre_log2 If \code{TRUE}, feature intensities are log2-transformed
-##'   before plotting.
-##' @param violin If \code{TRUE}, a violin plot is drawn instead of the boxplot.
-##' @param ylab The title of y-axis of the plot.
-##' @param ... Reserved for future use.
-##' @return A ggplot object.
+##' @param x a matrix or \linkS4class{poplin} object.
+##' @param xin character specifying the name of data to retrieve from \code{x}
+##'   when \code{x} is a poplin object
+##' @param group a discrete variable to visualize the grouping structure.
+##' @param pre_log2 logical controlling whether feature intensities are
+##'   log2-transformed before visualization.
+##' @param violin logical controlling whether a violin plot is drawn instead of
+##'   the boxplot.
+##' @param ylab the title of y-axis of the plot.
+##' @param ... reserved for future use.
+##' @return a ggplot object.
 ##' @name poplin_boxplot
+##' @examples
+##'
+##' ## sample group variable
+##' group <- colData(faahko_poplin)$sample_group
+##'
+##' ## poplin object
+##' poplin_boxplot(faahko_poplin, xin = "knn_cyclic", group = group)
+##'
+##' ## matrix
+##' m <- poplin_data(faahko_poplin, "knn_cyclic")
+##' poplin_boxplot(m, group = group)
 NULL
 
 ##' @export
@@ -57,9 +70,9 @@ poplin_boxplot.default <- function(x, group, pre_log2 = FALSE, violin = FALSE,
 
 ##' @rdname poplin_boxplot
 ##' @export
-poplin_boxplot.poplin <- function(x, poplin_in, group, pre_log2 = FALSE,
+poplin_boxplot.poplin <- function(x, xin, group, pre_log2 = FALSE,
                                   violin = FALSE, ylab = "Intensity", ...) {
-  m <- .verify_and_extract_input(x, poplin_in)
+  m <- .verify_and_extract_input(x, xin)
   poplin_boxplot.default(m, group = group, pre_log2 = pre_log2,
                          violin = violin, ylab = ylab, ...)
 }

@@ -11,32 +11,34 @@
 \S4method{poplin_reduce}{poplin}(
   x,
   method = c("pca", "tsne", "plsda"),
-  poplin_in,
-  poplin_out,
+  xin,
+  xout,
   y,
   ncomp = 2,
   ...
 )
 }
 \arguments{
-\item{x}{A matrix or \linkS4class{poplin} object.}
+\item{x}{a matrix or \linkS4class{poplin} object.}
 
-\item{method}{A dimension reduction method. Default is 'pca'.}
+\item{method}{the dimension reduction method to be used, defaulting to "pca".}
 
-\item{y}{A factor vector for discrete outcome required for PLS-DA. Ignored
+\item{y}{a factor vector for discrete outcome required for PLS-DA. Ignored
 otherwise.}
 
-\item{ncomp}{Output dimensionality.}
+\item{ncomp}{output dimensionality.}
 
-\item{...}{Argument passed to a specific dimension reduction method.}
+\item{...}{argument passed to a specific dimension reduction method.}
 
-\item{poplin_in}{Name of a data matrix to retrieve.}
+\item{xin}{character specifying the name of data to retrieve from \code{x}
+when \code{x} is a poplin object.}
 
-\item{poplin_out}{Name of a data matrix to store.}
+\item{xout}{character specifying the name of data to store in \code{x} when
+\code{x} is a poplin object.}
 }
 \value{
-A matrix or \linkS4class{poplin} object with the same number of rows
-as \code{ncol(x)} containing the dimension reduction result.
+a matrix or \linkS4class{poplin} object with the same number of
+rows as \code{ncol(x)} containing the dimension reduction result.
 }
 \description{
 In metabolomics, dimension reduction methods are often used for modeling
@@ -53,6 +55,18 @@ partial least squares-discriminant analysis (PLS-DA)
 t-distributed stochastic neighbor embedding
 }
 }
+}
+\examples{
+
+## poplin object
+out <- poplin_reduce(faahko_poplin, method = "pca",
+                     xin = "knn_cyclic", xout = "pca")
+summary(poplin_reduced(out, "pca"))
+
+## matrix
+m <- poplin_data(faahko_poplin, "knn_cyclic")
+poplin_reduce(m, method = "pca")
+summary(out)
 }
 \seealso{
 Other data reduction methods: 

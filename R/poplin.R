@@ -3,14 +3,15 @@
 ##' The poplin class is designed to process LC/MS data. It is an extension of
 ##' the standard SummarizedExperiment class, and supports additional containers
 ##' for data processing results (e.g., normalization, imputation) via
-##' [poplin_data] and dimension reduction results (PCA, PLS-DA) via
-##' [poplin_reduced]. A poplin object also can be created by coercing from a
-##' \linkS4class{SummarizedExperiment} object.
+##' [poplin_data_list] and dimension reduction results (PCA, PLS-DA) via
+##' [poplin_reduced_list].
 ##'
-##' @param intensity Peak intensity matrix where rows represent features and
-##'   columns represent samples.
-##' @param ... Arguments passed to the [SummarizedExperiment] constructor.
-##' @return A poplin object
+##' @param ... arguments passed to the [SummarizedExperiment] constructor.
+##' @param poplin_data_list a list of matrix-like objects containing data
+##'   processing results.
+##' @param poplin_reduced_list a list of matrix-like objects containing dimension
+##'   reduction results.
+##' @return a poplin object
 ##' @author Jaehyun Joo
 ##' @name poplin-class
 ##' @aliases
@@ -19,13 +20,19 @@
 ##' coerce,SummarizedExperiment,poplin-method
 ##' @usage
 ##' ## Constructor
-##' poplin(intensity, ...)
+##' poplin(..., poplin_data_list = list(), poplin_reduced_list = list())
 ##' @examples
-##' nsamp <- 20
-##' nfeature <- 1000
-##' m <- matrix(sample(1:1000000, size = 200000), nrow = nsamp, ncol = nfeature)
-##' poplin(m)
+##' nsamp <- 10
+##' nfeature <- 200
+##' intensity <- rlnorm(nsamp * nfeature, 10, 1)
+##' m <- matrix(intensity, nrow = nfeature, ncol = nsamp)
+##' rownames(m) <- paste0("F", 1:nrow(m))
+##' colnames(m) <- paste0("S", 1:ncol(m))
+##' poplin(assays = list(raw = m))
+##' 
 ##' ## Coercion from an SummarizedExperiment object
+##' se <- SummarizedExperiment(assays = list(raw = m))
+##' as(se, "poplin")
 ##'
 NULL
 
@@ -45,11 +52,11 @@ NULL
 ##' equal to \code{dim(x)}. End users are supposed to interact with this field
 ##' via [poplin_data]. }
 ##'
-##' \item{\code{poplinReduced(x)}, \code{poplinReduced(x) <- value}:}{
-##' Returns a \linkS4class{DataFrame} of matrices containing one or more
-##' dimension-reduced data. \code{value} must be a \linkS4class{DataFrame} with
-##' the dimension equal to \code{ncol(x)}. End users are supposed to interact
-##' with this field via [poplin_reduced]. }
+##' \item{\code{poplinReduced(x)}, \code{poplinReduced(x) <- value}:}{ Returns a
+##' \linkS4class{DataFrame} of matrices containing one or more dimension-reduced
+##' data. \code{value} must be a \linkS4class{DataFrame} with the number of rows
+##' equal to \code{ncol(x)}. End users are supposed to interact with this field
+##' via [poplin_reduced]. }
 ##'
 ##' }
 ##'
@@ -68,12 +75,15 @@ NULL
 ##' @export
 ##' @import methods
 ##' @importFrom SummarizedExperiment SummarizedExperiment
-poplin <- function(intensity,  ...) {
-  se <- SummarizedExperiment(assays = SimpleList(raw = intensity), ...)
+poplin <- function(...,
+                   poplin_data_list = list(),
+                   poplin_reduced_list = list()) {
+  se <- SummarizedExperiment(...)
   if (!is(se, "SummarizedExperiment")) {
     se <- as(se, "SummarizedExperiment")
   }
-  .se_to_poplin(se)
+  .se_to_poplin(se, poplin_data_list = poplin_data_list,
+                poplin_reduced_list = poplin_reduced_list)
 }
 
 ##' @importFrom S4Vectors DataFrame SimpleList
@@ -81,7 +91,7 @@ poplin <- function(intensity,  ...) {
 ##' @importFrom methods new
 ##' @importFrom BiocGenerics nrow ncol
 ##' @importMethodsFrom SummarizedExperiment assays assayNames assay assays<- assayNames<- assay<-
-.se_to_poplin <- function(se) {
+.se_to_poplin <- function(se, poplin_data_list = list(), poplin_reduced_list = list()) {
   old_validity <- S4Vectors:::disableValidity()
   if (!isTRUE(old_validity)) {
     ## Temporarily disable validity check and restore original setting upon the
@@ -89,12 +99,15 @@ poplin <- function(intensity,  ...) {
     S4Vectors:::disableValidity(TRUE)
     on.exit(S4Vectors:::disableValidity(old_validity))
   }
-  new(
+  out <- new(
     "poplin",
     se,
     poplinData = new("DFrame", nrows = nrow(se)),
     poplinReduced = new("DFrame", nrows = ncol(se))
   )
+  poplin_data_list(out) <- poplin_data_list
+  poplin_reduced_list(out) <- poplin_reduced_list
+  out
 }
 
 ##' @exportMethod coerce

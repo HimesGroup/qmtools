@@ -102,15 +102,8 @@ cbind.poplin.matrix <- function(..., deparse.level = 1) {
   out
 }
 
-## poplin.matrix.pca <- function(x, ...) {
-##   x <- poplin.matrix(x)
-##   class(x) <- c("poplin.matrix.pca", "poplin.matrix", "matrix")
-##   x
-## }
-
 ##' @export
 summary.poplin.pca <- function(object, ...) {
-  cat("Call:", deparse(attr(object, "call")), "\n")
   cat("Reduction method:", attr(object, "method"), "\n")
   cat("Input dimension: [",
       attr(object, "origD")[1], ", ",
@@ -147,7 +140,6 @@ print.poplin.matrix <- function(x, ...) {
 
 ##' @export
 summary.poplin.tsne <- function(object, ...) {
-  cat("Call:", deparse(attr(object, "call")), "\n")
   cat("Reduction method:", attr(object, "method"), "\n")
   cat("Input dimension: [",
       attr(object, "origD")[1], ", ",
@@ -162,7 +154,6 @@ summary.poplin.tsne <- function(object, ...) {
 
 ##' @export
 summary.poplin.plsda <- function(object, ...) {
-  cat("Call:", deparse(attr(object, "call")), "\n")
   cat("Reduction method:", attr(object, "method"), "\n")
   cat("X dimension: [",
     attr(object, "origD")[1], ", ",

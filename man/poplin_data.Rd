@@ -31,7 +31,7 @@ In the code snippets below, \code{x} is a \linkS4class{poplin} object.
 
 \describe{
 \item{\code{poplin_data_names(x)}:}{
-Return the names of all processed data sets stored in \code{x@poplinData}.
+Return the names of all processed data sets.
 }
 \item{\code{poplin_data_list(x, type)}:}{
 Retrieves a named \linkS4class{List} of matrices containing one or more

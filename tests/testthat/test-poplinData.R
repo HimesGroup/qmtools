@@ -7,7 +7,7 @@ rownames(d2) <- rownames(faahko_poplin)
 colnames(d2) <- colnames(faahko_poplin)
 
 test_that("poplinData setters/getters work with character 'type'.", {
-  pp <- faahko_poplin
+  pp <- empty
   poplin_data(pp, "d1") <- d1
   expect_identical(poplin_data(pp, "d1"), d1)
   expect_identical(poplin_data_list(pp), SimpleList(d1 = d1))
@@ -39,7 +39,7 @@ test_that("poplinData setters/getters work with character 'type'.", {
 })
 
 test_that("poplinData setters/getters work with numeric 'type'.", {
-  pp <- faahko_poplin
+  pp <- empty
   expect_error(poplin_data(pp), "no available entries")
   expect_error(poplin_data(pp, 2), "invalid subscript")
   expect_error(poplin_data(pp, "d1"), "invalid subscript")
@@ -77,7 +77,7 @@ test_that("poplinData setters/getters work with numeric 'type'.", {
 })
 
 test_that("poplinData setters/getters work with List'.", {
-  pp <- faahko_poplin
+  pp <- empty
   poplin_data_list(pp) <- list(d1 = d1, d2 = d2)
   expect_identical(poplin_data_names(pp), c("d1", "d2"))
   expect_identical(poplin_data(pp, "d1"), d1)
@@ -112,7 +112,7 @@ test_that("poplinData setters/getters work with List'.", {
 })
 
 test_that("poplinData setters/getters respond to dimnames.", {
-  pp <- faahko_poplin
+  pp <- empty
   expect_warning(poplin_data(pp, "d1") <- d1, NA) # no warning
   expect_warning(poplin_data(pp, "d2") <- d2, NA) # no warning
   expect_identical(rownames(poplin_data(pp)), rownames(pp))
@@ -135,7 +135,7 @@ test_that("poplinData setters/getters respond to dimnames.", {
 })
 
 test_that("poplinData setters/getters preserve mcols and metadata.", {
-  pp <- faahko_poplin
+  pp <- empty
   stuff <- List(d1=d1, d2=d2)
   mcols(stuff)$A <- c("one", "two")
   metadata(stuff)$B <- "three"
@@ -148,13 +148,13 @@ test_that("poplinData setters/getters preserve mcols and metadata.", {
 
 
 test_that("poplin_data setter assigns 'poplin1' for an unnamed object.", {
-  pp <- faahko_poplin
+  pp <- empty
   poplin_data(pp) <- d1
   expect_identical(poplin_data_names(pp), "poplin1")
 })
 
 test_that("poplin_data setter assigns dimnames(x) when dimnames(value) =  NULL.", {
-  pp <- faahko_poplin
+  pp <- empty
   d1_null <- d1
   rownames(d1_null) <- NULL
   colnames(d1_null) <- NULL
@@ -171,7 +171,7 @@ test_that("poplin_data setter assigns dimnames(x) when dimnames(value) =  NULL."
 })
 
 test_that("poplin_data_names setter/getters work correctly.", {
-  pp <- faahko_poplin
+  pp <- empty
   expect_warning(poplin_data_list(pp) <- list(d1, d2), "NULL")
   expect_identical(poplin_data_names(pp), c("poplin1", "poplin2"))
 

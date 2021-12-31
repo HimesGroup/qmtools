@@ -8,33 +8,54 @@
 \usage{
 \S4method{reduce_tsne}{matrix}(x, ncomp = 2, normalize = TRUE, ...)
 
-\S4method{reduce_tsne}{poplin}(x, poplin_in, poplin_out, ncomp = 2, normalize = TRUE, ...)
+\S4method{reduce_tsne}{poplin}(x, xin, xout, ncomp = 2, normalize = TRUE, ...)
 }
 \arguments{
-\item{x}{A matrix or \linkS4class{poplin} object.}
+\item{x}{a matrix or \linkS4class{poplin} object.}
 
-\item{ncomp}{Number of components to calculate.}
+\item{ncomp}{output dimensionality.}
 
-\item{normalize}{if \code{TRUE}, an input matrix is mean-centered and scaled
-so that the largest absolute of the centered matrix is equal to unity. See
-\link[Rtsne:normalize_input]{Rtsne::normalize_input} for details.}
+\item{normalize}{logical controlling whether the input matrix is
+mean-centered and scaled so that the largest absolute of the centered
+matrix is equal to unity. See \link[Rtsne]{normalize_input} for details.}
 
-\item{...}{Additional arguments passed to \link[Rtsne:Rtsne]{Rtsne::Rtsne}.}
+\item{...}{additional arguments passed to \link[Rtsne]{Rtsne}.}
 
-\item{poplin_in}{Name of a data matrix to retrieve.}
+\item{xin}{character specifying the name of data to retrieve from \code{x}
+when \code{x} is a poplin object.}
 
-\item{poplin_out}{Name of a data matrix to store.}
+\item{xout}{character specifying the name of data to store in \code{x} when
+\code{x} is a poplin object.}
 }
 \value{
-A poplin.tsne matrix or \linkS4class{poplin} object with the same
+a poplin.tsne matrix or \linkS4class{poplin} object with the same
 number of rows as \code{ncol(x)} containing the dimension reduction
 result.
+
+a poplin.tsne or \linkS4class{poplin} object with the same number of
+rows as \code{ncol(x)} containing the dimension reduction result.
+poplin.tsne is a matrix containing custom attributes used to summarize and
+visualize the t-SNE result.
 }
 \description{
 Apply t-SNE to a matrix or \linkS4class{poplin} object. This is an interface
-to the \link[Rtsne:Rtsne]{Rtsne::Rtsne} from the \pkg{Rtsne} package. t-SNE is well-suited for
-visualizing high-dimensional data by giving each data point a location in a
-two or three-dimensional map.
+to the \link[Rtsne]{Rtsne} function from the \pkg{Rtsne} package. t-SNE is
+well-suited for visualizing high-dimensional data by giving each data point
+a location in a two or three-dimensional map.
+}
+\examples{
+
+if (requireNamespace("Rtsne", quietly = TRUE)) {
+  ## poplin object
+  out <- reduce_tsne(faahko_poplin, xin = "knn_cyclic", xout = "tsne",
+                     normalize = TRUE, perplexity = 3)
+  summary(poplin_reduced(out, "tsne"))
+
+  ## matrix
+  m <- poplin_data(faahko_poplin, "knn_cyclic")
+  out <- reduce_tsne(m, normalize = TRUE, perplexity = 3, ncomp = 3)
+  summary(out)
+}
 }
 \references{
 L.J.P. van der Maaten and G.E. Hinton. Visualizing High-Dimensional Data

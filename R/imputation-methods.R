@@ -4,25 +4,27 @@
 ##' package provides a few options to handle them.
 ##' [poplin_impute] is a wrapper for the following set of functions:
 ##' \describe{
+##' \item{\code{\link{impute_randomforest}}:}{
+##' random forest imputation
+##' }
 ##' \item{\code{\link{impute_knn}}:}{
 ##' k-nearest neighbor (KNN) imputation
 ##' }
 ##' \item{\code{\link{impute_pca}}:}{
 ##' principal component analysis (PCA) imputation
 ##' }
-##' \item{\code{\link{impute_randomforest}}:}{
-##' random forest imputation
-##' }
-##' \item{\code{\link{impute_simple}}:}{
-##' simple univariate imputation (e.g., half-minimum, mean, median)
+##' \item{\code{\link{impute_univariate}}:}{
+##' univariate imputation (e.g., half-minimum, mean, median)
 ##' }
 ##' }
-##' @param x A matrix or \linkS4class{poplin} object.
-##' @param method A imputation method. Default is 'pqn'.
-##' @param poplin_in Name of a data matrix to retrieve.
-##' @param poplin_out Name of a data matrix to store.
-##' @param ... Arguments passed to a specific imputation method.
-##' @return A matrix or \linkS4class{poplin} object of the same dimension as
+##' @param x a matrix or \linkS4class{poplin} object.
+##' @param method the imputation method to be used, defaulting to "knn".
+##' @param xin character specifying the name of data to retrieve from \code{x}
+##'   when \code{x} is a poplin object.
+##' @param xout character specifying the name of data to store in \code{x} when
+##'   \code{x} is a poplin object.
+##' @param ... arguments passed to a specific imputation method.
+##' @return a matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the imputed intensities.
 ##' @name poplin_impute
 ##' @aliases
@@ -30,10 +32,20 @@
 ##' poplin_impute,matrix-method
 ##' poplin_impute,poplin-method
 ##' @family imputation methods
+##' @examples
+##'
+##' if (requireNamespace("VIM", quietly = TRUE)) {
+##'  ## poplin object
+##'  poplin_impute(faahko_poplin, method = "knn", xin = "raw", xout = "knn")
+##' 
+##'  ## matrix
+##'  m <- poplin_raw(faahko_poplin, "raw")
+##'  poplin_impute(m, method = "knn")
+##' }
 setMethod(
   "poplin_impute",
   "matrix",
-  function(x, method = c("knn", "pca", "randomforest", "simple"), ...) {
+  function(x, method = c("knn", "randomforest", "pca", "univariate"), ...) {
     .poplin_impute(x, method = method, ...)
   }
 )
@@ -42,66 +54,20 @@ setMethod(
 setMethod(
   "poplin_impute",
   "poplin",
-  function(x, method = c("knn", "pca", "randomforest", "simple"),
-           poplin_in, poplin_out, ...) {
-    m <- .verify_and_extract_input(x, poplin_in)
-    poplin_data(x, poplin_out) <- .poplin_impute(m, method = method, ...)
+  function(x, method = c("knn", "randomforest", "pca", "univariate"),
+           xin, xout, ...) {
+    m <- .verify_and_extract_input(x, xin)
+    poplin_data(x, xout) <- .poplin_impute(m, method = method, ...)
     x
-  }
-)
-
-##' K-nearest neighbor (KNN) imputation
-##'
-##' Apply k-nearest neighbor (KNN) imputation to a matrix or
-##' \linkS4class{poplin} object. This is an interface to the [VIM::kNN] from the
-##' \pkg{VIM} package. Since it is based on Gower's distance, standardization of
-##' input data prior to KNN imputation would not affect the result.
-##'
-##' @references
-##' Alexander Kowarik, Matthias Templ (2016). Imputation with the R Package VIM.
-##' Journal of Statistical Software, 74(7), 1-16. doi:10.18637/jss.v074.i07
-##'
-##' Gower, J. C. (1971). A General Coefficient of Similarity and Some of Its
-##' Properties. Biometrics, 27(4), 857–871. https://doi.org/10.2307/2528823
-##'
-##' @param x A matrix or \linkS4class{poplin} object.
-##' @param poplin_in Name of a data matrix to retrieve.
-##' @param poplin_out Name of a data matrix to store.
-##' @param by Imputation by k-nearest features or by k-nearest samples.
-##' @param ... Additional arguments passed to [VIM::kNN].
-##' @return A matrix or \linkS4class{poplin} object of the same dimension as
-##'   \code{x} containing the imputed intensities.
-##' @name impute_knn
-##' @aliases
-##' impute_knn
-##' impute_knn,matrix-method
-##' impute_knn,poplin-method
-##' @family imputation methods
-setMethod(
-  "impute_knn",
-  "matrix",
-  function(x, by = c("feature", "sample"),  ...) {
-    .impute_knn(x, by = by, ...)
-  }
-)
-
-##' @rdname impute_knn
-setMethod(
-  "impute_knn",
-  "poplin",
-  function(x, poplin_in, poplin_out, by = c("feature", "sample"), ...) {
-    .poplin_extract_and_assign(x, .impute_knn,
-                               poplin_in, poplin_out,
-                               by = by, ...)
   }
 )
 
 ##' Random forest imputation
 ##'
 ##' Apply random forest imputation to a matrix or \linkS4class{poplin} object.
-##' This is an interface to the [missForest::missForest] from the
-##' \pkg{missForest} package. Since random forest is a tree-based method, it can
-##' be performed with raw intensities - invariant to monotonic transformations.
+##' This is an interface to the \link[missForest]{missForest} function from the
+##' \pkg{missForest} package. Since the random forest is a tree-based method, it
+##' is invariant to monotonic transformations.
 ##'
 ##' @references
 ##'
@@ -111,11 +77,13 @@ setMethod(
 ##' Stekhoven D. J., & Buehlmann, P. (2012). MissForest - non-parametric missing
 ##' value imputation for mixed-type data. Bioinformatics, 28(1), 112-118.
 ##'
-##' @param x A matrix or \linkS4class{poplin} object.
-##' @param poplin_in Name of a data matrix to retrieve.
-##' @param poplin_out Name of a data matrix to store.
-##' @param ... Additional arguments passed to [missForest::missForest].
-##' @return A matrix or \linkS4class{poplin} object of the same dimension as
+##' @param x a matrix or \linkS4class{poplin} object.
+##' @param xin character specifying the name of data to retrieve from \code{x}
+##'   when \code{x} is a poplin object.
+##' @param xout character specifying the name of data to store in \code{x} when
+##'   \code{x} is a poplin object.
+##' @param ... additional arguments passed to \link[missForest]{missForest}.
+##' @return a matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the imputed intensities.
 ##' @name impute_randomforest
 ##' @aliases
@@ -123,6 +91,16 @@ setMethod(
 ##' impute_randomforest,matrix-method
 ##' impute_randomforest,poplin-method
 ##' @family imputation methods
+##' @examples
+##'
+##' if (requireNamespace("missForest", quietly = TRUE)) {
+##'   ## poplin object
+##'   impute_randomforest(faahko_poplin, xin = "raw", xout = "rf")
+##' 
+##'   ## matrix
+##'   m <- poplin_raw(faahko_poplin, xin = "raw")
+##'   impute_randomforest(m)
+##' }
 setMethod(
   "impute_randomforest",
   "matrix",
@@ -135,19 +113,77 @@ setMethod(
 setMethod(
   "impute_randomforest",
   "poplin",
-  function(x, poplin_in, poplin_out, ...) {
+  function(x, xin, xout, ...) {
     .poplin_extract_and_assign(x, .impute_randomforest,
-                               poplin_in, poplin_out, ...)
+                               xin, xout, ...)
+  }
+)
+
+##' K-nearest neighbor (KNN) imputation
+##'
+##' Apply k-nearest neighbor (KNN) imputation to a matrix or
+##' \linkS4class{poplin} object. This is an interface to the \link[VIM]{kNN}
+##' function from the \pkg{VIM} package. Since it is based on Gower's distance,
+##' Standardization of input data before imputation would not affect the result.
+##'
+##' @references
+##' Alexander Kowarik, Matthias Templ (2016). Imputation with the R Package VIM.
+##' Journal of Statistical Software, 74(7), 1-16. doi:10.18637/jss.v074.i07
+##'
+##' Gower, J. C. (1971). A General Coefficient of Similarity and Some of Its
+##' Properties. Biometrics, 27(4), 857–871. https://doi.org/10.2307/2528823
+##'
+##' @param x a matrix or \linkS4class{poplin} object.
+##' @param xin character specifying the name of data to retrieve from \code{x}
+##'   when \code{x} is a poplin object.
+##' @param xout character specifying the name of data to store in \code{x} when
+##'   \code{x} is a poplin object.
+##' @param by character controlling whether the imputation is performed by
+##'   k-nearest features or by k-nearest samples. Either "feature" or "sample".
+##' @param ... additional arguments passed to \link[VIM]{kNN}.
+##' @return a matrix or \linkS4class{poplin} object of the same dimension as
+##'   \code{x} containing the imputed intensities.
+##' @name impute_knn
+##' @aliases
+##' impute_knn
+##' impute_knn,matrix-method
+##' impute_knn,poplin-method
+##' @family imputation methods
+##' @examples
+##' if (requireNamespace("VIM", quietly = TRUE)) {
+##'   ## poplin object
+##'   impute_knn(faahko_poplin, xin = "raw", xout = "knn")
+##' 
+##'   ## matrix
+##'   m <- poplin_raw(faahko_poplin, "raw")
+##'   impute_knn(m)
+##' }
+setMethod(
+  "impute_knn",
+  "matrix",
+  function(x, by = c("feature", "sample"),  ...) {
+    .impute_knn(x, by = by, ...)
+  }
+)
+
+##' @rdname impute_knn
+setMethod(
+  "impute_knn",
+  "poplin",
+  function(x, xin, xout, by = c("feature", "sample"), ...) {
+    .poplin_extract_and_assign(x, .impute_knn,
+                               xin, xout,
+                               by = by, ...)
   }
 )
 
 ##' Principal component analysis (PCA) imputation
 ##'
 ##' Apply PCA imputation to a matrix or \linkS4class{poplin} object. This is a
-##' interface to the [pcaMethods::pca] from the \pkg{pcaMethods} package. Here,
-##' features are interpreted as variables and samples as observations.
-##' Pre-processing of input (centering, scaling) may be necessary. See the
-##' documentation of [pcaMethods::pca] and [pcaMethods::prep]. Note that the PCA
+##' interface to the \link[pcaMethods]{pca} function from the \pkg{pcaMethods}
+##' package. Here, features are interpreted as variables and samples as
+##' observations. Pre-processing of input (centering, scaling) may be necessary.
+##' See the documentation of \link[pcaMethods]{pca}. Note that the PCA
 ##' imputation could yield negative feature values that need to be
 ##' post-processed.
 ##'
@@ -156,12 +192,14 @@ setMethod(
 ##' pcaMethods -- a Bioconductor package providing PCA methods for incomplete
 ##' data. Bioinformatics, 2007, 23, 1164-1167
 ##'
-##' @param x A matrix or \linkS4class{poplin} object.
-##' @param poplin_in Name of a data matrix to retrieve.
-##' @param poplin_out Name of a data matrix to store.
-##' @param type A method for performing PCA.
-##' @param ... Additional arguments passed to [pcaMethods::pca].
-##' @return A matrix or \linkS4class{poplin} object of the same dimension as
+##' @param x a matrix or \linkS4class{poplin} object.
+##' @param xin character specifying the name of data to retrieve from \code{x}
+##'   when \code{x} is a poplin object.
+##' @param xout character specifying the name of data to store in \code{x} when
+##'   \code{x} is a poplin object.
+##' @param type the method to perform PCA.
+##' @param ... additional arguments passed to \link[pcaMethods]{pca}.
+##' @return a matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the imputed intensities.
 ##' @name impute_pca
 ##' @aliases
@@ -169,10 +207,21 @@ setMethod(
 ##' impute_pca,matrix-method
 ##' impute_pca,poplin-method
 ##' @family imputation methods
+##' @examples
+##'
+##' if (requireNamespace("pcaMethods", quietly = TRUE)) {
+##'   ## poplin object
+##'   impute_pca(faahko_poplin, xin = "raw", xout = "ppca", type = "ppca",
+##'              center = TRUE, scale = "uv")
+##'
+##'   ## matrix
+##'   m <- poplin_raw(faahko_poplin, "raw")
+##'   impute_pca(m, type = "ppca", center = TRUE, scale = "uv")
+##' }
 setMethod(
   "impute_pca",
   "matrix",
-  function(x, type = c("bpca", "ppca", "nipals", "svdImpute"), ...) {
+  function(x, type = c("nipals", "bpca", "ppca", "svdImpute"), ...) {
     .impute_pca(x, type = type, ...)
   }
 )
@@ -181,15 +230,15 @@ setMethod(
 setMethod(
   "impute_pca",
   "poplin",
-  function(x, poplin_in, poplin_out,
-           type = c("bpca", "ppca", "nipals", "svdImpute"), ...) {
+  function(x, xin, xout,
+           type = c("nipals", "bpca", "ppca", "svdImpute"), ...) {
     .poplin_extract_and_assign(x, .impute_pca,
-                               poplin_in, poplin_out,
+                               xin, xout,
                                type = type, ...)
   }
 )
 
-##' Simple univariate imputation
+##' Univariate imputation
 ##'
 ##' Apply univariate imputation to a matrix or \linkS4class{poplin} object. The
 ##' supported methods include
@@ -206,83 +255,42 @@ setMethod(
 ##' Spectrometry-based Metabolomics Data. Sci Rep 8, 663 (2018).
 ##' https://doi.org/10.1038/s41598-017-19120-0
 ##'
-##' @param x A matrix or \linkS4class{poplin} object.
-##' @param poplin_in Name of a data matrix to retrieve.
-##' @param poplin_out Name of a data matrix to store.
-##' @param type A method for doing univariate imputation.
-##' @return A matrix or \linkS4class{poplin} object of the same dimension as
+##' @param x a matrix or \linkS4class{poplin} object.
+##' @param xin character specifying the name of data to retrieve from \code{x}
+##'   when \code{x} is a poplin object.
+##' @param xout character specifying the name of data to store in \code{x} when
+##'   \code{x} is a poplin object.
+##' @param type character specifying the method for univariate imputation.
+##' @return a matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the imputed intensities.
-##' @name impute_simple
+##' @name impute_univariate
 ##' @aliases
-##' impute_simple
-##' impute_simple,matrix-method
-##' impute_simple,poplin-method
+##' impute_univariate
+##' impute_univariate,matrix-method
+##' impute_univariate,poplin-method
 ##' @family imputation methods
+##' @examples
+##' 
+##' ## poplin object
+##' impute_univariate(faahko_poplin, xin = "raw", xout = "halfmin",
+##'                   type = "halfmin")
+##' ## matrix
+##' m <- poplin_raw(faahko_poplin, "raw")
+##' impute_univariate(m, type = "median")
 setMethod(
-  "impute_simple",
+  "impute_univariate",
   "matrix",
   function(x, type = c("halfmin", "median", "mean")) {
-    .impute_simple(x, type = type)
+    .impute_univariate(x, type = type)
   }
 )
 
-##' @rdname impute_simple
+##' @rdname impute_univariate
 setMethod(
-  "impute_simple",
+  "impute_univariate",
   "poplin",
-  function(x, poplin_in, poplin_out, type = c("halfmin", "median", "mean")) {
-    .poplin_extract_and_assign(x, .impute_simple,
-                               poplin_in, poplin_out, type = type)
+  function(x, xin, xout, type = c("halfmin", "median", "mean")) {
+    .poplin_extract_and_assign(x, .impute_univariate,
+                               xin, xout, type = type)
   }
 )
-
-## setMethod(
-##   "impute_halfmin",
-##   "matrix",
-##   function(x) {
-##     .impute_halfmin(x)
-##   }
-## )
-
-## setMethod(
-##   "impute_halfmin",
-##   "poplin",
-##   function(x, poplin_in, poplin_out) {
-##     .poplin_extract_and_assign(x, .impute_halfmin,
-##                                poplin_in, poplin_out)
-##   }
-## )
-
-## setMethod(
-##   "impute_median",
-##   "matrix",
-##   function(x, ...) {
-##     .impute_median(x, ...)
-##   }
-## )
-
-## setMethod(
-##   "impute_median",
-##   "poplin",
-##   function(x, poplin_in, poplin_out, ...) {
-##     .poplin_extract_and_assign(x, .impute_median,
-##                                poplin_in, poplin_out, ...)
-##   }
-## )
-
-## setMethod(
-##   "impute_mean",
-##   "matrix",
-##   function(x, ...) {
-##     .impute_mean(x, ...)
-##   }
-## )
-
-## setMethod(
-##   "impute_mean",
-##   "poplin",
-##   function(x, poplin_in, poplin_out, ...) {
-##     .poplin_extract_and_assign(x, .impute_mean,
-##                                poplin_in, poplin_out, ...)
-##   }
-## )

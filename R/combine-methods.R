@@ -13,7 +13,7 @@
 ##'
 ##' Take a sequence of poplin objects in \code{...} and combine by rows. Note
 ##' that all objects in ... must have the exact same values for
-##' \code{poplin_data_list}. See \code{?}[rbind] for the interpretation of
+##' \code{poplin_data_list}. See \code{?rbind} for the interpretation of
 ##' \code{deparse.level}.
 ##'
 ##' }
@@ -23,7 +23,7 @@
 ##' that all objects in ... must have the same values of \code{poplin_reduced_names}.
 ##' Dimension reduction results with the same name across the objects will be
 ##' combined row-wise to create the corresponding entry in the output object.
-##' See \code{?}[cbind] for the interpretation of \code{deparse.level}.
+##' See \code{?cbind} for the interpretation of \code{deparse.level}.
 ##'
 ##' }
 ##' }
@@ -124,6 +124,9 @@ setMethod("cbind", "poplin", function(..., deparse.level = 1) {
       DataFrame, c(lapply(combined@data, I),
                    list(row.names = NULL, check.names = FALSE))
     )
+    ## Make sure the returned DFrame has the correct # of rows
+    ## Since combining empty poplinData would return nrow = 0
+    poplinData_all@nrows <- nrow(args[[1]])
     ## how to hand metadata?
     ## metadata(poplinData_all) <- metadata(poplinData(args[[1]]))
   },

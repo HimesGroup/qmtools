@@ -15,7 +15,6 @@
   if (ncomp > min(dim(x))) {
     stop("'ncomp' must be <= min(dim(x))")
   }
-  fun_call <- match.call()
   xt <- t(x) # transpose matrix;
   if (center || scale) {
     xt <- scale(xt, center = center, scale = scale)
@@ -43,7 +42,6 @@
   attr(out, "origD") <- dim(x)
   attr(out, "centered") <- center
   attr(out, "scaled") <- scale
-  attr(out, "call") <- fun_call
   out <- poplin.matrix(out, "poplin.pca")
 }
 
@@ -99,7 +97,6 @@
   if (any(!is.finite(x))) {
     stop("infinite or missing values in 'x'.")
   }
-  fun_call <- match.call()
   xt <- t(x) # transpose matrix;
   if (normalize) {
     xt <- Rtsne::normalize_input(xt)
@@ -115,7 +112,6 @@
   attr(out, "eta") <- res$eta
   attr(out, "origD") <- dim(x)
   attr(out, "normalized") <- normalize
-  attr(out, "call") <- fun_call
   poplin.matrix(out, "poplin.tsne")
 }
 
@@ -128,8 +124,13 @@
   if (!is.factor(y)) {
     stop("'y' must be a factor.")
   }
+  if (any(!is.finite(y))) {
+    stop("infinite or missing values in 'y'.")
+  }
+  if (any(!is.finite(x))) {
+    stop("infinite or missing values in 'x'.")
+  }
   xt <- t(x)
-  fun_call <- match.call()
   y_levels <- levels(y)
   y_dummy <- model.matrix(~ y - 1)
   colnames(y_dummy) <- gsub("^y", "", colnames(y_dummy))
@@ -160,7 +161,6 @@
   attr(out, "centered") <- center
   attr(out, "scaled") <- scale
   attr(out, "validation") <- fit$validation
-  attr(out, "call") <- fun_call
   poplin.matrix(out, "poplin.plsda")
 }
 

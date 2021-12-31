@@ -10,8 +10,7 @@
 ##'
 ##' \describe{
 ##' \item{\code{poplin_reduced_names(x)}:}{
-##' Return the names of all dimension-reduced data sets stored in
-##' \code{x@poplinReduced}.
+##' Return the names of all dimension-reduced data sets.
 ##' }
 ##' \item{\code{poplin_reduced_list(x)}:}{
 ##' Retrieves a named \linkS4class{List} of matrices containing one or more

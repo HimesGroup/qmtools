@@ -20,13 +20,13 @@ Imports:
     heatmaply,
     methods,
     S4Vectors,
-    stats
+    stats,
 Suggests:
     limma,
     Biobase,
-    missForest,
     hexbin,
     Rtsne,
+    missForest,
     vsn,
     VIM,
     pcaMethods,

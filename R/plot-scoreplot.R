@@ -3,32 +3,44 @@
 ##' Visualize the data onto a lower-dimensional space using the [poplin_reduce]
 ##' output.
 ##'
-##' @param x A dimension-reduced data matrix produced by [poplin_reduce] or
+##' @param x a dimension-reduced data matrix produced by [poplin_reduce] or
 ##'   \linkS4class{poplin} object containing dimension-reduced data.
-##' @param poplin_in Name of a dimension-reduced data matrix to retrieve.
-##' @param comp A numeric vector of length 2 indicating two components to plot.
-##' @param group A discrete variable to visualize the grouping structure.
-##' @param group_col A vector of colors with the same length of unique values in
+##' @param xin character specifying the name of data to retrieve from \code{x}
+##'   when \code{x} is a poplin object
+##' @param comp a numeric vector of length 2 indicating two components to plot.
+##' @param group a discrete variable to visualize the grouping structure.
+##' @param group_col a vector of colors with the same length of unique values in
 ##'   \code{group}.
-##' @param point_size Numeric value controlling the size of points.
-##' @param point_shape_by_group Logical controlling whether each group have
+##' @param point_size numeric controlling the size of points.
+##' @param point_shape_by_group logical controlling whether each group have
 ##'   different shapes of data points. Also can be a numeric vector with the
 ##'   same length of unique values in \code{group} to manually set point shapes.
-##' @param label Logical controlling whether score labels are shown instead of
+##' @param label logical controlling whether score labels are shown instead of
 ##'   points.
-##' @param label_size Numeric value controlling the size of labels.
-##' @param label_subset A character vector specifying a subset of score labels
+##' @param label_size numeric controlling the size of labels.
+##' @param label_subset a character vector specifying a subset of score labels
 ##'   to display.
-##' @param ellipse Logical controlling whether data ellipses are shown using
-##'   [ggplot2::stat_ellipse].
-##' @param xlab The title of x-axis of the plot.
-##' @param ylab The title of y-axis of the plot.
-##' @param title The main title of the plot.
-##' @param legend Logical controlling whether the plot legend is shown.
-##' @param ... Arguments passed to the default method.
-##' @return A ggplot object.
+##' @param ellipse logical controlling whether data ellipses are shown using
+##'   the \link[ggplot2]{stat_ellipse} function from the \pkg{ggplot2} package.
+##' @param xlab the title of x-axis of the plot.
+##' @param ylab the title of y-axis of the plot.
+##' @param title the main title of the plot.
+##' @param legend logical controlling whether the plot legend is shown.
+##' @param ... arguments passed to the default method.
+##' @return a ggplot object.
 ##' @seealso [poplin_reduce], [poplin_biplot].
 ##' @name poplin_scoreplot
+##' @examples
+##'
+##' ## sample group variable
+##' group <- colData(faahko_poplin)$sample_group
+##'
+##' ## poplin object
+##' poplin_scoreplot(faahko_poplin, xin = "pca", group = group)
+##'
+##' ## matrix
+##' m <- poplin_reduced(faahko_poplin, "pca")
+##' poplin_scoreplot(m, group = group, label = TRUE)
 NULL
 
 ##' @export
@@ -198,19 +210,19 @@ poplin_scoreplot.poplin.plsda <- function(x, comp = c(1, 2),
 
 ##' @rdname poplin_scoreplot
 ##' @export
-poplin_scoreplot.poplin <- function(x, poplin_in, comp = 1:2,
+poplin_scoreplot.poplin <- function(x, xin, comp = 1:2,
                                     group, group_col = NULL, label = FALSE,
                                     xlab = NULL, ylab = NULL, ...) {
-  if (!(poplin_in %in% poplin_reduced_names(x))) {
-    stop("'", poplin_in, "' is not found in the poplin object.\n",
+  if (!(xin %in% poplin_reduced_names(x))) {
+    stop("'", xin, "' is not found in the poplin object.\n",
          "Input must be one of poplin_reduced_names(x).")
   }
-  m <- poplin_reduced(x, poplin_in)
+  m <- poplin_reduced(x, xin)
   if (is.null(colnames(m))) {
-    stop("colnames of 'poplin_reduced(x, poplin_in)' must be non-NULL.")
+    stop("colnames of 'poplin_reduced(x, xin)' must be non-NULL.")
   }
   if (label && is.null(rownames(m))) {
-    stop("rownames of 'poplin_reduced(x, poplin_in)' ",
+    stop("rownames of 'poplin_reduced(x, xin)' ",
          "'must be non-NULL if label = TRUE.")
   }
   poplin_scoreplot(m, comp = comp, group = group, group_col = group_col,

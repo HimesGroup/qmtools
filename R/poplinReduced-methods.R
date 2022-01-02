@@ -67,6 +67,13 @@
 ##' poplin_reduced_names<-,poplin,character-method
 ##' @docType methods
 ##' @seealso [poplin_raw], [poplin_data]
+##' @examples
+##' data(faahko_poplin)
+##' poplin_reduced_list(faahko_poplin)
+##' poplin_reduced_names(faahko_poplin)
+##' poplin_reduced(faahko_poplin)
+##' poplin_reduced(faahko_poplin, 2)
+##' poplin_reduced(faahko_poplin, "pca")
 NULL
 
 ##' @importClassesFrom S4Vectors SimpleList
@@ -90,11 +97,13 @@ setReplaceMethod(
   function(x, check_samplenames = TRUE, ..., value) {
     if (check_samplenames) {
       for (v in seq_along(value)) {
-        value[[v]] <- .check_samplenames(x, value[[v]], fun ='poplin_reduced_list<-')
+        value[[v]] <- .check_samplenames(x, value[[v]],
+                                         fun ='poplin_reduced_list<-')
       }
     }
     value_names <- names(value)
-    if (!is.null(value_names) && anyDuplicated(value_names[value_names != ""])) {
+    if (!is.null(value_names) &&
+        anyDuplicated(value_names[value_names != ""])) {
       stop("'names(value)' contains duplicates. ",
            "Use different names for incoming data.")
     }

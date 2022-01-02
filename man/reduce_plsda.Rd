@@ -11,17 +11,17 @@
 \S4method{reduce_plsda}{poplin}(x, xin, xout, y, ncomp = 2, center = TRUE, scale = FALSE, ...)
 }
 \arguments{
-\item{x}{a matrix or \linkS4class{poplin} object.}
+\item{x}{A matrix or \linkS4class{poplin} object.}
 
-\item{y}{a factor vector for discrete outcome.}
+\item{y}{A factor vector for discrete outcome.}
 
 \item{ncomp}{output dimensionality.}
 
-\item{center}{logical indicating mean-centering prior to PLS-DA.}
+\item{center}{Logical indicating mean-centering prior to PLS-DA.}
 
-\item{scale}{logical indicating unit variance scaling prior to PLS-DA.}
+\item{scale}{Logical indicating unit variance scaling prior to PLS-DA.}
 
-\item{...}{additional arguments passed to \link[pls]{plsr}.}
+\item{...}{Additional arguments passed to \link[pls]{plsr}.}
 
 \item{xin}{character specifying the name of data to retrieve from \code{x}
 when \code{x} is a poplin object.}
@@ -30,7 +30,7 @@ when \code{x} is a poplin object.}
 \code{x} is a poplin object.}
 }
 \value{
-a poplin.plsda or \linkS4class{poplin} object with the same number of
+A poplin.plsda or \linkS4class{poplin} object with the same number of
 rows as \code{ncol(x)} containing the dimension reduction result.
 poplin.plsda is a matrix containing custom attributes used to summarize and
 visualize the PLS-DA result.
@@ -42,12 +42,15 @@ standard PLS for classification using the \link[pls]{plsr} function from the
 }
 \examples{
 
+data(faahko_poplin)
+
 if (requireNamespace("pls", quietly = TRUE)) {
   ## response vector
   y <- factor(colData(faahko_poplin)$sample_group, levels = c("WT", "KO"))
 
   ## poplin object
-  out <- reduce_plsda(faahko_poplin, xin = "knn_cyclic", xout = "plsda", y = y)
+  out <- reduce_plsda(faahko_poplin, xin = "knn_cyclic", xout = "plsda",
+                      y = y)
   summary(poplin_reduced(out, "plsda"))
 
   ## matrix

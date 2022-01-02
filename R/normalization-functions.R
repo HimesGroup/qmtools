@@ -1,9 +1,9 @@
-##' @importFrom stats cor fitted lowess median model.matrix na.omit prcomp predict residuals sd
+##' @importFrom stats cor fitted lowess median model.matrix na.omit
+##' @importFrom stats prcomp predict residuals sd
 .poplin_normalize <- function(x,
-                              ## method must be in the same sequence as in poplin_normalize
                               method = c("pqn",  "sum", "mean", "median",
                                          "mad", "cyclicloess", "vsn", "scale"),
-           ...) {
+                              ...) {
   method <- match.arg(method)
   .normalize_fun_dispatch(x, method = method, ...)
 }
@@ -28,7 +28,7 @@
 ## The reference suggests to apply integral normalization prior to PQN so
 ## consider to add that.
 .normalize_pqn <- function(x, ref_samples = NULL, min_frac = 0.5,
-                                 type = c("mean", "median")) {
+                           type = c("mean", "median")) {
   type <- match.arg(type)
   if ((is.null(ref_samples))) {
     ref <- x
@@ -43,7 +43,9 @@
              non_match, call. = FALSE)
       } else if (is.numeric(ref_samples) &&
                  !(all(ref_samples >= 1 & ref_samples <= ncol(x)))) {
-        stop("Subscript out of bound. 'ref_samples' must be within [1, ncol(x)].")
+        stop(
+          "Subscript out of bound. 'ref_samples' must be within [1, ncol(x)]."
+        )
       } else {
         ref <- x[, ref_samples, drop = FALSE]
       }
@@ -112,7 +114,7 @@
 
 ##' @importFrom stats mad
 .normalize_columns <- function(x, method = c("sum", "mean", "median",
-                                                 "mad", "euclidean"),
+                                             "mad", "euclidean"),
                                restrict = FALSE, rescale = FALSE) {
   method <- match.arg(method)
   if (restrict) {
@@ -127,7 +129,7 @@
     median = apply(x_sub, 2, median, na.rm = TRUE),
     mad = apply(x_sub, 2, mad, na.rm = TRUE),
     euclidean = apply(x_sub, 2, function(x) sqrt(sum(x**2, na.rm = TRUE)))
-    )
+  )
   if (rescale) {
     scale_factors <- scale_factors / median(scale_factors)
   }
@@ -139,8 +141,8 @@
 ## Cyclic LOESS normalization (taken from limma package 09/13/2021)
 ################################################################################
 .normalize_cyclicloess <- function(x, pre_log2, weights = NULL, span = 0.7,
-                                          iterations = 3,
-                                          type = c("fast", "affy", "pairs")) {
+                                   iterations = 3,
+                                   type = c("fast", "affy", "pairs")) {
   type <- match.arg(type)
   if (pre_log2) {
     x <- log2(x)
@@ -218,7 +220,7 @@
 }
 
 .normalize_scale <- function(x, type = c("auto", "range", "pareto",
-                                                "vast", "level")) {
+                                         "vast", "level")) {
   type <- match.arg(type)
   switch(
     type,

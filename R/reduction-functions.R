@@ -1,4 +1,5 @@
-.poplin_reduce <- function(x, method = c("pca", "tsne", "plsda"), y, ncomp = 2, ...) {
+.poplin_reduce <- function(x, method = c("pca", "tsne", "plsda"), y,
+                           ncomp = 2, ...) {
   method <- match.arg(method)
   if (length(ncomp) != 1) {
     stop("'ncomp' must be a positive integer.")
@@ -48,38 +49,22 @@
 .pca_svd <- function(x, ncomp) {
   pc <- prcomp(x, center = FALSE, scale. = FALSE)
   imp <- summary(pc)$importance
-  out <- pc$x[, 1:ncomp]
+  out <- pc$x[, seq_len(ncomp)]
   attr(out, "method") <- "PCA (SVD)"
   attr(out, "ncomp") <- ncomp
-  attr(out, "R2") <- imp[2, 1:ncomp]
-  attr(out, "R2cum") <- imp[3, 1:ncomp]
-  attr(out, "loadings") <- pc$rotation[, 1:ncomp]
-  attr(out, "sdev") <- pc$sdev[1:ncomp]
-  out
-}
-
-.pca_bayesian <- function(x, ncomp, ...) {
-  res <- pcaMethods::bpca(Matrix = x, nPcs = ncomp, ...)
-  out <- res@scores
-  colnames(out) <- paste0("PC", 1:ncol(out))
-  rownames(out) <- rownames(x)
-  colnames(res@loadings) <- paste0("PC", 1:ncol(out))
-  rownames(res@loadings) <- colnames(x)
-  attr(out, "method") <- "PCA (Bayesian)"
-  attr(out, "ncomp") <- ncomp
-  attr(out, "R2") <- c(res@R2cum[1], diff(res@R2cum))
-  attr(out, "R2cum") <- res@R2cum
-  attr(out, "loadings") <- res@loadings
-  attr(out, "sdev") <- apply(res@scores, 2, sd)
+  attr(out, "R2") <- imp[2, seq_len(ncomp)]
+  attr(out, "R2cum") <- imp[3, seq_len(ncomp)]
+  attr(out, "loadings") <- pc$rotation[, seq_len(ncomp)]
+  attr(out, "sdev") <- pc$sdev[seq_len(ncomp)]
   out
 }
 
 .pca_nipals <- function(x, ncomp, ...) {
   res <- pcaMethods::nipalsPca(Matrix = x, nPcs = ncomp, ...)
   out <- res@scores
-  colnames(out) <- paste0("PC", 1:ncol(out))
+  colnames(out) <- paste0("PC", seq_len(ncol(out)))
   rownames(out) <- rownames(x)
-  colnames(res@loadings) <- paste0("PC", 1:ncol(out))
+  colnames(res@loadings) <- paste0("PC", seq_len(ncol(out)))
   rownames(res@loadings) <- colnames(x)
   attr(out, "method") <- "PCA (NIPALS)"
   attr(out, "ncomp") <- ncomp
@@ -103,7 +88,7 @@
   }
   res <- Rtsne::Rtsne(xt, dims = ncomp, ...)
   out <- res$Y
-  colnames(out) <- paste0("tSNE", 1:ncol(out))
+  colnames(out) <- paste0("tSNE", seq_len(ncol(out)))
   rownames(out) <- colnames(x)
   attr(out, "method") <- "t-SNE"
   attr(out, "ncomp") <- ncomp
@@ -117,7 +102,7 @@
 
 
 .reduce_plsda <- function(x, y, ncomp = 2, center = TRUE, scale = FALSE,
-                                 ...) {
+                          ...) {
   if (!requireNamespace("pls", quietly = TRUE)) {
     stop("Package 'pls' is required. Please install and try again.")
   }

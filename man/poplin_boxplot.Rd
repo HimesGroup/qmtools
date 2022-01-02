@@ -26,30 +26,32 @@
 )
 }
 \arguments{
-\item{x}{a matrix or \linkS4class{poplin} object.}
+\item{x}{A matrix or \linkS4class{poplin} object.}
 
-\item{group}{a discrete variable to visualize the grouping structure.}
+\item{group}{A discrete variable to visualize the grouping structure.}
 
-\item{pre_log2}{logical controlling whether feature intensities are
+\item{pre_log2}{Logical controlling whether feature intensities are
 log2-transformed before visualization.}
 
-\item{violin}{logical controlling whether a violin plot is drawn instead of
+\item{violin}{Logical controlling whether a violin plot is drawn instead of
 the boxplot.}
 
-\item{ylab}{the title of y-axis of the plot.}
+\item{ylab}{The title of y-axis of the plot.}
 
-\item{...}{reserved for future use.}
+\item{...}{Reserved for future use.}
 
-\item{xin}{character specifying the name of data to retrieve from \code{x}
+\item{xin}{Character specifying the name of data to retrieve from \code{x}
 when \code{x} is a poplin object}
 }
 \value{
-a ggplot object.
+A ggplot object.
 }
 \description{
 Produce a box-and-whisker plot of the feature intensity values.
 }
 \examples{
+
+data(faahko_poplin)
 
 ## sample group variable
 group <- colData(faahko_poplin)$sample_group

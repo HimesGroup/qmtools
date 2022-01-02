@@ -1,7 +1,8 @@
-#################################################################################
+################################################################################
 ## Taken from SingleCellExperiment package (09/18/2021)
 ## Just rename it to poplin.class and extend it for print functions
-#################################################################################
+################################################################################
+
 ##' The poplin.matrix class
 ##'
 ##' A matrix class that retains its attributes upon being subsetted or combined.
@@ -67,7 +68,9 @@ setOldClass(c("poplin.matrix", "matrix"))
   ## Make sure custom attributes are the same; otherwise they won't be combined
   u.attr <- unique(all.attr)
   if (length(u.attr) > 1) {
-    warning("mismatched custom attributes when combining 'poplin.matrix' objects")
+    warning(
+      "mismatched custom attributes when combining 'poplin.matrix' objects"
+    )
     NULL
   } else {
     ## Singular
@@ -103,6 +106,16 @@ cbind.poplin.matrix <- function(..., deparse.level = 1) {
 }
 
 ##' @export
+print.poplin.matrix <- function(x, ...) {
+  at <- attributes(x)
+  custom_at <- setdiff(names(at), c("dim", "dimnames"))
+  for (i in custom_at) {
+    attr(x, i) <- NULL
+  }
+  print.default(x)
+}
+
+##' @export
 summary.poplin.pca <- function(object, ...) {
   cat("Reduction method:", attr(object, "method"), "\n")
   cat("Input dimension: [",
@@ -115,28 +128,10 @@ summary.poplin.pca <- function(object, ...) {
   imp <- rbind(attr(object, "R2"), attr(object, "R2cum"))
   rownames(imp) <- c("Proportion of Variance",
                      "Cumulative Proportion")
-  colnames(imp) <- paste0("PC", 1:attr(object, "ncomp"))
+  colnames(imp) <- paste0("PC", seq_len(attr(object, "ncomp")))
   print(imp, digits = 4)
   invisible(object)
 }
-
-##' @export
-print.poplin.matrix <- function(x, ...) {
-  at <- attributes(x)
-  custom_at <- setdiff(names(at), c("dim", "dimnames"))
-  for (i in custom_at) {
-    attr(x, i) <- NULL
-  }
-  print.default(x)
-}
-
-## ##' @export
-## poplin.tsne <- function(x, ...) {
-##   x <- poplin.matrix(x)
-##   class(x) <- c("poplin.matrix.tsne", "poplin.matrix", "matrix")
-##   x
-## }
-
 
 ##' @export
 summary.poplin.tsne <- function(object, ...) {
@@ -156,10 +151,10 @@ summary.poplin.tsne <- function(object, ...) {
 summary.poplin.plsda <- function(object, ...) {
   cat("Reduction method:", attr(object, "method"), "\n")
   cat("X dimension: [",
-    attr(object, "origD")[1], ", ",
-    attr(object, "origD")[2], "]\n",
-    sep = ""
-  )
+      attr(object, "origD")[1], ", ",
+      attr(object, "origD")[2], "]\n",
+      sep = ""
+      )
   cat("Y responses:", attr(object, "responses"), "\n")
   cat("X, Y matrices centered before PLS-DA:", attr(object, "centered"), "\n")
   cat("X scaled before PLS-DA:", attr(object, "scaled"), "\n")

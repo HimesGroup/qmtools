@@ -17,20 +17,20 @@
 )
 }
 \arguments{
-\item{x}{a matrix or \linkS4class{poplin} object.}
+\item{x}{A matrix or \linkS4class{poplin} object.}
 
-\item{method}{the imputation method to be used, defaulting to "knn".}
+\item{method}{The imputation method to be used, defaulting to "knn".}
 
-\item{...}{arguments passed to a specific imputation method.}
+\item{...}{Arguments passed to a specific imputation method.}
 
-\item{xin}{character specifying the name of data to retrieve from \code{x}
+\item{xin}{Character specifying the name of data to retrieve from \code{x}
 when \code{x} is a poplin object.}
 
-\item{xout}{character specifying the name of data to store in \code{x} when
+\item{xout}{Character specifying the name of data to store in \code{x} when
 \code{x} is a poplin object.}
 }
 \value{
-a matrix or \linkS4class{poplin} object of the same dimension as
+A matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the imputed intensities.
 }
 \description{
@@ -53,6 +53,8 @@ univariate imputation (e.g., half-minimum, mean, median)
 }
 }
 \examples{
+
+data(faahko_poplin)
 
 if (requireNamespace("VIM", quietly = TRUE)) {
  ## poplin object

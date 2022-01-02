@@ -3,48 +3,50 @@
 ##' Visualize an overlay of a score plot and a loading plot using the
 ##' [poplin_reduce] output.
 ##'
-##' @param x a dimension-reduced data matrix produced by [poplin_reduce] or
+##' @param x A dimension-reduced data matrix produced by [poplin_reduce] or
 ##'   \linkS4class{poplin} object containing dimension-reduced data.
-##' @param xin character specifying the name of data to retrieve from \code{x}
+##' @param xin Character specifying the name of data to retrieve from \code{x}
 ##'   when \code{x} is a poplin object
-##' @param y a data matrix for loadings. Not required for the [reduce_pca] and
+##' @param y A data matrix for loadings. Not required for the [reduce_pca] and
 ##'   [reduce_plsda] outputs.
-##' @param comp a numeric vector of length 2 indicating two components to plot.
-##' @param group a discrete variable to visualize the grouping structure.
+##' @param comp A numeric vector of length 2 indicating two components to plot.
+##' @param group A discrete variable to visualize the grouping structure.
 ##' @param group_col A vector of colors with the same length of unique values in
 ##'   \code{group}.
-##' @param point_size numeric controlling the size of points.
-##' @param point_shape_by_group logical controlling whether each group have
+##' @param point_size Numeric controlling the size of points.
+##' @param point_shape_by_group Logical controlling whether each group have
 ##'   different shapes of data points. Also can be a numeric vector with the
 ##'   same length of unique values in \code{group} to manually set point shapes.
-##' @param label logical controlling whether score labels are shown instead of
+##' @param label Logical controlling whether score labels are shown instead of
 ##'   points.
-##' @param label_size numeric controlling the size of labels.
-##' @param label_subset a character vector specifying a subset of score labels
+##' @param label_size Numeric controlling the size of labels.
+##' @param label_subset A character vector specifying a subset of score labels
 ##'   to display.
-##' @param ellipse logical controlling whether data ellipses are shown using
-##'   the \link[ggplot2]{stat_ellipse} function from the \pkg{ggplot2} package.
-##' @param xlab the title of x-axis of the plot.
-##' @param ylab the title of y-axis of the plot.
-##' @param title the main title of the plot.
-##' @param legend logical controlling whether the plot legend is shown.
-##' @param arrow_len numeric controlling the length of arrow head.
-##' @param arrow_col character indicating the color of arrows.
-##' @param arrow_alpha numeric controlling the transparency of arrow.
-##' @param arrow_label logical controlling whether text labels for arrows are
+##' @param ellipse Logical controlling whether data ellipses are shown using
+##'   the \link[ggplot2]{stat_ellipse} (\pkg{ggplot2} package).
+##' @param xlab The title of x-axis of the plot.
+##' @param ylab The title of y-axis of the plot.
+##' @param title The main title of the plot.
+##' @param legend Logical controlling whether the plot legend is shown.
+##' @param arrow_len Numeric controlling the length of arrow head.
+##' @param arrow_col Character indicating the color of arrows.
+##' @param arrow_alpha Numeric controlling the transparency of arrow.
+##' @param arrow_label Logical controlling whether text labels for arrows are
 ##'   shown.
-##' @param arrow_label_ext numeric controlling the scalar extension for
+##' @param arrow_label_ext Numeric controlling the scalar extension for
 ##'   arrow labels.
-##' @param arrow_label_size numeric value controlling the size of arrow labels.
-##' @param arrow_label_col character indicating the color of arrow labels.
+##' @param arrow_label_size Numeric value controlling the size of arrow labels.
+##' @param arrow_label_col Character indicating the color of arrow labels.
 ##'   labels.
-##' @param arrow_label_subset a character vector specifying a subset of arrow
+##' @param arrow_label_subset A character vector specifying a subset of arrow
 ##'   labels to display.
-##' @param ... arguments passed to the default method.
-##' @return a ggplot object.
+##' @param ... Arguments passed to the default method.
+##' @return A ggplot object.
 ##' @seealso [poplin_reduce], [poplin_scoreplot].
 ##' @name poplin_biplot
 ##' @examples
+##'
+##' data(faahko_poplin)
 ##'
 ##' ## sample group variable
 ##' group <- colData(faahko_poplin)$sample_group
@@ -55,10 +57,11 @@
 ##' ## matrix
 ##' m <- poplin_reduced(faahko_poplin, "pca")
 ##' poplin_biplot(m, group = group, arrow_col = "orange",
-##'               arrow_label_subset = rownames(faahko_poplin)[1:10])
+##'               arrow_label_subset = rownames(faahko_poplin)[seq_len(10)])
 NULL
 
-##' @importFrom ggplot2 geom_segment scale_x_continuous scale_y_continuous sec_axis
+##' @importFrom ggplot2 geom_segment scale_x_continuous scale_y_continuous
+##' @importFrom ggplot2 sec_axis
 ##' @export
 poplin_biplot <- function(x, ...) {
   UseMethod("poplin_biplot")
@@ -66,7 +69,7 @@ poplin_biplot <- function(x, ...) {
 
 ##' @rdname poplin_biplot
 ##' @export
-poplin_biplot.default <- function(x, y, comp = 1:2, group,
+poplin_biplot.default <- function(x, y, comp = c(1, 2), group,
                                   group_col = NULL,
                                   point_size = 1.5,
                                   point_shape_by_group = FALSE,
@@ -91,8 +94,8 @@ poplin_biplot.default <- function(x, y, comp = 1:2, group,
                         xlab = xlab, ylab = ylab,
                         title = title, legend = legend)
   scalers <- 0.7 * c(
-    (max(x[, comp[1]]) - min(x[, comp[1]])) / (max(y[, comp[1]]) - min(y, comp[1])),
-    (max(x[, comp[2]]) - min(x[, comp[2]])) / (max(y[, comp[2]]) - min(y, comp[2]))
+  (max(x[, comp[1]]) - min(x[, comp[1]])) / (max(y[, comp[1]]) - min(y, comp[1])),
+  (max(x[, comp[2]]) - min(x[, comp[2]])) / (max(y[, comp[2]]) - min(y, comp[2]))
   )
   y <- sweep(y[, comp], 2, scalers, FUN = "*")
   y <- as.data.frame(y)
@@ -118,7 +121,8 @@ poplin_biplot.default <- function(x, y, comp = 1:2, group,
     p <- p + geom_text(
                inherit.aes = FALSE,
                ## data = y, aes(x = x_adj, y = y_adj, label = label),
-               data = y, aes(x = !!quote(x_adj), y = !!quote(y_adj), label = label),
+               data = y, aes(x = !!quote(x_adj), y = !!quote(y_adj),
+                             label = label),
                col = arrow_label_col, size = arrow_label_size
              )
   }
@@ -127,10 +131,10 @@ poplin_biplot.default <- function(x, y, comp = 1:2, group,
 
 ##' @rdname poplin_biplot
 ##' @export
-## poplin_biplot.poplin.pca <- function(x, scale = 1, comp = 1:2, group, ...) {
-poplin_biplot.poplin.pca <- function(x, comp = 1:2, group, label = FALSE, ...) {
+poplin_biplot.poplin.pca <- function(x, comp = c(1, 2), group,
+                                     label = FALSE, ...) {
   if (max(comp) > ncol(x) || length(comp) != 2) {
-    stop("Choose two components within 1:ncol(x).")
+    stop("Choose two components between 1 and ", ncol(x), ".")
   }
   comp <- sort(comp)
   n <- nrow(x)
@@ -142,29 +146,35 @@ poplin_biplot.poplin.pca <- function(x, comp = 1:2, group, label = FALSE, ...) {
   ## else lam <- 1
   X <- t(t(x[, comp]) / lam)
   Y <- t(t(attr(x, "loadings")[, comp]) * lam)
-  poplin_biplot.default(X, Y, comp = 1:2, group = group, label = label, ...)
+  poplin_biplot.default(X, Y, comp = c(1, 2), group = group, label = label, ...)
 }
 
 ##' @rdname poplin_biplot
 ##' @export
-poplin_biplot.poplin.plsda <- function(x, comp = 1:2,
+poplin_biplot.poplin.plsda <- function(x, comp = c(1, 2),
                                        group = attr(x, "Y.observed"),
                                        label = label, ...) {
+  if (max(comp) > ncol(x) || length(comp) != 2) {
+    stop("Choose two components between 1 and ", ncol(x), ".")
+  }
   X <- x[, comp]
   Y <- attr(x, "loadings")[, comp]
-  poplin_biplot.default(X, Y, comp = 1:2, group = group, label = label, ...)
+  poplin_biplot.default(X, Y, comp = c(1, 2), group = group, label = label, ...)
 }
 
 
 ##' @rdname poplin_biplot
 ##' @export
-poplin_biplot.poplin <- function(x, xin, comp = 1:2, group,
+poplin_biplot.poplin <- function(x, xin, comp = c(1, 2), group,
                                  label = FALSE, ...) {
   if (!(xin %in% poplin_reduced_names(x))) {
     stop("'", xin, "' is not found in the poplin object.\n",
          "Input must be one of poplin_reduced_names(x).")
   }
   m <- poplin_reduced(x, xin)
+  if (max(comp) > ncol(m) || length(comp) != 2) {
+    stop("Choose two components between 1 and ", ncol(m), ".")
+  }
   if (is.null(colnames(m))) {
     stop("colnames of 'poplin_reduced(x, xin)' must be non-NULL.")
   }

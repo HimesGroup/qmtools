@@ -6,13 +6,12 @@
 ##' [poplin_data_list] and dimension reduction results (PCA, PLS-DA) via
 ##' [poplin_reduced_list].
 ##'
-##' @param ... arguments passed to the [SummarizedExperiment] constructor.
-##' @param poplin_data_list a list of matrix-like objects containing data
+##' @param ... Arguments passed to the [SummarizedExperiment] constructor.
+##' @param poplin_data_list A list of matrix-like objects containing data
 ##'   processing results.
-##' @param poplin_reduced_list a list of matrix-like objects containing dimension
-##'   reduction results.
-##' @return a poplin object
-##' @author Jaehyun Joo
+##' @param poplin_reduced_list A list of matrix-like objects containing
+##'   dimension reduction results.
+##' @return A poplin object
 ##' @name poplin-class
 ##' @aliases
 ##' poplin
@@ -26,10 +25,10 @@
 ##' nfeature <- 200
 ##' intensity <- rlnorm(nsamp * nfeature, 10, 1)
 ##' m <- matrix(intensity, nrow = nfeature, ncol = nsamp)
-##' rownames(m) <- paste0("F", 1:nrow(m))
-##' colnames(m) <- paste0("S", 1:ncol(m))
+##' rownames(m) <- paste0("F", seq_len(nrow(m)))
+##' colnames(m) <- paste0("S", seq_len(ncol(m)))
 ##' poplin(assays = list(raw = m))
-##' 
+##'
 ##' ## Coercion from an SummarizedExperiment object
 ##' se <- SummarizedExperiment(assays = list(raw = m))
 ##' as(se, "poplin")
@@ -71,6 +70,20 @@ NULL
 ##' @name poplin-internals
 NULL
 
+setMethod("poplinReduced", "poplin", function(x) x@poplinReduced)
+
+setReplaceMethod("poplinReduced", "poplin", function(x, value) {
+  x@poplinReduced <- value
+  x
+})
+
+setMethod("poplinData", "poplin", function(x) x@poplinData)
+
+setReplaceMethod("poplinData", "poplin", function(x, value) {
+  x@poplinData <- value
+  x
+})
+
 
 ##' @export
 ##' @import methods
@@ -90,8 +103,10 @@ poplin <- function(...,
 ##' @importClassesFrom S4Vectors DataFrame
 ##' @importFrom methods new
 ##' @importFrom BiocGenerics nrow ncol
-##' @importMethodsFrom SummarizedExperiment assays assayNames assay assays<- assayNames<- assay<-
-.se_to_poplin <- function(se, poplin_data_list = list(), poplin_reduced_list = list()) {
+##' @importMethodsFrom SummarizedExperiment assays assayNames assay
+##' @importMethodsFrom SummarizedExperiment assays<- assayNames<- assay<-
+.se_to_poplin <- function(se, poplin_data_list = list(),
+                          poplin_reduced_list = list()) {
   old_validity <- S4Vectors:::disableValidity()
   if (!isTRUE(old_validity)) {
     ## Temporarily disable validity check and restore original setting upon the
@@ -130,7 +145,7 @@ setAs("SummarizedExperiment", "poplin", function(from) {
   if (!is.null(rownames)) coolcat("rownames(%d): %s\n", rownames)
   else cat("rownames: NULL\n")
   ## rowData`()
-  coolcat("rowData names(%d): %s\n", names(rowData(object, use.names=FALSE)))
+  coolcat("rowData names(%d): %s\n", names(rowData(object, use.names = FALSE)))
   ## colnames()
   colnames <- colnames(object)
   if (!is.null(colnames)) coolcat("colnames(%d): %s\n", colnames)
@@ -149,19 +164,4 @@ setAs("SummarizedExperiment", "poplin", function(from) {
 }
 
 setMethod("show", "poplin", .poplin_show)
-
-
-setMethod("poplinReduced", "poplin", function(x) x@poplinReduced)
-
-setReplaceMethod("poplinReduced", "poplin", function(x, value) {
-  x@poplinReduced <- value
-  x
-})
-
-setMethod("poplinData", "poplin", function(x) x@poplinData)
-
-setReplaceMethod("poplinData", "poplin", function(x, value) {
-  x@poplinData <- value
-  x
-})
 

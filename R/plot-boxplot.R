@@ -2,19 +2,21 @@
 ##'
 ##' Produce a box-and-whisker plot of the feature intensity values.
 ##'
-##' @param x a matrix or \linkS4class{poplin} object.
-##' @param xin character specifying the name of data to retrieve from \code{x}
+##' @param x A matrix or \linkS4class{poplin} object.
+##' @param xin Character specifying the name of data to retrieve from \code{x}
 ##'   when \code{x} is a poplin object
-##' @param group a discrete variable to visualize the grouping structure.
-##' @param pre_log2 logical controlling whether feature intensities are
+##' @param group A discrete variable to visualize the grouping structure.
+##' @param pre_log2 Logical controlling whether feature intensities are
 ##'   log2-transformed before visualization.
-##' @param violin logical controlling whether a violin plot is drawn instead of
+##' @param violin Logical controlling whether a violin plot is drawn instead of
 ##'   the boxplot.
-##' @param ylab the title of y-axis of the plot.
-##' @param ... reserved for future use.
-##' @return a ggplot object.
+##' @param ylab The title of y-axis of the plot.
+##' @param ... Reserved for future use.
+##' @return A ggplot object.
 ##' @name poplin_boxplot
 ##' @examples
+##'
+##' data(faahko_poplin)
 ##'
 ##' ## sample group variable
 ##' group <- colData(faahko_poplin)$sample_group
@@ -37,7 +39,7 @@ poplin_boxplot <- function(x, ...) {
 ##' @importFrom stats reshape
 ##' @importFrom ggplot2 geom_boxplot geom_violin
 poplin_boxplot.default <- function(x, group, pre_log2 = FALSE, violin = FALSE,
-                           ylab = "Intensity", ...) {
+                                   ylab = "Intensity", ...) {
   ## convert wide to long format to draw fig
   if (pre_log2) {
     x <- log2(x)
@@ -54,7 +56,8 @@ poplin_boxplot.default <- function(x, group, pre_log2 = FALSE, violin = FALSE,
   if (missing(group)) {
     p <- ggplot(dd, aes(x = !!quote(id), y = !!quote(value)))
   } else {
-    p <- ggplot(dd, aes(x = !!quote(id), y = !!quote(value), fill = !!quote(group)))
+    p <- ggplot(dd, aes(x = !!quote(id), y = !!quote(value),
+                        fill = !!quote(group)))
   }
   if (violin) {
     p <- p + geom_violin()

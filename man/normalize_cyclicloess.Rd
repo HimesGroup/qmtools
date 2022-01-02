@@ -8,7 +8,7 @@
 \usage{
 \S4method{normalize_cyclicloess}{matrix}(
   x,
-  pre_log2 = TRUE,
+  pre_log2,
   type = c("fast", "affy", "pairs"),
   span = 0.7,
   iterations = 3
@@ -18,43 +18,45 @@
   x,
   xin,
   xout,
-  pre_log2 = TRUE,
+  pre_log2,
   type = c("fast", "affy", "pairs"),
   span = 0.7,
   iterations = 3
 )
 }
 \arguments{
-\item{x}{a matrix or \linkS4class{poplin} object.}
+\item{x}{A matrix or \linkS4class{poplin} object.}
 
-\item{pre_log2}{logical controlling whether feature intensities are
+\item{pre_log2}{Logical controlling whether feature intensities are
 log2-transformed before normalization.}
 
-\item{type}{character specifying which variant of the cyclic LOESS
+\item{type}{Character specifying which variant of the cyclic LOESS
 method to use.}
 
-\item{span}{span of LOESS smoothing window, between 0 and 1.}
+\item{span}{Span of LOESS smoothing window, between 0 and 1.}
 
-\item{iterations}{number of times to cycle through all pairs of columns.}
+\item{iterations}{Number of times to cycle through all pairs of columns.}
 
-\item{xin}{character specifying the name of data to retrieve from \code{x}
+\item{xin}{Character specifying the name of data to retrieve from \code{x}
 when \code{x} is a poplin object.}
 
-\item{xout}{character specifying the name of data to store in \code{x} when
+\item{xout}{Character specifying the name of data to store in \code{x} when
 \code{x} is a poplin object.}
 }
 \value{
-a matrix or \linkS4class{poplin} object of the same dimension as
+A matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the normalized intensities.
 }
 \description{
 Apply Cyclic LOESS normalization to a matrix or \linkS4class{poplin} object.
-This is an interface to the \link[limma:normalizeCyclicLoess]{limma::normalizeCyclicLoess} from the
+This is an interface to the \link[limma]{normalizeCyclicLoess} from the
 \pkg{limma} package. The input \code{x} is expected to contain
 log-transformed raw intensities. See Bolstad et al. (2003) and Ballman et
 al. (2004) for details.
 }
 \examples{
+
+data(faahko_poplin)
 
 if (requireNamespace("limma", quietly = TRUE)) {
   ## poplin object

@@ -10,16 +10,16 @@
 poplin(..., poplin_data_list = list(), poplin_reduced_list = list())
 }
 \arguments{
-\item{...}{arguments passed to the \link{SummarizedExperiment} constructor.}
+\item{...}{Arguments passed to the \link{SummarizedExperiment} constructor.}
 
-\item{poplin_data_list}{a list of matrix-like objects containing data
+\item{poplin_data_list}{A list of matrix-like objects containing data
 processing results.}
 
-\item{poplin_reduced_list}{a list of matrix-like objects containing dimension
-reduction results.}
+\item{poplin_reduced_list}{A list of matrix-like objects containing
+dimension reduction results.}
 }
 \value{
-a poplin object
+A poplin object
 }
 \description{
 The poplin class is designed to process LC/MS data. It is an extension of
@@ -33,15 +33,12 @@ nsamp <- 10
 nfeature <- 200
 intensity <- rlnorm(nsamp * nfeature, 10, 1)
 m <- matrix(intensity, nrow = nfeature, ncol = nsamp)
-rownames(m) <- paste0("F", 1:nrow(m))
-colnames(m) <- paste0("S", 1:ncol(m))
+rownames(m) <- paste0("F", seq_len(nrow(m)))
+colnames(m) <- paste0("S", seq_len(ncol(m)))
 poplin(assays = list(raw = m))
 
 ## Coercion from an SummarizedExperiment object
 se <- SummarizedExperiment(assays = list(raw = m))
 as(se, "poplin")
 
-}
-\author{
-Jaehyun Joo
 }

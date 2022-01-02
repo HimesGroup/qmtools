@@ -23,29 +23,29 @@
 )
 }
 \arguments{
-\item{x}{a matrix or \linkS4class{poplin} object.}
+\item{x}{A matrix or \linkS4class{poplin} object.}
 
-\item{ref_samples}{a vector of sample names or indices to specify reference
+\item{ref_samples}{A vector of sample names or indices to specify reference
 samples for the calculation of quotients. Must be a subset of
 \code{colnames(x)} if it is a character vector. If \code{NULL}, all
 samples are used.}
 
-\item{min_frac}{a minimum proportion of reference samples for features to be
+\item{min_frac}{A minimum proportion of reference samples for features to be
 considered in the calculation of a reference spectrum, between 0 and 1.
 For \code{min_frac = 1}, all reference samples should have non-missing
 values for the features to be included.}
 
-\item{type}{a method to compute a reference spectrum. Either "mean" or
+\item{type}{A method to compute a reference spectrum. Either "mean" or
 "median".}
 
-\item{xin}{character specifying the name of data to retrieve from \code{x}
+\item{xin}{Character specifying the name of data to retrieve from \code{x}
 when \code{x} is a poplin object.}
 
-\item{xout}{character specifying the name of data to store in \code{x} when
+\item{xout}{Character specifying the name of data to store in \code{x} when
 \code{x} is a poplin object.}
 }
 \value{
-a matrix or \linkS4class{poplin} object of the same dimension as
+A matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the normalized intensities.
 }
 \description{
@@ -57,6 +57,8 @@ normalized by the median of quotients. See Dieterle et al. (2006) for
 details.
 }
 \examples{
+
+data(faahko_poplin)
 
 ## poplin object
 normalize_pqn(faahko_poplin, xin = "knn", xout = "knn_pqn")

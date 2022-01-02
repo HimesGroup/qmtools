@@ -20,10 +20,11 @@
 ##' \item{\code{cbind(..., deparse.level = 1)}:}{
 ##'
 ##' Take a sequence of poplin objects in \code{...} and combine by columns. Note
-##' that all objects in ... must have the same values of \code{poplin_reduced_names}.
-##' Dimension reduction results with the same name across the objects will be
-##' combined row-wise to create the corresponding entry in the output object.
-##' See \code{?cbind} for the interpretation of \code{deparse.level}.
+##' that all objects in ... must have the same values of
+##' \code{poplin_reduced_names}. Dimension reduction results with the same name
+##' across the objects will be combined row-wise to create the corresponding
+##' entry in the output object. See \code{?cbind} for the interpretation of
+##' \code{deparse.level}.
 ##'
 ##' }
 ##' }
@@ -88,8 +89,9 @@ setMethod("rbind", "poplin", function(..., deparse.level = 1) {
   ## })
   tryCatch({
     poplinData_all <- do.call(rbind, lapply(args, poplinData))
-    ## how to handle metadata?
-    metadata(poplinData_all) <- list() # clean metadata; consistency with assay-via method
+    ## How to handle metadata?
+    ## Currently clean metadata; consistency with assay-via method
+    metadata(poplinData_all) <- list() 
   })
   ## Utilize SE class for combining objects: see the SingleCellExperiment source
   poplinReduced_se <- lapply(args, function(x) .poplin_to_se_coldata(x))
@@ -126,7 +128,9 @@ setMethod("cbind", "poplin", function(..., deparse.level = 1) {
     )
     ## Make sure the returned DFrame has the correct # of rows
     ## Since combining empty poplinData would return nrow = 0
-    poplinData_all@nrows <- nrow(args[[1]])
+    poplinData_all <- BiocGenerics:::replaceSlots(poplinData_all,
+                                                  nrows = nrow(args[[1]]))
+    ## poplinData_all@nrows <- nrow(args[[1]])
     ## how to hand metadata?
     ## metadata(poplinData_all) <- metadata(poplinData(args[[1]]))
   },

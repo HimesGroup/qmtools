@@ -11,18 +11,18 @@
 \S4method{impute_univariate}{poplin}(x, xin, xout, type = c("halfmin", "median", "mean"))
 }
 \arguments{
-\item{x}{a matrix or \linkS4class{poplin} object.}
+\item{x}{A matrix or \linkS4class{poplin} object.}
 
-\item{type}{character specifying the method for univariate imputation.}
+\item{type}{Character specifying the method for univariate imputation.}
 
-\item{xin}{character specifying the name of data to retrieve from \code{x}
+\item{xin}{Character specifying the name of data to retrieve from \code{x}
 when \code{x} is a poplin object.}
 
-\item{xout}{character specifying the name of data to store in \code{x} when
+\item{xout}{Character specifying the name of data to store in \code{x} when
 \code{x} is a poplin object.}
 }
 \value{
-a matrix or \linkS4class{poplin} object of the same dimension as
+A matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the imputed intensities.
 }
 \description{
@@ -38,6 +38,8 @@ the mean of non-missing values.
 }
 }
 \examples{
+
+data(faahko_poplin)
 
 ## poplin object
 impute_univariate(faahko_poplin, xin = "raw", xout = "halfmin",

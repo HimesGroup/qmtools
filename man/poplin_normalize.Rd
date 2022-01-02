@@ -21,20 +21,20 @@
 )
 }
 \arguments{
-\item{x}{a matrix or \linkS4class{poplin} object.}
+\item{x}{A matrix or \linkS4class{poplin} object.}
 
-\item{method}{the normalization method to be used, defaulting to "pqn".}
+\item{method}{The normalization method to be used, defaulting to "pqn".}
 
-\item{...}{arguments passed to a specific normalization method.}
+\item{...}{Arguments passed to a specific normalization method.}
 
-\item{xin}{character specifying the name of data to retrieve from \code{x}
+\item{xin}{Character specifying the name of data to retrieve from \code{x}
 when \code{x} is a poplin object.}
 
-\item{xout}{character specifying the name of data to store in \code{x} when
+\item{xout}{Character specifying the name of data to store in \code{x} when
 \code{x} is a poplin object.}
 }
 \value{
-a matrix or \linkS4class{poplin} object of the same dimension as
+A matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the normalized intensities.
 }
 \description{
@@ -70,8 +70,11 @@ feature-based scaling (e.g., auto, range, pareto, vast, level)
 }
 \examples{
 
+data(faahko_poplin)
+
 ## poplin object
-poplin_normalize(faahko_poplin, method = "pqn", xin = "knn", xout = "knn_pqn")
+poplin_normalize(faahko_poplin, method = "pqn",
+                 xin = "knn", xout = "knn_pqn")
 
 ## matrix
 m <- poplin_data(faahko_poplin, "knn")

@@ -77,6 +77,14 @@ be removed.
 }
 }
 
+\examples{
+data(faahko_poplin)
+poplin_reduced_list(faahko_poplin)
+poplin_reduced_names(faahko_poplin)
+poplin_reduced(faahko_poplin)
+poplin_reduced(faahko_poplin, 2)
+poplin_reduced(faahko_poplin, "pca")
+}
 \seealso{
 \link{poplin_raw}, \link{poplin_data}
 }

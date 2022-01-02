@@ -44,51 +44,54 @@
 )
 }
 \arguments{
-\item{x}{a matrix or \linkS4class{poplin} object.}
+\item{x}{A matrix or \linkS4class{poplin} object.}
 
-\item{unit}{character specifying whether a correlation matrix is
+\item{unit}{Character specifying whether a correlation matrix is
 computed based on samples or features.}
 
-\item{use}{the method to compute correlations in the presence of missing
+\item{use}{The method to compute correlations in the presence of missing
 values. Refer to \code{?cor} for details.}
 
 \item{method}{character specifying which correlation coefficient is
 to be computed. Refer to \code{?cor} for details.}
 
-\item{widths}{relative widths of heatmap and dendrogram.}
+\item{widths}{Relative widths of heatmap and dendrogram.}
 
-\item{heights}{relative heights of heatmap and dendrogram.}
+\item{heights}{Relative heights of heatmap and dendrogram.}
 
-\item{colors}{a vector of colors for heatmap.}
+\item{colors}{A vector of colors for heatmap.}
 
-\item{label}{logical controlling whether cell values are shown.}
+\item{label}{Logical controlling whether cell values are shown.}
 
-\item{digits}{the desired number of digits when \code{label = TRUE}.}
+\item{digits}{The desired number of digits when \code{label = TRUE}.}
 
-\item{grid_gap}{numeric specifying the gap between cells.}
+\item{grid_gap}{Numeric specifying the gap between cells.}
 
-\item{hide_colorbar}{logical controlling whether the color bar (legend) is
+\item{hide_colorbar}{Logical controlling whether the color bar (legend) is
 hidden.}
 
-\item{showticklabels}{a logical vector of length 2 (x-axis, y-axis). If
+\item{showticklabels}{A logical vector of length 2 (x-axis, y-axis). If
 \code{FALSE}, the ticks are removed from the sides of the plot.}
 
-\item{row_dend_left}{logical controlling whether the row dendrogram is
+\item{row_dend_left}{Logical controlling whether the row dendrogram is
 placed on the left on the plot.}
 
-\item{...}{additional arguments passed to \link[heatmaply:heatmaply]{heatmaply::heatmaply}.}
+\item{...}{Additional arguments passed to \link[heatmaply]{heatmaply}
+(\pkg{heatmaply} package).}
 
-\item{xin}{character specifying the name of data to retrieve from \code{x}
+\item{xin}{Character specifying the name of data to retrieve from \code{x}
 when \code{x} is a poplin object.}
 }
 \value{
-gtable of aligned plots.
+A gtable of aligned plots.
 }
 \description{
 Visualize correlations between samples or features. All values in a
 correlation matrix are visualized by rectangles.
 }
 \examples{
+
+data(faahko_poplin)
 
 ## poplin object
 poplin_corplot(faahko_poplin, xin = "knn_cyclic")

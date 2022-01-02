@@ -51,7 +51,7 @@
 \method{poplin_scoreplot}{poplin}(
   x,
   xin,
-  comp = 1:2,
+  comp = c(1, 2),
   group,
   group_col = NULL,
   label = FALSE,
@@ -61,54 +61,56 @@
 )
 }
 \arguments{
-\item{x}{a dimension-reduced data matrix produced by \link{poplin_reduce} or
+\item{x}{A dimension-reduced data matrix produced by \link{poplin_reduce} or
 \linkS4class{poplin} object containing dimension-reduced data.}
 
-\item{comp}{a numeric vector of length 2 indicating two components to plot.}
+\item{comp}{A numeric vector of length 2 indicating two components to plot.}
 
-\item{group}{a discrete variable to visualize the grouping structure.}
+\item{group}{A discrete variable to visualize the grouping structure.}
 
-\item{group_col}{a vector of colors with the same length of unique values in
+\item{group_col}{A vector of colors with the same length of unique values in
 \code{group}.}
 
-\item{point_size}{numeric controlling the size of points.}
+\item{point_size}{Numeric controlling the size of points.}
 
-\item{point_shape_by_group}{logical controlling whether each group have
+\item{point_shape_by_group}{Logical controlling whether each group have
 different shapes of data points. Also can be a numeric vector with the
 same length of unique values in \code{group} to manually set point shapes.}
 
-\item{label}{logical controlling whether score labels are shown instead of
+\item{label}{Logical controlling whether score labels are shown instead of
 points.}
 
-\item{label_size}{numeric controlling the size of labels.}
+\item{label_size}{Numeric controlling the size of labels.}
 
-\item{label_subset}{a character vector specifying a subset of score labels
+\item{label_subset}{A character vector specifying a subset of score labels
 to display.}
 
-\item{ellipse}{logical controlling whether data ellipses are shown using
+\item{ellipse}{Logical controlling whether data ellipses are shown using
 the \link[ggplot2]{stat_ellipse} function from the \pkg{ggplot2} package.}
 
-\item{xlab}{the title of x-axis of the plot.}
+\item{xlab}{The title of x-axis of the plot.}
 
-\item{ylab}{the title of y-axis of the plot.}
+\item{ylab}{The title of y-axis of the plot.}
 
-\item{title}{the main title of the plot.}
+\item{title}{The main title of the plot.}
 
-\item{legend}{logical controlling whether the plot legend is shown.}
+\item{legend}{Logical controlling whether the plot legend is shown.}
 
-\item{...}{arguments passed to the default method.}
+\item{...}{Arguments passed to the default method.}
 
-\item{xin}{character specifying the name of data to retrieve from \code{x}
+\item{xin}{Character specifying the name of data to retrieve from \code{x}
 when \code{x} is a poplin object}
 }
 \value{
-a ggplot object.
+A ggplot object.
 }
 \description{
 Visualize the data onto a lower-dimensional space using the \link{poplin_reduce}
 output.
 }
 \examples{
+
+data(faahko_poplin)
 
 ## sample group variable
 group <- colData(faahko_poplin)$sample_group

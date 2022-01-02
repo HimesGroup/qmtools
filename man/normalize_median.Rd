@@ -11,23 +11,23 @@
 \S4method{normalize_median}{poplin}(x, xin, xout, restrict = FALSE, rescale = FALSE)
 }
 \arguments{
-\item{x}{a matrix or \linkS4class{poplin} object.}
+\item{x}{A matrix or \linkS4class{poplin} object.}
 
-\item{restrict}{logical controlling whether any feature with missing values
+\item{restrict}{Logical controlling whether any feature with missing values
 is excluded from the calculation of normalization factors.}
 
-\item{rescale}{logical controlling whether the normalized intensities are
+\item{rescale}{Logical controlling whether the normalized intensities are
 multiplied by the median of normalization factors to make look similar to
 their original scales.}
 
-\item{xin}{character specifying the name of data to retrieve from \code{x}
+\item{xin}{Character specifying the name of data to retrieve from \code{x}
 when \code{x} is a poplin object.}
 
-\item{xout}{character specifying the name of data to store in \code{x} when
+\item{xout}{Character specifying the name of data to store in \code{x} when
 \code{x} is a poplin object.}
 }
 \value{
-a matrix or \linkS4class{poplin} object of the same dimension as
+A matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the normalized intensities.
 }
 \description{
@@ -36,6 +36,9 @@ each sample, feature intensities are divided by its median. The median of
 intensity values for individual samples will be one as a result.
 }
 \examples{
+
+data(faahko_poplin)
+
 ## poplin object
 normalize_median(faahko_poplin, xin = "knn", xout = "knn_med")
 

@@ -21,8 +21,7 @@
 ##' \code{i}-th element of raw intensity data sets. It is a convenient
 ##' alternative to \code{poplin_raw_list(x)[[i]]}. \code{value} must be a matrix
 ##' with the same dimension as \code{x}. If \code{i} is missing, the first entry
-##' is retrieved or replaced. This is an alias of \code{assay(x, i)}.
-##' }
+##' is retrieved or replaced. This is an alias of \code{assay(x, i)}. }
 ##'
 ##' }
 ##' @name poplin_raw
@@ -41,34 +40,41 @@
 ##' poplin_raw_list<-,poplin-method
 ##' poplin_raw_names<-,poplin,character-method
 ##' @seealso [poplin_data], [poplin_reduced]
+##' @examples
+##' data(faahko_poplin)
+##' poplin_raw_list(faahko_poplin)
+##' poplin_raw_names(faahko_poplin)
+##' poplin_raw(faahko_poplin)
+##' poplin_raw(faahko_poplin, 2)
+##' poplin_raw(faahko_poplin, "raw")
 NULL
 
 setMethod(
   "poplin_raw_list", "poplin",
   function(x, ...) {
     assays(x = x, ...)
-})
+  })
 
 setReplaceMethod(
   "poplin_raw_list", "poplin",
   function(x, check_dimnames = TRUE, ..., value) {
-  if (check_dimnames) {
-    for (v in seq_along(value)) {
-      value[[v]] <- .check_dimnames(x, value[[v]], fun ='poplin_raw_list<-')
+    if (check_dimnames) {
+      for (v in seq_along(value)) {
+        value[[v]] <- .check_dimnames(x, value[[v]], fun ='poplin_raw_list<-')
+      }
     }
-  }
-  names(value) <- .replace_empty_names(
-    names(value), N = length(value), msg = "names(value)",
-    name_pattern = "raw"
-  )
-  `assays<-`(x = x, ..., value = value)
-})
+    names(value) <- .replace_empty_names(
+      names(value), N = length(value), msg = "names(value)",
+      name_pattern = "raw"
+    )
+    `assays<-`(x = x, ..., value = value)
+  })
 
 setMethod(
   "poplin_raw_names", "poplin",
   function(x, ...) {
     assayNames(x = x, ...)
-})
+  })
 
 setReplaceMethod(
   "poplin_raw_names", c("poplin", "character"),
@@ -77,7 +83,7 @@ setReplaceMethod(
     value <- .replace_empty_names(value, N = N, msg = "value",
                                   name_pattern = "raw")
     `assayNames<-`(x = x, ..., value = value)
-})
+  })
 
 setMethod(
   "poplin_raw", c("poplin", "numeric"),

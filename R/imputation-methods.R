@@ -17,14 +17,14 @@
 ##' univariate imputation (e.g., half-minimum, mean, median)
 ##' }
 ##' }
-##' @param x a matrix or \linkS4class{poplin} object.
-##' @param method the imputation method to be used, defaulting to "knn".
-##' @param xin character specifying the name of data to retrieve from \code{x}
+##' @param x A matrix or \linkS4class{poplin} object.
+##' @param method The imputation method to be used, defaulting to "knn".
+##' @param xin Character specifying the name of data to retrieve from \code{x}
 ##'   when \code{x} is a poplin object.
-##' @param xout character specifying the name of data to store in \code{x} when
+##' @param xout Character specifying the name of data to store in \code{x} when
 ##'   \code{x} is a poplin object.
-##' @param ... arguments passed to a specific imputation method.
-##' @return a matrix or \linkS4class{poplin} object of the same dimension as
+##' @param ... Arguments passed to a specific imputation method.
+##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the imputed intensities.
 ##' @name poplin_impute
 ##' @aliases
@@ -33,6 +33,8 @@
 ##' poplin_impute,poplin-method
 ##' @family imputation methods
 ##' @examples
+##'
+##' data(faahko_poplin)
 ##'
 ##' if (requireNamespace("VIM", quietly = TRUE)) {
 ##'  ## poplin object
@@ -77,13 +79,13 @@ setMethod(
 ##' Stekhoven D. J., & Buehlmann, P. (2012). MissForest - non-parametric missing
 ##' value imputation for mixed-type data. Bioinformatics, 28(1), 112-118.
 ##'
-##' @param x a matrix or \linkS4class{poplin} object.
-##' @param xin character specifying the name of data to retrieve from \code{x}
+##' @param x A matrix or \linkS4class{poplin} object.
+##' @param xin Character specifying the name of data to retrieve from \code{x}
 ##'   when \code{x} is a poplin object.
-##' @param xout character specifying the name of data to store in \code{x} when
+##' @param xout Character specifying the name of data to store in \code{x} when
 ##'   \code{x} is a poplin object.
-##' @param ... additional arguments passed to \link[missForest]{missForest}.
-##' @return a matrix or \linkS4class{poplin} object of the same dimension as
+##' @param ... Additional arguments passed to \link[missForest]{missForest}.
+##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the imputed intensities.
 ##' @name impute_randomforest
 ##' @aliases
@@ -92,6 +94,8 @@ setMethod(
 ##' impute_randomforest,poplin-method
 ##' @family imputation methods
 ##' @examples
+##'
+##' data(faahko_poplin)
 ##'
 ##' if (requireNamespace("missForest", quietly = TRUE)) {
 ##'   ## poplin object
@@ -133,15 +137,15 @@ setMethod(
 ##' Gower, J. C. (1971). A General Coefficient of Similarity and Some of Its
 ##' Properties. Biometrics, 27(4), 857–871. https://doi.org/10.2307/2528823
 ##'
-##' @param x a matrix or \linkS4class{poplin} object.
-##' @param xin character specifying the name of data to retrieve from \code{x}
+##' @param x A matrix or \linkS4class{poplin} object.
+##' @param xin Character specifying the name of data to retrieve from \code{x}
 ##'   when \code{x} is a poplin object.
-##' @param xout character specifying the name of data to store in \code{x} when
+##' @param xout Character specifying the name of data to store in \code{x} when
 ##'   \code{x} is a poplin object.
-##' @param by character controlling whether the imputation is performed by
+##' @param by Character controlling whether the imputation is performed by
 ##'   k-nearest features or by k-nearest samples. Either "feature" or "sample".
-##' @param ... additional arguments passed to \link[VIM]{kNN}.
-##' @return a matrix or \linkS4class{poplin} object of the same dimension as
+##' @param ... Additional arguments passed to \link[VIM]{kNN}.
+##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the imputed intensities.
 ##' @name impute_knn
 ##' @aliases
@@ -150,6 +154,9 @@ setMethod(
 ##' impute_knn,poplin-method
 ##' @family imputation methods
 ##' @examples
+##'
+##' data(faahko_poplin)
+##' 
 ##' if (requireNamespace("VIM", quietly = TRUE)) {
 ##'   ## poplin object
 ##'   impute_knn(faahko_poplin, xin = "raw", xout = "knn")
@@ -192,14 +199,14 @@ setMethod(
 ##' pcaMethods -- a Bioconductor package providing PCA methods for incomplete
 ##' data. Bioinformatics, 2007, 23, 1164-1167
 ##'
-##' @param x a matrix or \linkS4class{poplin} object.
-##' @param xin character specifying the name of data to retrieve from \code{x}
+##' @param x A matrix or \linkS4class{poplin} object.
+##' @param xin Character specifying the name of data to retrieve from \code{x}
 ##'   when \code{x} is a poplin object.
-##' @param xout character specifying the name of data to store in \code{x} when
+##' @param xout Character specifying the name of data to store in \code{x} when
 ##'   \code{x} is a poplin object.
-##' @param type the method to perform PCA.
-##' @param ... additional arguments passed to \link[pcaMethods]{pca}.
-##' @return a matrix or \linkS4class{poplin} object of the same dimension as
+##' @param type The method to perform PCA.
+##' @param ... Additional arguments passed to \link[pcaMethods]{pca}.
+##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the imputed intensities.
 ##' @name impute_pca
 ##' @aliases
@@ -208,6 +215,8 @@ setMethod(
 ##' impute_pca,poplin-method
 ##' @family imputation methods
 ##' @examples
+##'
+##' data(faahko_poplin)
 ##'
 ##' if (requireNamespace("pcaMethods", quietly = TRUE)) {
 ##'   ## poplin object
@@ -250,18 +259,19 @@ setMethod(
 ##' \item Mean imputation: for each feature, missing values are replaced with
 ##' the mean of non-missing values.
 ##' }
+##' 
 ##' @references
 ##' Wei, R., Wang, J., Su, M. et al. Missing Value Imputation Approach for Mass
 ##' Spectrometry-based Metabolomics Data. Sci Rep 8, 663 (2018).
 ##' https://doi.org/10.1038/s41598-017-19120-0
 ##'
-##' @param x a matrix or \linkS4class{poplin} object.
-##' @param xin character specifying the name of data to retrieve from \code{x}
+##' @param x A matrix or \linkS4class{poplin} object.
+##' @param xin Character specifying the name of data to retrieve from \code{x}
 ##'   when \code{x} is a poplin object.
-##' @param xout character specifying the name of data to store in \code{x} when
+##' @param xout Character specifying the name of data to store in \code{x} when
 ##'   \code{x} is a poplin object.
-##' @param type character specifying the method for univariate imputation.
-##' @return a matrix or \linkS4class{poplin} object of the same dimension as
+##' @param type Character specifying the method for univariate imputation.
+##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the imputed intensities.
 ##' @name impute_univariate
 ##' @aliases
@@ -270,6 +280,8 @@ setMethod(
 ##' impute_univariate,poplin-method
 ##' @family imputation methods
 ##' @examples
+##'
+##' data(faahko_poplin)
 ##' 
 ##' ## poplin object
 ##' impute_univariate(faahko_poplin, xin = "raw", xout = "halfmin",

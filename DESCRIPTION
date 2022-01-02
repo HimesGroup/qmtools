@@ -1,6 +1,6 @@
 Package: poplin
 Title: Reproducible analysis of metabolomics data
-Version: 0.0.0.9000
+Version: 0.9.0
 Authors@R: 
     person(given = "Jaehyun",
            family = "Joo",
@@ -9,10 +9,15 @@ Authors@R:
 Description: This is a LC/MS data processing package.
 License: GPL (>= 3)
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 biocViews:
+    Software,
+    Metabolomics,
+    MassSpectrometry,
+    DataRepresentation,
+    Preprocessing,
+    Normalization
 Imports: 
     BiocGenerics,
     rlang,
@@ -33,6 +38,6 @@ Suggests:
     pls,
     testthat (>= 3.0.0)
 Depends: 
-    R (>= 3.6.0),
+    R (>= 4.0),
     SummarizedExperiment
 Config/testthat/edition: 3

@@ -3,31 +3,34 @@
 ##' Visualize correlations between samples or features. All values in a
 ##' correlation matrix are visualized by rectangles.
 ##'
-##' @param x a matrix or \linkS4class{poplin} object.
-##' @param xin character specifying the name of data to retrieve from \code{x}
+##' @param x A matrix or \linkS4class{poplin} object.
+##' @param xin Character specifying the name of data to retrieve from \code{x}
 ##'   when \code{x} is a poplin object.
-##' @param unit character specifying whether a correlation matrix is
+##' @param unit Character specifying whether a correlation matrix is
 ##'   computed based on samples or features.
-##' @param use the method to compute correlations in the presence of missing
+##' @param use The method to compute correlations in the presence of missing
 ##'   values. Refer to \code{?cor} for details.
 ##' @param method character specifying which correlation coefficient is
 ##'   to be computed. Refer to \code{?cor} for details.
-##' @param widths relative widths of heatmap and dendrogram.
-##' @param heights relative heights of heatmap and dendrogram.
-##' @param colors a vector of colors for heatmap.
-##' @param label logical controlling whether cell values are shown.
-##' @param digits the desired number of digits when \code{label = TRUE}.
-##' @param grid_gap numeric specifying the gap between cells.
-##' @param hide_colorbar logical controlling whether the color bar (legend) is
+##' @param widths Relative widths of heatmap and dendrogram.
+##' @param heights Relative heights of heatmap and dendrogram.
+##' @param colors A vector of colors for heatmap.
+##' @param label Logical controlling whether cell values are shown.
+##' @param digits The desired number of digits when \code{label = TRUE}.
+##' @param grid_gap Numeric specifying the gap between cells.
+##' @param hide_colorbar Logical controlling whether the color bar (legend) is
 ##'   hidden.
-##' @param showticklabels a logical vector of length 2 (x-axis, y-axis). If
+##' @param showticklabels A logical vector of length 2 (x-axis, y-axis). If
 ##'   \code{FALSE}, the ticks are removed from the sides of the plot.
-##' @param row_dend_left logical controlling whether the row dendrogram is
+##' @param row_dend_left Logical controlling whether the row dendrogram is
 ##'   placed on the left on the plot.
-##' @param ... additional arguments passed to [heatmaply::heatmaply].
-##' @return gtable of aligned plots.
+##' @param ... Additional arguments passed to \link[heatmaply]{heatmaply}
+##'   (\pkg{heatmaply} package).
+##' @return A gtable of aligned plots.
 ##' @name poplin_corplot
 ##' @examples
+##'
+##' data(faahko_poplin)
 ##'
 ##' ## poplin object
 ##' poplin_corplot(faahko_poplin, xin = "knn_cyclic")
@@ -46,18 +49,20 @@ poplin_corplot <- function(x, ...) {
 ##' @rdname poplin_corplot
 ##' @export
 poplin_corplot.default <- function(x, unit = c("sample", "feature"),
-                     use = c("everything", "all.obs", "complete.obs",
-                             "na.or.complete", "pairwise.complete.obs"),
-                     method = c("pearson", "kendall", "spearman"),
-                     widths = NULL, heights = NULL,
-                     colors = viridis::viridis(n = 256, alpha = 1,
-                                               begin = 0, end = 1,
-                                               option = "viridis"),
-                     label = FALSE, digits = 2,
-                     grid_gap = 0,
-                     hide_colorbar = FALSE,
-                     showticklabels = c(TRUE, TRUE),
-                     row_dend_left = FALSE, ...) {
+                                   use = c("everything", "all.obs",
+                                           "complete.obs", "na.or.complete",
+                                           "pairwise.complete.obs"),
+                                   method = c("pearson", "kendall", "spearman"),
+                                   widths = NULL, heights = NULL,
+                                   colors = viridis::viridis(
+                                                       n = 256, alpha = 1,
+                                                       begin = 0, end = 1,
+                                                       option = "viridis"
+                                                     ),
+                                   label = FALSE, digits = 2,
+                                   grid_gap = 0, hide_colorbar = FALSE,
+                                   showticklabels = c(TRUE, TRUE),
+                                   row_dend_left = FALSE, ...) {
   unit <- match.arg(unit)
   use <- match.arg(use)
   method <- match.arg(method)

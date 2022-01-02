@@ -19,25 +19,26 @@
 )
 }
 \arguments{
-\item{x}{a matrix or \linkS4class{poplin} object.}
+\item{x}{A matrix or \linkS4class{poplin} object.}
 
-\item{method}{the dimension reduction method to be used, defaulting to "pca".}
+\item{method}{The dimension reduction method to be used, defaulting to
+"pca".}
 
-\item{y}{a factor vector for discrete outcome required for PLS-DA. Ignored
+\item{y}{A factor vector for discrete outcome required for PLS-DA. Ignored
 otherwise.}
 
-\item{ncomp}{output dimensionality.}
+\item{ncomp}{Output dimensionality.}
 
-\item{...}{argument passed to a specific dimension reduction method.}
+\item{...}{Argument passed to a specific dimension reduction method.}
 
-\item{xin}{character specifying the name of data to retrieve from \code{x}
+\item{xin}{Character specifying the name of data to retrieve from \code{x}
 when \code{x} is a poplin object.}
 
 \item{xout}{character specifying the name of data to store in \code{x} when
 \code{x} is a poplin object.}
 }
 \value{
-a matrix or \linkS4class{poplin} object with the same number of
+A matrix or \linkS4class{poplin} object with the same number of
 rows as \code{ncol(x)} containing the dimension reduction result.
 }
 \description{
@@ -57,6 +58,8 @@ t-distributed stochastic neighbor embedding
 }
 }
 \examples{
+
+data(faahko_poplin)
 
 ## poplin object
 out <- poplin_reduce(faahko_poplin, method = "pca",

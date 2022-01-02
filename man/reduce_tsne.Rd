@@ -11,28 +11,24 @@
 \S4method{reduce_tsne}{poplin}(x, xin, xout, ncomp = 2, normalize = TRUE, ...)
 }
 \arguments{
-\item{x}{a matrix or \linkS4class{poplin} object.}
+\item{x}{A matrix or \linkS4class{poplin} object.}
 
-\item{ncomp}{output dimensionality.}
+\item{ncomp}{Output dimensionality.}
 
-\item{normalize}{logical controlling whether the input matrix is
+\item{normalize}{Logical controlling whether the input matrix is
 mean-centered and scaled so that the largest absolute of the centered
 matrix is equal to unity. See \link[Rtsne]{normalize_input} for details.}
 
-\item{...}{additional arguments passed to \link[Rtsne]{Rtsne}.}
+\item{...}{Additional arguments passed to \link[Rtsne]{Rtsne}.}
 
 \item{xin}{character specifying the name of data to retrieve from \code{x}
 when \code{x} is a poplin object.}
 
-\item{xout}{character specifying the name of data to store in \code{x} when
+\item{xout}{Character specifying the name of data to store in \code{x} when
 \code{x} is a poplin object.}
 }
 \value{
-a poplin.tsne matrix or \linkS4class{poplin} object with the same
-number of rows as \code{ncol(x)} containing the dimension reduction
-result.
-
-a poplin.tsne or \linkS4class{poplin} object with the same number of
+A poplin.tsne or \linkS4class{poplin} object with the same number of
 rows as \code{ncol(x)} containing the dimension reduction result.
 poplin.tsne is a matrix containing custom attributes used to summarize and
 visualize the t-SNE result.
@@ -44,6 +40,8 @@ well-suited for visualizing high-dimensional data by giving each data point
 a location in a two or three-dimensional map.
 }
 \examples{
+
+data(faahko_poplin)
 
 if (requireNamespace("Rtsne", quietly = TRUE)) {
   ## poplin object

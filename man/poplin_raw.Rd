@@ -41,10 +41,17 @@ is an alias of \code{assays(x)}. }
 \code{i}-th element of raw intensity data sets. It is a convenient
 alternative to \code{poplin_raw_list(x)[[i]]}. \code{value} must be a matrix
 with the same dimension as \code{x}. If \code{i} is missing, the first entry
-is retrieved or replaced. This is an alias of \code{assay(x, i)}.
-}
+is retrieved or replaced. This is an alias of \code{assay(x, i)}. }
 
 }
+}
+\examples{
+data(faahko_poplin)
+poplin_raw_list(faahko_poplin)
+poplin_raw_names(faahko_poplin)
+poplin_raw(faahko_poplin)
+poplin_raw(faahko_poplin, 2)
+poplin_raw(faahko_poplin, "raw")
 }
 \seealso{
 \link{poplin_data}, \link{poplin_reduced}

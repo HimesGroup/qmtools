@@ -29,14 +29,14 @@
 ##' feature-based scaling (e.g., auto, range, pareto, vast, level)
 ##' }
 ##' }
-##' @param x a matrix or \linkS4class{poplin} object.
-##' @param method the normalization method to be used, defaulting to "pqn".
-##' @param xin character specifying the name of data to retrieve from \code{x}
+##' @param x A matrix or \linkS4class{poplin} object.
+##' @param method The normalization method to be used, defaulting to "pqn".
+##' @param xin Character specifying the name of data to retrieve from \code{x}
 ##'   when \code{x} is a poplin object.
-##' @param xout character specifying the name of data to store in \code{x} when
+##' @param xout Character specifying the name of data to store in \code{x} when
 ##'   \code{x} is a poplin object.
-##' @param ... arguments passed to a specific normalization method.
-##' @return a matrix or \linkS4class{poplin} object of the same dimension as
+##' @param ... Arguments passed to a specific normalization method.
+##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
 ##' @name poplin_normalize
 ##' @aliases
@@ -45,10 +45,13 @@
 ##' poplin_normalize,poplin-method
 ##' @family normalization methods
 ##' @examples
-##' 
+##'
+##' data(faahko_poplin)
+##'
 ##' ## poplin object
-##' poplin_normalize(faahko_poplin, method = "pqn", xin = "knn", xout = "knn_pqn")
-##' 
+##' poplin_normalize(faahko_poplin, method = "pqn",
+##'                  xin = "knn", xout = "knn_pqn")
+##'
 ##' ## matrix
 ##' m <- poplin_data(faahko_poplin, "knn")
 ##' poplin_normalize(m)
@@ -83,22 +86,22 @@ setMethod(
 ##' normalized by the median of quotients. See Dieterle et al. (2006) for
 ##' details.
 ##'
-##' @param x a matrix or \linkS4class{poplin} object.
-##' @param xin character specifying the name of data to retrieve from \code{x}
+##' @param x A matrix or \linkS4class{poplin} object.
+##' @param xin Character specifying the name of data to retrieve from \code{x}
 ##'   when \code{x} is a poplin object.
-##' @param xout character specifying the name of data to store in \code{x} when
+##' @param xout Character specifying the name of data to store in \code{x} when
 ##'   \code{x} is a poplin object.
-##' @param ref_samples a vector of sample names or indices to specify reference
+##' @param ref_samples A vector of sample names or indices to specify reference
 ##'   samples for the calculation of quotients. Must be a subset of
 ##'   \code{colnames(x)} if it is a character vector. If \code{NULL}, all
 ##'   samples are used.
-##' @param min_frac a minimum proportion of reference samples for features to be
+##' @param min_frac A minimum proportion of reference samples for features to be
 ##'   considered in the calculation of a reference spectrum, between 0 and 1.
 ##'   For \code{min_frac = 1}, all reference samples should have non-missing
 ##'   values for the features to be included.
-##' @param type a method to compute a reference spectrum. Either "mean" or
+##' @param type A method to compute a reference spectrum. Either "mean" or
 ##'   "median".
-##' @return a matrix or \linkS4class{poplin} object of the same dimension as
+##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
 ##' @references
 ##' Dieterle F, Ross A, Schlotterbeck G, Senn H. Probabilistic quotient
@@ -112,6 +115,8 @@ setMethod(
 ##' normalize_pqn,poplin-method
 ##' @family normalization methods
 ##' @examples
+##'
+##' data(faahko_poplin)
 ##' 
 ##' ## poplin object
 ##' normalize_pqn(faahko_poplin, xin = "knn", xout = "knn_pqn")
@@ -146,17 +151,17 @@ setMethod(
 ##' Apply sum normalization to a matrix or \linkS4class{poplin} object. For each
 ##' sample, feature intensities are divided by the sum of all intensity values.
 ##'
-##' @param x a matrix or \linkS4class{poplin} object.
-##' @param xin character specifying the name of data to retrieve from \code{x}
+##' @param x A matrix or \linkS4class{poplin} object.
+##' @param xin Character specifying the name of data to retrieve from \code{x}
 ##'   when \code{x} is a poplin object.
-##' @param xout character specifying the name of data to store in \code{x} when
+##' @param xout Character specifying the name of data to store in \code{x} when
 ##'   \code{x} is a poplin object.
-##' @param restrict logical controlling whether any feature with missing values
+##' @param restrict Logical controlling whether any feature with missing values
 ##'   is excluded from the calculation of normalization factors.
-##' @param rescale logical controlling whether the normalized intensities are
+##' @param rescale Logical controlling whether the normalized intensities are
 ##'   multiplied by the median of normalization factors to make look similar to
 ##'   their original scales.
-##' @return a matrix or \linkS4class{poplin} object of the same dimension as
+##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
 ##' @name normalize_sum
 ##' @aliases
@@ -165,6 +170,8 @@ setMethod(
 ##' normalize_sum,poplin-method
 ##' @family normalization methods
 ##' @examples
+##'
+##' data(faahko_poplin)
 ##' 
 ##' ## poplin object
 ##' normalize_sum(faahko_poplin, xin = "knn", xout = "knn_sum")
@@ -197,17 +204,17 @@ setMethod(
 ##' each sample, feature intensities are divided by its mean. The mean of
 ##' intensity values for individual samples will be one as a result.
 ##'
-##' @param x a matrix or \linkS4class{poplin} object.
-##' @param xin character specifying the name of data to retrieve from \code{x}
+##' @param x A matrix or \linkS4class{poplin} object.
+##' @param xin Character specifying the name of data to retrieve from \code{x}
 ##'   when \code{x} is a poplin object.
-##' @param xout character specifying the name of data to store in \code{x} when
+##' @param xout Character specifying the name of data to store in \code{x} when
 ##'   \code{x} is a poplin object.
-##' @param restrict logical controlling whether any feature with missing values
+##' @param restrict Logical controlling whether any feature with missing values
 ##'   is excluded from the calculation of normalization factors.
-##' @param rescale logical controlling whether the normalized intensities are
+##' @param rescale Logical controlling whether the normalized intensities are
 ##'   multiplied by the median of normalization factors to make look similar to
 ##'   their original scales.
-##' @return a matrix or \linkS4class{poplin} object of the same dimension as
+##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
 ##' @name normalize_mean
 ##' @aliases
@@ -216,6 +223,9 @@ setMethod(
 ##' normalize_mean,poplin-method
 ##' @family normalization methods
 ##' @examples
+##' 
+##' data(faahko_poplin)
+##' 
 ##' ## poplin object
 ##' normalize_mean(faahko_poplin, xin = "knn", xout = "knn_mean")
 ##'
@@ -247,17 +257,17 @@ setMethod(
 ##' each sample, feature intensities are divided by its median. The median of
 ##' intensity values for individual samples will be one as a result.
 ##'
-##' @param x a matrix or \linkS4class{poplin} object.
-##' @param xin character specifying the name of data to retrieve from \code{x}
+##' @param x A matrix or \linkS4class{poplin} object.
+##' @param xin Character specifying the name of data to retrieve from \code{x}
 ##'   when \code{x} is a poplin object.
-##' @param xout character specifying the name of data to store in \code{x} when
+##' @param xout Character specifying the name of data to store in \code{x} when
 ##'   \code{x} is a poplin object.
-##' @param restrict logical controlling whether any feature with missing values
+##' @param restrict Logical controlling whether any feature with missing values
 ##'   is excluded from the calculation of normalization factors.
-##' @param rescale logical controlling whether the normalized intensities are
+##' @param rescale Logical controlling whether the normalized intensities are
 ##'   multiplied by the median of normalization factors to make look similar to
 ##'   their original scales.
-##' @return a matrix or \linkS4class{poplin} object of the same dimension as
+##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
 ##' @name normalize_median
 ##' @aliases
@@ -266,6 +276,9 @@ setMethod(
 ##' normalize_median,poplin-method
 ##' @family normalization methods
 ##' @examples
+##' 
+##' data(faahko_poplin)
+##' 
 ##' ## poplin object
 ##' normalize_median(faahko_poplin, xin = "knn", xout = "knn_med")
 ##'
@@ -297,17 +310,17 @@ setMethod(
 ##' \linkS4class{poplin} object. For each sample, feature intensities are
 ##' divided by its MAD.
 ##'
-##' @param x a matrix or \linkS4class{poplin} object.
-##' @param xin character specifying the name of data to retrieve from \code{x}
+##' @param x A matrix or \linkS4class{poplin} object.
+##' @param xin Character specifying the name of data to retrieve from \code{x}
 ##'   when \code{x} is a poplin object.
-##' @param xout character specifying the name of data to store in \code{x} when
+##' @param xout Character specifying the name of data to store in \code{x} when
 ##'   \code{x} is a poplin object.
-##' @param restrict logical controlling whether any feature with missing values
+##' @param restrict Logical controlling whether any feature with missing values
 ##'   is excluded from the calculation of normalization factors.
-##' @param rescale logical controlling whether the normalized intensities are
+##' @param rescale Logical controlling whether the normalized intensities are
 ##'   multiplied by the median of normalization factors to make look similar to
 ##'   their original scales.
-##' @return a matrix or \linkS4class{poplin} object of the same dimension as
+##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
 ##' @name normalize_mad
 ##' @aliases
@@ -316,6 +329,9 @@ setMethod(
 ##' normalize_mad,poplin-method
 ##' @family normalization methods
 ##' @examples
+##'
+##' data(faahko_poplin)
+##' 
 ##' ## poplin object
 ##' normalize_mad(faahko_poplin, xin = "knn", xout = "knn_mad")
 ##'
@@ -344,23 +360,23 @@ setMethod(
 ##' Cyclic LOESS normalization
 ##'
 ##' Apply Cyclic LOESS normalization to a matrix or \linkS4class{poplin} object.
-##' This is an interface to the [limma::normalizeCyclicLoess] from the
+##' This is an interface to the \link[limma]{normalizeCyclicLoess} from the
 ##' \pkg{limma} package. The input \code{x} is expected to contain
 ##' log-transformed raw intensities. See Bolstad et al. (2003) and Ballman et
 ##' al. (2004) for details.
 ##'
-##' @param x a matrix or \linkS4class{poplin} object.
-##' @param xin character specifying the name of data to retrieve from \code{x}
+##' @param x A matrix or \linkS4class{poplin} object.
+##' @param xin Character specifying the name of data to retrieve from \code{x}
 ##'   when \code{x} is a poplin object.
-##' @param xout character specifying the name of data to store in \code{x} when
+##' @param xout Character specifying the name of data to store in \code{x} when
 ##'   \code{x} is a poplin object.
-##' @param pre_log2 logical controlling whether feature intensities are
+##' @param pre_log2 Logical controlling whether feature intensities are
 ##'   log2-transformed before normalization.
-##' @param type character specifying which variant of the cyclic LOESS
+##' @param type Character specifying which variant of the cyclic LOESS
 ##'   method to use.
-##' @param span span of LOESS smoothing window, between 0 and 1.
-##' @param iterations number of times to cycle through all pairs of columns.
-##' @return a matrix or \linkS4class{poplin} object of the same dimension as
+##' @param span Span of LOESS smoothing window, between 0 and 1.
+##' @param iterations Number of times to cycle through all pairs of columns.
+##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
 ##' @references
 ##' Ritchie ME, Phipson B, Wu D, Hu Y, Law CW, Shi W, Smyth GK. limma powers
@@ -385,6 +401,8 @@ setMethod(
 ##' @family normalization methods
 ##' @examples
 ##'
+##' data(faahko_poplin)
+##'
 ##' if (requireNamespace("limma", quietly = TRUE)) {
 ##'   ## poplin object
 ##'   normalize_cyclicloess(faahko_poplin, xin = "knn", xout = "knn_cyclic",
@@ -396,7 +414,7 @@ setMethod(
 setMethod(
   "normalize_cyclicloess",
   "matrix",
-  function(x, pre_log2 = TRUE, type = c("fast", "affy", "pairs"),
+  function(x, pre_log2, type = c("fast", "affy", "pairs"),
            span = 0.7, iterations = 3) {
     .normalize_cyclicloess(x, pre_log2 = pre_log2, type = type,
                            span = span, iterations = iterations,
@@ -408,7 +426,7 @@ setMethod(
 setMethod(
   "normalize_cyclicloess",
   "poplin",
-  function(x, xin, xout, pre_log2 = TRUE,
+  function(x, xin, xout, pre_log2,
            type = c("fast", "affy", "pairs"), span = 0.7, iterations = 3) {
     .poplin_extract_and_assign(x, .normalize_cyclicloess,
                                xin, xout,
@@ -422,10 +440,10 @@ setMethod(
 ##'
 ##' Apply variance stabilizing normalization (VSN) to a matrix or
 ##' \linkS4class{poplin} object. This is an interface to the
-##' \link[vsn]{vsnMatrix} function from the \pkg{vsn} package (see [vsn::vsn2]
-##' for help). The vsn produces normalized intensities based on a glog
-##' (generalized logarithm) scale to base 2. See Huber et al. (2002) for
-##' details.
+##' \link[vsn]{vsnMatrix} function from the \pkg{vsn} package (see the
+##' \code{vsn2} function for help). The vsn produces normalized intensities
+##' based on a glog (generalized logarithm) scale to base 2. See Huber et al.
+##' (2002) for details.
 ##'
 ##' @references
 ##' Huber W, von Heydebreck A, Sültmann H, Poustka A, Vingron M. Variance
@@ -433,16 +451,16 @@ setMethod(
 ##' quantification of differential expression. Bioinformatics. 2002;18 Suppl
 ##' 1:S96-104. doi: 10.1093/bioinformatics/18.suppl_1.s96. PMID: 12169536.
 ##' 
-##' @param x a matrix or \linkS4class{poplin} object.
-##' @param xin character specifying the name of data to retrieve from \code{x}
+##' @param x A matrix or \linkS4class{poplin} object.
+##' @param xin Character specifying the name of data to retrieve from \code{x}
 ##'   when \code{x} is a poplin object.
-##' @param xout character specifying the name of data to store in \code{x} when
+##' @param xout Character specifying the name of data to store in \code{x} when
 ##'   \code{x} is a poplin object.
 ##' @param meanSdPlot Logical controlling whether the function displays
 ##'   \link[vsn]{meanSdPlot} from the \pkg{vsn} package to visually check a
 ##'   dependence of the standard deviation on the mean.
-##' @param ... additional arguments passed to \link[vsn]{vsnMatrix}.
-##' @return a matrix or \linkS4class{poplin} object of the same dimension as
+##' @param ... Additional arguments passed to \link[vsn]{vsnMatrix}.
+##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
 ##' @name normalize_vsn
 ##' @aliases
@@ -450,6 +468,18 @@ setMethod(
 ##' normalize_vsn,matrix-method
 ##' normalize_vsn,poplin-method
 ##' @family normalization methods
+##' @examples
+##'
+##' data(faahko_poplin)
+##' 
+##' if (requireNamespace("vsn", quietly = TRUE)) {
+##'   ## poplin object
+##'   normalize_vsn(faahko_poplin, xin = "knn", xout = "knn_vsn")
+##' 
+##'   ## matrix
+##'   m <- poplin_data(faahko_poplin, "knn")
+##'   normalize_vsn(m)
+##' }
 setMethod(
   "normalize_vsn",
   "matrix",
@@ -477,8 +507,8 @@ setMethod(
 ##' \item Auto scaling (unit variance scaling): each feature is scaled by its
 ##' standard deviation.
 ##' \item Range scaling: each feature is scaled by its range.
-##' \item Pareto scaling: each feature is scaled by the square root of its standard
-##' deviation.
+##' \item Pareto scaling: each feature is scaled by the square root of its
+##' standard deviation.
 ##' \item Vast scaling (variance stability scaling): it is an extension of auto
 ##' scaling, using the product of standard deviation and coefficient of
 ##' variation as a scaling factor.
@@ -493,13 +523,13 @@ setMethod(
 ##' information content of metabolomics data. BMC Genomics. 2006 Jun 8;7:142.
 ##' doi: 10.1186/1471-2164-7-142. PMID: 16762068; PMCID: PMC1534033.
 ##' 
-##' @param x a matrix or \linkS4class{poplin} object.
-##' @param xin character specifying the name of data to retrieve from \code{x}
+##' @param x A matrix or \linkS4class{poplin} object.
+##' @param xin Character specifying the name of data to retrieve from \code{x}
 ##'   when \code{x} is a poplin object.
-##' @param xout character specifying the name of data to store in \code{x} when
+##' @param xout Character specifying the name of data to store in \code{x} when
 ##'   \code{x} is a poplin object.
-##' @param type the scaling method to be applied.
-##' @return a matrix or \linkS4class{poplin} object of the same dimension as
+##' @param type The scaling method to be applied.
+##' @return A matrix or \linkS4class{poplin} object of the same dimension as
 ##'   \code{x} containing the normalized intensities.
 ##' @name normalize_scale
 ##' @aliases
@@ -508,9 +538,12 @@ setMethod(
 ##' normalize_scale,poplin-method
 ##' @family normalization methods
 ##' @examples
+##'
+##' data(faahko_poplin)
 ##' 
 ##' ## poplin object
-##' normalize_scale(faahko_poplin, xin = "knn", xout = "knn_auto", type = "auto")
+##' normalize_scale(faahko_poplin, xin = "knn", xout = "knn_auto",
+##'                 type = "auto")
 ##'
 ##' ## matrix
 ##' m <- poplin_data(faahko_poplin, "knn")

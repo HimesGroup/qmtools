@@ -11,30 +11,44 @@
 \S4method{normalize_vsn}{poplin}(x, xin, xout, meanSdPlot = FALSE, ...)
 }
 \arguments{
-\item{x}{a matrix or \linkS4class{poplin} object.}
+\item{x}{A matrix or \linkS4class{poplin} object.}
 
 \item{meanSdPlot}{Logical controlling whether the function displays
 \link[vsn]{meanSdPlot} from the \pkg{vsn} package to visually check a
 dependence of the standard deviation on the mean.}
 
-\item{...}{additional arguments passed to \link[vsn:vsn2]{vsn::vsnMatrix}.}
+\item{...}{Additional arguments passed to \link[vsn]{vsnMatrix}.}
 
-\item{xin}{character specifying the name of data to retrieve from \code{x}
+\item{xin}{Character specifying the name of data to retrieve from \code{x}
 when \code{x} is a poplin object.}
 
-\item{xout}{character specifying the name of data to store in \code{x} when
+\item{xout}{Character specifying the name of data to store in \code{x} when
 \code{x} is a poplin object.}
 }
 \value{
-a matrix or \linkS4class{poplin} object of the same dimension as
+A matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the normalized intensities.
 }
 \description{
 Apply variance stabilizing normalization (VSN) to a matrix or
-\linkS4class{poplin} object. This is an interface to the \link[vsn:vsn2]{vsn::vsnMatrix}
-from the \pkg{vsn} package (see \link[vsn:vsn2]{vsn::vsn2} for help). The vsn produces
-normalized intensities based on a glog (generalized logarithm) scale to base
-2. See Huber et al. (2002) for details.
+\linkS4class{poplin} object. This is an interface to the
+\link[vsn]{vsnMatrix} function from the \pkg{vsn} package (see the
+\code{vsn2} function for help). The vsn produces normalized intensities
+based on a glog (generalized logarithm) scale to base 2. See Huber et al.
+(2002) for details.
+}
+\examples{
+
+data(faahko_poplin)
+
+if (requireNamespace("vsn", quietly = TRUE)) {
+  ## poplin object
+  normalize_vsn(faahko_poplin, xin = "knn", xout = "knn_vsn")
+
+  ## matrix
+  m <- poplin_data(faahko_poplin, "knn")
+  normalize_vsn(m)
+}
 }
 \references{
 Huber W, von Heydebreck A, Sültmann H, Poustka A, Vingron M. Variance

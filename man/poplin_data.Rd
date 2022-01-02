@@ -34,9 +34,9 @@ In the code snippets below, \code{x} is a \linkS4class{poplin} object.
 Return the names of all processed data sets.
 }
 \item{\code{poplin_data_list(x, type)}:}{
-Retrieves a named \linkS4class{List} of matrices containing one or more
-data processing results. Each entry is a matrix with the same dimension of raw
-feature data in \code{assay(x)}.
+Retrieves a named \linkS4class{List} of matrices containing one or more data
+processing results. Each entry is a matrix with the same dimension of raw
+feature data in \code{poplin_raw_list(x)}.
 }
 \item{\code{poplin_data(x, type)}:}{
 Retrieves a matrix of data processing result. \code{type} is either a
@@ -76,6 +76,14 @@ be removed.
 }
 }
 
+\examples{
+data(faahko_poplin)
+poplin_data_list(faahko_poplin)
+poplin_data_names(faahko_poplin)
+poplin_data(faahko_poplin)
+poplin_data(faahko_poplin, 2)
+poplin_data(faahko_poplin, "knn")
+}
 \seealso{
 \link{poplin_raw}, \link{poplin_reduced}
 }

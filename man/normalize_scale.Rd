@@ -16,18 +16,18 @@
 )
 }
 \arguments{
-\item{x}{a matrix or \linkS4class{poplin} object.}
+\item{x}{A matrix or \linkS4class{poplin} object.}
 
-\item{type}{the scaling method to be applied.}
+\item{type}{The scaling method to be applied.}
 
-\item{xin}{character specifying the name of data to retrieve from \code{x}
+\item{xin}{Character specifying the name of data to retrieve from \code{x}
 when \code{x} is a poplin object.}
 
-\item{xout}{character specifying the name of data to store in \code{x} when
+\item{xout}{Character specifying the name of data to store in \code{x} when
 \code{x} is a poplin object.}
 }
 \value{
-a matrix or \linkS4class{poplin} object of the same dimension as
+A matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the normalized intensities.
 }
 \description{
@@ -37,8 +37,8 @@ supported methods include
 \item Auto scaling (unit variance scaling): each feature is scaled by its
 standard deviation.
 \item Range scaling: each feature is scaled by its range.
-\item Pareto scaling: each feature is scaled by the square root of its standard
-deviation.
+\item Pareto scaling: each feature is scaled by the square root of its
+standard deviation.
 \item Vast scaling (variance stability scaling): it is an extension of auto
 scaling, using the product of standard deviation and coefficient of
 variation as a scaling factor.
@@ -49,8 +49,11 @@ et al. (2006) for details.
 }
 \examples{
 
+data(faahko_poplin)
+
 ## poplin object
-normalize_scale(faahko_poplin, xin = "knn", xout = "knn_auto", type = "auto")
+normalize_scale(faahko_poplin, xin = "knn", xout = "knn_auto",
+                type = "auto")
 
 ## matrix
 m <- poplin_data(faahko_poplin, "knn")

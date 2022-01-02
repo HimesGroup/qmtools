@@ -30,10 +30,11 @@ that all objects in ... must have the exact same values for
 \item{\code{cbind(..., deparse.level = 1)}:}{
 
 Take a sequence of poplin objects in \code{...} and combine by columns. Note
-that all objects in ... must have the same values of \code{poplin_reduced_names}.
-Dimension reduction results with the same name across the objects will be
-combined row-wise to create the corresponding entry in the output object.
-See \code{?cbind} for the interpretation of \code{deparse.level}.
+that all objects in ... must have the same values of
+\code{poplin_reduced_names}. Dimension reduction results with the same name
+across the objects will be combined row-wise to create the corresponding
+entry in the output object. See \code{?cbind} for the interpretation of
+\code{deparse.level}.
 
 }
 }

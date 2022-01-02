@@ -14,17 +14,18 @@
 ##' t-distributed stochastic neighbor embedding
 ##' }
 ##' }
-##' @param x a matrix or \linkS4class{poplin} object.
-##' @param method the dimension reduction method to be used, defaulting to "pca".
-##' @param xin character specifying the name of data to retrieve from \code{x}
+##' @param x A matrix or \linkS4class{poplin} object.
+##' @param method The dimension reduction method to be used, defaulting to
+##'   "pca".
+##' @param xin Character specifying the name of data to retrieve from \code{x}
 ##'   when \code{x} is a poplin object.
 ##' @param xout character specifying the name of data to store in \code{x} when
 ##'   \code{x} is a poplin object.
-##' @param y a factor vector for discrete outcome required for PLS-DA. Ignored
+##' @param y A factor vector for discrete outcome required for PLS-DA. Ignored
 ##'   otherwise.
-##' @param ncomp output dimensionality.
-##' @param ... argument passed to a specific dimension reduction method.
-##' @return a matrix or \linkS4class{poplin} object with the same number of
+##' @param ncomp Output dimensionality.
+##' @param ... Argument passed to a specific dimension reduction method.
+##' @return A matrix or \linkS4class{poplin} object with the same number of
 ##'   rows as \code{ncol(x)} containing the dimension reduction result.
 ##' @name poplin_reduce
 ##' @aliases
@@ -33,6 +34,8 @@
 ##' poplin_reduce,poplin-method
 ##' @family data reduction methods
 ##' @examples
+##'
+##' data(faahko_poplin)
 ##' 
 ##' ## poplin object
 ##' out <- poplin_reduce(faahko_poplin, method = "pca",
@@ -59,7 +62,7 @@ setMethod(
            y, ncomp = 2, ...) {
     m <- .verify_and_extract_input(x, xin)
     poplin_reduced(x, xout) <- .poplin_reduce(m, method = method, y = y,
-                                                    ncomp = ncomp, ...)
+                                              ncomp = ncomp, ...)
     x
   }
 )
@@ -79,16 +82,16 @@ setMethod(
 ##' iterative least squares. In P. R. Krishnajah (Ed.), Multivariate analysis
 ##' (pp. 391-420). NewYork: Academic Press.
 ##'
-##' @param x a matrix or \linkS4class{poplin} object.
-##' @param xin character specifying the name of data to retrieve from \code{x}
+##' @param x A matrix or \linkS4class{poplin} object.
+##' @param xin Character specifying the name of data to retrieve from \code{x}
 ##'   when \code{x} is a poplin object.
 ##' @param xout character specifying the name of data to store in \code{x} when
 ##'   \code{x} is a poplin object.
-##' @param ncomp output dimensionality.
-##' @param center logical indicating mean-centering prior to PCA.
-##' @param scale logical indicating unit variance scaling prior to PCA.
-##' @param ... additional arguments passed to \link[pcaMethods]{nipalsPca}.
-##' @return a poplin.pca or \linkS4class{poplin} object with the same number of
+##' @param ncomp Output dimensionality.
+##' @param center Logical indicating mean-centering prior to PCA.
+##' @param scale Logical indicating unit variance scaling prior to PCA.
+##' @param ... Additional arguments passed to \link[pcaMethods]{nipalsPca}.
+##' @return A poplin.pca or \linkS4class{poplin} object with the same number of
 ##'   rows as \code{ncol(x)} containing the dimension reduction result.
 ##'   poplin.pca is a matrix containing custom attributes used to summarize and
 ##'   visualize the PCA result.
@@ -99,6 +102,8 @@ setMethod(
 ##' reduce_pca,poplin-method
 ##' @family data reduction methods
 ##' @examples
+##'
+##' data(faahko_poplin)
 ##' 
 ##' ## poplin object
 ##' out <- reduce_pca(faahko_poplin, xin = "knn_cyclic", xout = "pca")
@@ -145,20 +150,17 @@ setMethod(
 ##' Jesse H. Krijthe (2015). Rtsne: T-Distributed Stochastic Neighbor Embedding
 ##' using a Barnes-Hut Implementation, URL: https://github.com/jkrijthe/Rtsne
 ##'
-##' @param x a matrix or \linkS4class{poplin} object.
+##' @param x A matrix or \linkS4class{poplin} object.
 ##' @param xin character specifying the name of data to retrieve from \code{x}
 ##'   when \code{x} is a poplin object.
-##' @param xout character specifying the name of data to store in \code{x} when
+##' @param xout Character specifying the name of data to store in \code{x} when
 ##'   \code{x} is a poplin object.
-##' @param ncomp output dimensionality.
-##' @param normalize logical controlling whether the input matrix is
+##' @param ncomp Output dimensionality.
+##' @param normalize Logical controlling whether the input matrix is
 ##'   mean-centered and scaled so that the largest absolute of the centered
 ##'   matrix is equal to unity. See \link[Rtsne]{normalize_input} for details.
-##' @param ... additional arguments passed to \link[Rtsne]{Rtsne}.
-##' @return a poplin.tsne matrix or \linkS4class{poplin} object with the same
-##'   number of rows as \code{ncol(x)} containing the dimension reduction
-##'   result.
-##' @return a poplin.tsne or \linkS4class{poplin} object with the same number of
+##' @param ... Additional arguments passed to \link[Rtsne]{Rtsne}.
+##' @return A poplin.tsne or \linkS4class{poplin} object with the same number of
 ##'   rows as \code{ncol(x)} containing the dimension reduction result.
 ##'   poplin.tsne is a matrix containing custom attributes used to summarize and
 ##'   visualize the t-SNE result.
@@ -169,6 +171,8 @@ setMethod(
 ##' reduce_tsne,poplin-method
 ##' @family data reduction methods
 ##' @examples
+##'
+##' data(faahko_poplin)
 ##' 
 ##' if (requireNamespace("Rtsne", quietly = TRUE)) {
 ##'   ## poplin object
@@ -211,17 +215,17 @@ setMethod(
 ##'  Partial Least Squares and Principal Component Regression. R package version
 ##'  2.8-0. https://CRAN.R-project.org/package=pls
 ##'
-##' @param x a matrix or \linkS4class{poplin} object.
+##' @param x A matrix or \linkS4class{poplin} object.
 ##' @param xin character specifying the name of data to retrieve from \code{x}
 ##'   when \code{x} is a poplin object.
 ##' @param xout character specifying the name of data to store in \code{x} when
 ##'   \code{x} is a poplin object.
-##' @param y a factor vector for discrete outcome.
+##' @param y A factor vector for discrete outcome.
 ##' @param ncomp output dimensionality.
-##' @param center logical indicating mean-centering prior to PLS-DA.
-##' @param scale logical indicating unit variance scaling prior to PLS-DA.
-##' @param ... additional arguments passed to \link[pls]{plsr}.
-##' @return a poplin.plsda or \linkS4class{poplin} object with the same number of
+##' @param center Logical indicating mean-centering prior to PLS-DA.
+##' @param scale Logical indicating unit variance scaling prior to PLS-DA.
+##' @param ... Additional arguments passed to \link[pls]{plsr}.
+##' @return A poplin.plsda or \linkS4class{poplin} object with the same number of
 ##'   rows as \code{ncol(x)} containing the dimension reduction result.
 ##'   poplin.plsda is a matrix containing custom attributes used to summarize and
 ##'   visualize the PLS-DA result.
@@ -232,13 +236,16 @@ setMethod(
 ##' reduce_plsda,poplin-method
 ##' @family data reduction methods
 ##' @examples
+##'
+##' data(faahko_poplin)
 ##' 
 ##' if (requireNamespace("pls", quietly = TRUE)) {
 ##'   ## response vector
 ##'   y <- factor(colData(faahko_poplin)$sample_group, levels = c("WT", "KO"))
 ##'
 ##'   ## poplin object
-##'   out <- reduce_plsda(faahko_poplin, xin = "knn_cyclic", xout = "plsda", y = y)
+##'   out <- reduce_plsda(faahko_poplin, xin = "knn_cyclic", xout = "plsda",
+##'                       y = y)
 ##'   summary(poplin_reduced(out, "plsda"))
 ##'
 ##'   ## matrix

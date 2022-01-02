@@ -3,10 +3,6 @@ setMethod("[", c("poplin", "ANY", "ANY"), function(x, i, j, ..., drop = TRUE) {
   if (!missing(i)) {
     ii <- .get_subset_index(i, rownames(x))
     poplinData(x) <- poplinData(x)[ii, , drop = FALSE]
-    ## if (length(reducedDataList(x)) != 0L) {
-    ##   message("Row-subsetting operation: 'poplinReduced' slot was reset.")
-    ## }
-    ## poplinReduced(x) <- new("DFrame", nrows = ncol(x))
   }
   if (!missing(j)) {
     jj <- .get_subset_index(j, colnames(x))
@@ -36,13 +32,12 @@ setReplaceMethod(
           }
         }, error=function(err) {
           stop(
-            "failed to replace 'poplinData' in '<", class(x), ">[i,] <- value'\n",
+            "failed to replace 'poplinData' in '<", class(x),
+            ">[i,] <- value'\n",
             conditionMessage(err))
         })
         poplinData(x) <- poplinData_left
       }
-      ## message("Row-subsetting operation: 'poplinReduced' slot was reset.")
-      ## poplinReduced(x) <- new("DFrame", nrows = ncol(x))
     }
 
     if (!missing(j)) {
@@ -56,7 +51,8 @@ setReplaceMethod(
           }
         }, error=function(err) {
           stop(
-            "failed to replace 'poplinData' in '<", class(x), ">[,j] <- value'\n",
+            "failed to replace 'poplinData' in '<", class(x),
+            ">[,j] <- value'\n",
             conditionMessage(err))
         })
       } else {
@@ -68,7 +64,8 @@ setReplaceMethod(
           }
         }, error=function(err) {
           stop(
-            "failed to replace 'poplinData' in '<", class(x), ">[,j] <- value'\n",
+            "failed to replace 'poplinData' in '<", class(x),
+            ">[,j] <- value'\n",
             conditionMessage(err))
         })
       }
@@ -81,7 +78,8 @@ setReplaceMethod(
         }
       }, error=function(err) {
         stop(
-          "failed to replace 'poplinReduced' in '<", class(x), ">[,j] <- value'\n",
+          "failed to replace 'poplinReduced' in '<", class(x),
+          ">[,j] <- value'\n",
           conditionMessage(err))
       })
 
@@ -89,4 +87,4 @@ setReplaceMethod(
       poplinReduced(x) <- poplinReduced_left
     }
     callNextMethod()
-})
+  })

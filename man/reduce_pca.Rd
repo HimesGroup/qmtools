@@ -11,24 +11,24 @@
 \S4method{reduce_pca}{poplin}(x, xin, xout, ncomp = 2, center = TRUE, scale = FALSE, ...)
 }
 \arguments{
-\item{x}{a matrix or \linkS4class{poplin} object.}
+\item{x}{A matrix or \linkS4class{poplin} object.}
 
-\item{ncomp}{output dimensionality.}
+\item{ncomp}{Output dimensionality.}
 
-\item{center}{logical indicating mean-centering prior to PCA.}
+\item{center}{Logical indicating mean-centering prior to PCA.}
 
-\item{scale}{logical indicating unit variance scaling prior to PCA.}
+\item{scale}{Logical indicating unit variance scaling prior to PCA.}
 
-\item{...}{additional arguments passed to \link[pcaMethods]{nipalsPca}.}
+\item{...}{Additional arguments passed to \link[pcaMethods]{nipalsPca}.}
 
-\item{xin}{character specifying the name of data to retrieve from \code{x}
+\item{xin}{Character specifying the name of data to retrieve from \code{x}
 when \code{x} is a poplin object.}
 
 \item{xout}{character specifying the name of data to store in \code{x} when
 \code{x} is a poplin object.}
 }
 \value{
-a poplin.pca or \linkS4class{poplin} object with the same number of
+A poplin.pca or \linkS4class{poplin} object with the same number of
 rows as \code{ncol(x)} containing the dimension reduction result.
 poplin.pca is a matrix containing custom attributes used to summarize and
 visualize the PCA result.
@@ -42,6 +42,8 @@ from the \pkg{pcaMethods} package. NIPALS PCA can handle a small amount of
 missing values.
 }
 \examples{
+
+data(faahko_poplin)
 
 ## poplin object
 out <- reduce_pca(faahko_poplin, xin = "knn_cyclic", xout = "pca")

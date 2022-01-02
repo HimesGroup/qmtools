@@ -11,18 +11,18 @@
 \S4method{impute_randomforest}{poplin}(x, xin, xout, ...)
 }
 \arguments{
-\item{x}{a matrix or \linkS4class{poplin} object.}
+\item{x}{A matrix or \linkS4class{poplin} object.}
 
-\item{...}{additional arguments passed to \link[missForest]{missForest}.}
+\item{...}{Additional arguments passed to \link[missForest]{missForest}.}
 
-\item{xin}{character specifying the name of data to retrieve from \code{x}
+\item{xin}{Character specifying the name of data to retrieve from \code{x}
 when \code{x} is a poplin object.}
 
-\item{xout}{character specifying the name of data to store in \code{x} when
+\item{xout}{Character specifying the name of data to store in \code{x} when
 \code{x} is a poplin object.}
 }
 \value{
-a matrix or \linkS4class{poplin} object of the same dimension as
+A matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the imputed intensities.
 }
 \description{
@@ -32,6 +32,8 @@ This is an interface to the \link[missForest]{missForest} function from the
 is invariant to monotonic transformations.
 }
 \examples{
+
+data(faahko_poplin)
 
 if (requireNamespace("missForest", quietly = TRUE)) {
   ## poplin object

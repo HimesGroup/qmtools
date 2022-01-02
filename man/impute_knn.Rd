@@ -11,21 +11,21 @@
 \S4method{impute_knn}{poplin}(x, xin, xout, by = c("feature", "sample"), ...)
 }
 \arguments{
-\item{x}{a matrix or \linkS4class{poplin} object.}
+\item{x}{A matrix or \linkS4class{poplin} object.}
 
-\item{by}{character controlling whether the imputation is performed by
+\item{by}{Character controlling whether the imputation is performed by
 k-nearest features or by k-nearest samples. Either "feature" or "sample".}
 
-\item{...}{additional arguments passed to \link[VIM]{kNN}.}
+\item{...}{Additional arguments passed to \link[VIM]{kNN}.}
 
-\item{xin}{character specifying the name of data to retrieve from \code{x}
+\item{xin}{Character specifying the name of data to retrieve from \code{x}
 when \code{x} is a poplin object.}
 
-\item{xout}{character specifying the name of data to store in \code{x} when
+\item{xout}{Character specifying the name of data to store in \code{x} when
 \code{x} is a poplin object.}
 }
 \value{
-a matrix or \linkS4class{poplin} object of the same dimension as
+A matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the imputed intensities.
 }
 \description{
@@ -35,6 +35,9 @@ function from the \pkg{VIM} package. Since it is based on Gower's distance,
 Standardization of input data before imputation would not affect the result.
 }
 \examples{
+
+data(faahko_poplin)
+
 if (requireNamespace("VIM", quietly = TRUE)) {
   ## poplin object
   impute_knn(faahko_poplin, xin = "raw", xout = "knn")

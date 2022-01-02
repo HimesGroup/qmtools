@@ -1,6 +1,5 @@
-.poplin_impute <- function(x,
-                           method = c("knn", "randomforest", "pca", "univariate"),
-                           ...) {
+.poplin_impute <- function(x, method = c("knn", "randomforest",
+                                         "pca", "univariate"), ...) {
   method <- match.arg(method)
   switch(
     method,
@@ -8,7 +7,7 @@
     randomforest = .impute_randomforest(x, ...),
     pca = .impute_pca(x, ...),
     univariate = .impute_univariate(x, ...)
-    )
+  )
 }
 
 ## Knn imputation
@@ -18,11 +17,11 @@
   }
   by <- match.arg(by)
   if (by == "feature") {
-    out <- VIM::kNN(x, ...)[, 1:ncol(x)]
+    out <- VIM::kNN(x, ...)[, seq_len(ncol(x))]
     ## VIM package internally converts x as data.table, which drops rownames
     rownames(out) <- rownames(x)
   } else {
-    out <- t(VIM::kNN(t(x), ...))[1:nrow(x), ]
+    out <- t(VIM::kNN(t(x), ...))[seq_len(nrow(x)), ]
     colnames(out) <- colnames(x)
   }
   as.matrix(out)
@@ -37,7 +36,8 @@
 }
 
 ## Bayesian PCA imputation
-.impute_pca <- function(x, type = c("nipals", "bpca", "ppca", "svdImpute"), ...) {
+.impute_pca <- function(x, type = c("nipals", "bpca", "ppca", "svdImpute"),
+                        ...) {
   if (!requireNamespace("pcaMethods", quietly = TRUE)) {
     stop("Package 'pcaMethods' is required. Please install and try again.")
   }

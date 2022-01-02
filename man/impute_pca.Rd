@@ -11,20 +11,20 @@
 \S4method{impute_pca}{poplin}(x, xin, xout, type = c("nipals", "bpca", "ppca", "svdImpute"), ...)
 }
 \arguments{
-\item{x}{a matrix or \linkS4class{poplin} object.}
+\item{x}{A matrix or \linkS4class{poplin} object.}
 
-\item{type}{the method to perform PCA.}
+\item{type}{The method to perform PCA.}
 
-\item{...}{additional arguments passed to \link[pcaMethods]{pca}.}
+\item{...}{Additional arguments passed to \link[pcaMethods]{pca}.}
 
-\item{xin}{character specifying the name of data to retrieve from \code{x}
+\item{xin}{Character specifying the name of data to retrieve from \code{x}
 when \code{x} is a poplin object.}
 
-\item{xout}{character specifying the name of data to store in \code{x} when
+\item{xout}{Character specifying the name of data to store in \code{x} when
 \code{x} is a poplin object.}
 }
 \value{
-a matrix or \linkS4class{poplin} object of the same dimension as
+A matrix or \linkS4class{poplin} object of the same dimension as
 \code{x} containing the imputed intensities.
 }
 \description{
@@ -37,6 +37,8 @@ imputation could yield negative feature values that need to be
 post-processed.
 }
 \examples{
+
+data(faahko_poplin)
 
 if (requireNamespace("pcaMethods", quietly = TRUE)) {
   ## poplin object

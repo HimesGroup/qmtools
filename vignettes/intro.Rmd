@@ -238,7 +238,7 @@ either to a `poplin` object or a `matrix`.
 
 The `poplin_naplot()` helps to visually inspect missingness of the data.
 
-```{r naplot, fig.width = 8, fig.height = 8}
+```{r naplot, fig.width = 7, fig.height = 7}
 poplin_naplot(x = faahko_poplin, xin = "raw")
 ```
 
@@ -247,7 +247,7 @@ poplin_naplot(x = faahko_poplin, xin = "raw")
 The `poplin_corplot()` visualizes correlations between samples (or features) to
 quickly check the grouping structure in the data.
 
-```{r corplot, fig.width = 8, fig.height = 8}
+```{r corplot, fig.width = 7, fig.height = 7}
 poplin_corplot(x = faahko_poplin, xin = "knn_cyclic")
 ```
 
@@ -273,7 +273,7 @@ poplin_boxplot(faahko_poplin, xin = "knn_cyclic", group = group)
 The `poplin_scoreplot()` function visualizes the data onto a lower-dimensional
 space using the `poplin_reduce()` output.
 
-```{r poplin_scoreplot}
+```{r poplin_scoreplot, fig.width = 7, fig.height = 5}
 group <- colData(faahko_poplin)$sample_group
 
 ## PCA output
@@ -283,6 +283,21 @@ poplin_scoreplot(faahko_poplin, xin = "pca", group = group,
 ## PLS-DA output 
 poplin_scoreplot(faahko_poplin, xin = "plsda", ellipse = TRUE,
                  label = TRUE)
+
+```
+
+## poplin_biplot
+
+The `poplin_biplot()` function Visualize an overlay of a score plot and a
+loading plot using the `poplin_reduce()` output.
+
+```{r poplin_biplot, fig.width = 7, fig.height = 5}
+group <- colData(faahko_poplin)$sample_group
+
+poplin_biplot(faahko_poplin, xin = "pca", group = group, 
+              ellipse = TRUE, arrow_col = "orange", 
+              arrow_label_subset = c("FT039", "FT042", "FT046", "FT098"),
+              arrow_label_col = "gray20")
 
 ```
 

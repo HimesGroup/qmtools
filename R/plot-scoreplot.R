@@ -230,6 +230,9 @@ poplin_scoreplot.poplin <- function(x, xin, comp = c(1, 2),
     stop("rownames of 'poplin_reduced(x, xin)' ",
          "'must be non-NULL if label = TRUE.")
   }
+  if (missing(group) && inherits(m, "poplin.plsda")) {
+    group <- attr(m, "Y.observed")
+  }
   poplin_scoreplot(m, comp = comp, group = group, group_col = group_col,
                    label = label, xlab = xlab, ylab = ylab, ...)
 }

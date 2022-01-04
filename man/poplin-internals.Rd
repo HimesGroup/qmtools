@@ -35,6 +35,11 @@ via \link{poplin_reduced}. }
 
 }
 }
+\examples{
+data(faahko_poplin)
+poplinData(faahko_poplin)
+poplinReduced(faahko_poplin)
+}
 \seealso{
 \link{poplin_data}, \link{poplin_reduced}
 }

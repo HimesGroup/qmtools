@@ -72,21 +72,6 @@ setMethod("rbind", "poplin", function(..., deparse.level = 1) {
   }
   out <- callNextMethod()
   args <- list(...)
-  ## Utilize Assay class for combining objects
-  ## poplinData_assays <- lapply(args, function(x) .poplin_to_assays(x))
-  ## tryCatch({
-  ##   combined <- do.call(rbind, poplinData_assays)
-  ##   poplinData_all <- do.call(
-  ##     DataFrame, c(lapply(combined@data, I),
-  ##                  list(row.names = NULL, check.names = FALSE))
-  ##   )
-  ## },
-  ## error = function(err) {
-  ##   stop(
-  ##     "failed to combine 'poplinData' in 'rbind(<",
-  ##     class(args[[1]]), ">)':\n  ", conditionMessage(err)
-  ##   )
-  ## })
   tryCatch({
     poplinData_all <- do.call(rbind, lapply(args, poplinData))
     ## How to handle metadata?
@@ -130,9 +115,6 @@ setMethod("cbind", "poplin", function(..., deparse.level = 1) {
     ## Since combining empty poplinData would return nrow = 0
     poplinData_all <- BiocGenerics:::replaceSlots(poplinData_all,
                                                   nrows = nrow(args[[1]]))
-    ## poplinData_all@nrows <- nrow(args[[1]])
-    ## how to hand metadata?
-    ## metadata(poplinData_all) <- metadata(poplinData(args[[1]]))
   },
   error = function(err) {
     stop(

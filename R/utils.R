@@ -6,7 +6,6 @@
     warning("'", msg, "' contains empty strings, replacing with '",
             name_pattern, "'")
     names[empty] <- paste0(name_pattern, seq_len(sum(empty)))
-    ## names[empty] <- paste0(name_pattern, seq_along(sum(empty)))
   }
   names
 }
@@ -48,6 +47,7 @@
   x
 }
 
+## Reserved for future use
 ## `%||%` <- function(x, y) {
 ##   if (is.null(x)) y else x
 ## }

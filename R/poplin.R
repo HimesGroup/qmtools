@@ -68,6 +68,10 @@ NULL
 ##' poplinReduced<-,poplin-method
 ##' @seealso [poplin_data], [poplin_reduced]
 ##' @name poplin-internals
+##' @examples
+##' data(faahko_poplin)
+##' poplinData(faahko_poplin)
+##' poplinReduced(faahko_poplin)
 NULL
 
 setMethod("poplinReduced", "poplin", function(x) x@poplinReduced)

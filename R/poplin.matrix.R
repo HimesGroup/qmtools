@@ -1,6 +1,6 @@
 ################################################################################
 ## Taken from SingleCellExperiment package (09/18/2021)
-## Just rename it to poplin.class and extend it for print functions
+## Just rename it to poplin.class and extend it for print and summary functions
 ################################################################################
 
 ##' The poplin.matrix class

@@ -19,15 +19,7 @@ License: GPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
-biocViews:
-    Software,
-    Metabolomics,
-    MassSpectrometry,
-    DataRepresentation,
-    Preprocessing,
-    Normalization,
-    DimensionReduction,
-    Visualization
+biocViews: Software, Metabolomics, MassSpectrometry, DataRepresentation, Preprocessing, Normalization
 Imports: 
     BiocGenerics,
     rlang,

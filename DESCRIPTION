@@ -1,31 +1,57 @@
 Package: poplin
-Title: Reproducible analysis of metabolomics data
-Version: 0.0.0.9000
-Authors@R: 
+Title: LC/MS Metabolomics Data Processing Utilities
+Version: 0.99.0
+Authors@R: c(
     person(given = "Jaehyun",
            family = "Joo",
            role = c("aut", "cre"),
-           email = "jaehyunjoo@outlook.com")
-Description: pass
-License: GPL (>= 3)
+           email = "jaehyunjoo@outlook.com"),
+    person(given = "Blanca",
+           family = "Himes",
+           role = c("aut"),
+           email = "bhimes@pennmedicine.upenn.edu")
+           )
+Description: Defines a S4 class for storing LC/MS metabolomics data processing
+             results and provides utility functions for performing
+             imputation, normalization, dimension reduction, and common
+             visualizations.
+License: GPL-3
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 biocViews:
+    Software,
+    Metabolomics,
+    MassSpectrometry,
+    DataRepresentation,
+    Preprocessing,
+    Normalization,
+    DimensionReduction,
+    Visualization
 Imports: 
     BiocGenerics,
+    rlang,
     ggplot2,
     heatmaply,
     methods,
     S4Vectors,
-    stats
-Suggests: 
-    missForest,
+    stats,
+Suggests:
+    limma,
+    Biobase,
     hexbin,
     Rtsne,
+    missForest,
     vsn,
     VIM,
-    pcaMethods
+    pcaMethods,
+    pls,
+    testthat (>= 3.0.0),
+    BiocStyle,
+    knitr,
+    rmarkdown
 Depends: 
+    R (>= 4.1),
     SummarizedExperiment
+Config/testthat/edition: 3
+VignetteBuilder: knitr

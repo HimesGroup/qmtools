@@ -1,12 +1,80 @@
-##' @export
-setMethod("poplinData", "poplin", function(x) x@poplinData)
-
-##' @export
-setReplaceMethod("poplinData", "poplin", function(x, value) {
-  x@poplinData <- value
-  x
-})
-
+##' Poplin data methods
+##'
+##' Methods to get or set data processing results in a \linkS4class{poplin}
+##' object. These methods are intended to store and retrieve processed data
+##' sets involved in normalization, imputation, and transformation.
+##'
+##' @section Getters:
+##'
+##' In the code snippets below, \code{x} is a \linkS4class{poplin} object.
+##'
+##' \describe{
+##' \item{\code{poplin_data_names(x)}:}{
+##' Return the names of all processed data sets.
+##' }
+##' \item{\code{poplin_data_list(x, type)}:}{
+##' Retrieves a named \linkS4class{List} of matrices containing one or more data
+##' processing results. Each entry is a matrix with the same dimension of raw
+##' feature data in \code{poplin_raw_list(x)}.
+##' }
+##' \item{\code{poplin_data(x, type)}:}{
+##' Retrieves a matrix of data processing result. \code{type} is either a
+##' string specifying the name of data set to retrieve or an integer specifying
+##' the index of the desired data set, defaulting to the first entry if missing.
+##' }
+##' }
+##'
+##' @section Setters:
+##'
+##' \describe{
+##' \item{\code{poplin_data_names(x) <- value}:}{
+##' \code{value} must be a character vector to be assigned for the names of
+##' processed data sets.
+##' }
+##' \item{\code{poplin_data_list(x) <- value}:}{
+##' \code{value} is expected to be a named \linkS4class{List} of matrices. If
+##' the result already exists, it will be replaced. If \code{value} is
+##' \code{NULL}, any existing result will be removed.
+##' }
+##' \item{\code{poplin_data(x, type) <- value}:}{
+##' \code{value} is expected to be a matrix. \code{type} determines how the
+##' result is assigned:
+##' - integer: it must be within the range of existing results. \code{value}
+##' will replace the result at that index.
+##' - character: if the result exists with this name, it will be replaced with
+##' \code{value}. Otherwise a new result with this name will be appended.
+##' - missing: \code{value} will be assigned to the first entry.
+##'
+##' If \code{value} is \code{NULL}, the result corresponding to \code{type} will
+##' be removed.
+##' }
+##' }
+##'
+##' @name poplin_data
+##' @aliases
+##' poplin_data poplin_data_list poplin_data_names
+##' poplin_data,poplin,missing-method
+##' poplin_data,poplin,numeric-method
+##' poplin_data,poplin,character-method
+##' poplin_data_list,poplin-method
+##' poplin_data_names,poplin-method
+##' poplin_data<- poplin_data_list<- poplin_data_names<-
+##' poplin_data poplin_data_list poplin_data_names
+##' poplin_data<-,poplin,missing-method
+##' poplin_data<-,poplin,numeric-method
+##' poplin_data<-,poplin,character-method
+##' poplin_data_list<-,poplin-method
+##' poplin_data_names<-,poplin,character-method
+##' @docType methods
+##' @seealso [poplin_raw], [poplin_reduced]
+##' @examples
+##' data(faahko_poplin)
+##' poplin_data_list(faahko_poplin)
+##' poplin_data_names(faahko_poplin)
+##' poplin_data(faahko_poplin)
+##' poplin_data(faahko_poplin, 2)
+##' poplin_data(faahko_poplin, "knn")
+NULL
 
 ##' @importClassesFrom S4Vectors SimpleList
 ##' @export
@@ -30,7 +98,7 @@ setReplaceMethod(
   function(x, check_dimnames = TRUE, ..., value) {
     if (check_dimnames) {
       for (v in seq_along(value)) {
-        value[[v]] <- .check_dimnames(x, value[[v]], fun ='poplin_data_list')
+        value[[v]] <- .check_dimnames(x, value[[v]], fun ='poplin_data_list<-')
       }
     }
     .check_name_duplicates(assayNames(x), names(value),
@@ -117,7 +185,9 @@ setReplaceMethod(
   "poplin_data",
   c("poplin", "numeric"),
   function(x, type, check_dimnames = TRUE, ..., value) {
-    value <- .check_dimnames(x, value, check_dimnames)
+    if (check_dimnames) {
+      value <- .check_dimnames(x, value, fun = 'poplin_data<-')
+    }
     .set_poplinData_data_integer(
       x, type, value,
       get_slot = poplinData,
@@ -140,7 +210,9 @@ setReplaceMethod(
     .check_name_duplicates(assayNames(x), type,
                            msg1 = "value",
                            msg2 = "Use a different name.")
-    value <- .check_dimnames(x, value, check_dimnames)
+    if (check_dimnames) {
+      value <- .check_dimnames(x, value, fun = "poplin_data<-")
+    }
     .set_poplinData_data_character(
       x, type, value,
       get_slot = poplinData,

@@ -1,30 +1,26 @@
-.get_poplinReducedData_names <- function(...) {
+.get_poplinReduced_names <- function(...) {
   .get_poplinData_names(...)
 }
 
-.set_poplinReducedData_names <- function(...) {
+.set_poplinReduced_names <- function(...) {
   .set_poplinData_names(...)
 }
 
-##' @export
-.get_poplinReducedData_data_integer <- function(...) {
+.get_poplinReduced_data_integer <- function(...) {
   .get_poplinData_data_integer(...)
 }
 
-##' @export
-.get_poplinReducedData_data_character <- function(...) {
+.get_poplinReduced_data_character <- function(...) {
   .get_poplinData_data_character(...)
 }
 
-##' @export
-.get_poplinReducedData_data_missing <- function(...) {
+.get_poplinReduced_data_missing <- function(...) {
   .get_poplinData_data_missing(...)
 }
 
 
-##' @export
-.set_poplinReducedData_data_integer <- function(x, type, value, get_slot,
-                                                set_element_fun, funstr) {
+.set_poplinReduced_data_integer <- function(x, type, value, get_slot,
+                                            set_element_fun, funstr) {
   ## x <- updateObject(x)
 
   if (length(type) != 1L) {
@@ -52,10 +48,8 @@
 }
 
 
-##' @export
-.set_poplinReducedData_data_character <- function(x, type, value, get_slot,
-                                                  set_element_fun, funstr) {
-  ## x <- updateObject(x)
+.set_poplinReduced_data_character <- function(x, type, value, get_slot,
+                                              set_element_fun, funstr) {
 
   if (length(type) != 1L) {
     stop("attempt to replace more than one element")
@@ -76,17 +70,15 @@
 
 }
 
-##' @export
-.set_poplinReducedData_data_missing <- function(...) {
+.set_poplinReduced_data_missing <- function(...) {
   .set_poplinData_data_missing(...)
 }
 
 
-##' @export
 ##' @importFrom methods as
 ##' @importFrom S4Vectors DataFrame I mcols mcols<- metadata metadata<-
-.set_poplinReducedData_datalist <- function(x, value, get_slot, set_element_fun,
-                                            funstr, name_pattern) {
+.set_poplinReduced_datalist <- function(x, value, get_slot, set_element_fun,
+                                        funstr, name_pattern) {
   ## x <- updateObject(x)
 
   if (identical(length(value), 0L)) {
@@ -121,16 +113,15 @@
     }
   }
 
-  ## tmp <- get_slot(x)
-  ## tmp[[element]] <- collected
-  ## tmp <- collected
   set_element_fun(x, collected)
 }
 
 
-
 .check_samplenames <- function(reference, incoming, fun) {
   if (!is.null(incoming)) {
+    if (!(identical(ncol(reference), nrow(incoming)))) {
+      stop("'value' should have number of rows equal to 'ncol(x)'")
+    }
     samplenames_incoming <- rownames(incoming)
     samplenames_reference <- colnames(reference)
     if (!is.null(samplenames_incoming)) {

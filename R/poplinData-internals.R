@@ -1,10 +1,3 @@
-##' @importClassesFrom S4Vectors SimpleList
-##' @export
-## .get_poplinData_datalist <- function(x, get_slot, element) {
-##   ## x <- updateObject(x) # internal update for obsolete class but not necessary
-##   as(get_slot(x)[[element]], "SimpleList")
-## }
-
 .get_poplinData_names <- function(x, get_slot) {
   colnames(get_slot(x))
 }
@@ -19,9 +12,7 @@
   set_element_fun(x, poplin_slot)
 }
 
-##' @export
 .get_poplinData_data_integer <- function(x, index, get_slot, funstr) {
-  ## x <- updateObject(x)
   tmp <- get_slot(x)
 
   tryCatch({
@@ -34,11 +25,8 @@
 
 }
 
-##' @export
 .get_poplinData_data_character <- function(x, index, get_slot,
                                            funstr, namestr) {
-
-  ## x <- updateObject(x)
   tmp <- get_slot(x)
 
   tryCatch({
@@ -51,7 +39,6 @@
 
 }
 
-##' @export
 .get_poplinData_data_missing <- function(x, base_fun, name_fun, funstr, ...) {
   if (identical(length(name_fun(x)), 0L)) {
     stop("no available entries for '", funstr, "(<", class(x), ">, ...)'")
@@ -59,10 +46,8 @@
   base_fun(x, 1L, ...) # fallback to numeric type; retrieve the first data
 }
 
-##' @export
 .set_poplinData_data_integer <- function(x, type, value, get_slot,
                                          set_element_fun, funstr) {
-  ## x <- updateObject(x)
 
   if (length(type) != 1L) {
     stop("attempt to replace more than one element")
@@ -94,10 +79,8 @@
 }
 
 
-##' @export
 .set_poplinData_data_character <- function(x, type, value, get_slot,
                                            set_element_fun, funstr) {
-  ## x <- updateObject(x)
 
   if (length(type) != 1L) {
     stop("attempt to replace more than one element")
@@ -124,7 +107,6 @@
 }
 
 
-##' @export
 .set_poplinData_data_missing <- function(x, value, ..., base_fun, name_fun,
                                          name_pattern) {
   if (length(name_fun(x))) {
@@ -138,7 +120,6 @@
 }
 
 
-##' @export
 ##' @importFrom methods as
 ##' @importFrom S4Vectors DataFrame I mcols mcols<- metadata metadata<-
 .set_poplinData_datalist <- function(x, value, get_slot, set_element_fun,
@@ -188,13 +169,14 @@
     }
   }
 
-  ## tmp <- get_slot(x)
-  ## tmp[[element]] <- collected
   set_element_fun(x, collected)
 }
 
 .check_dimnames <- function(reference, incoming, fun) {
   if (!is.null(incoming)) {
+    if (!(identical(dim(reference), dim(incoming)))) {
+      stop("'value' should have the dimension same as 'dim(x)'")
+    }
     rownames_incoming <- rownames(incoming)
     colnames_incoming <- colnames(incoming)
     rownames_reference <- rownames(reference)

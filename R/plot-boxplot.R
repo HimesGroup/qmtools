@@ -1,15 +1,47 @@
+##' Box plot
+##'
+##' Produce a box-and-whisker plot of the feature intensity values.
+##'
+##' @param x A matrix or \linkS4class{poplin} object.
+##' @param xin Character specifying the name of data to retrieve from \code{x}
+##'   when \code{x} is a poplin object
+##' @param group A discrete variable to visualize the grouping structure.
+##' @param pre_log2 Logical controlling whether feature intensities are
+##'   log2-transformed before visualization.
+##' @param violin Logical controlling whether a violin plot is drawn instead of
+##'   the boxplot.
+##' @param ylab The title of y-axis of the plot.
+##' @param ... Reserved for future use.
+##' @return A ggplot object.
+##' @name poplin_boxplot
+##' @examples
+##'
+##' data(faahko_poplin)
+##'
+##' ## sample group variable
+##' group <- colData(faahko_poplin)$sample_group
+##'
+##' ## poplin object
+##' poplin_boxplot(faahko_poplin, xin = "knn_cyclic", group = group)
+##'
+##' ## matrix
+##' m <- poplin_data(faahko_poplin, "knn_cyclic")
+##' poplin_boxplot(m, group = group)
+NULL
+
 ##' @export
 poplin_boxplot <- function(x, ...) {
   UseMethod("poplin_boxplot")
 }
 
+##' @rdname poplin_boxplot
 ##' @export
 ##' @importFrom stats reshape
 ##' @importFrom ggplot2 geom_boxplot geom_violin
-poplin_boxplot.default <- function(x, group, log2 = FALSE, violin = FALSE,
-                           ylab = "Intensity") {
+poplin_boxplot.default <- function(x, group, pre_log2 = FALSE, violin = FALSE,
+                                   ylab = "Intensity", ...) {
   ## convert wide to long format to draw fig
-  if (log2) {
+  if (pre_log2) {
     x <- log2(x)
   }
   dt <- as.data.frame(t(x))
@@ -22,9 +54,10 @@ poplin_boxplot.default <- function(x, group, log2 = FALSE, violin = FALSE,
                 times = cols, v.names = "value",
                 direction = "long", sep = "")
   if (missing(group)) {
-    p <- ggplot(dd, aes(x = id, y = value))
+    p <- ggplot(dd, aes(x = !!quote(id), y = !!quote(value)))
   } else {
-    p <- ggplot(dd, aes(x = id, y = value, fill = group))
+    p <- ggplot(dd, aes(x = !!quote(id), y = !!quote(value),
+                        fill = !!quote(group)))
   }
   if (violin) {
     p <- p + geom_violin()
@@ -38,8 +71,11 @@ poplin_boxplot.default <- function(x, group, log2 = FALSE, violin = FALSE,
           axis.title.x = element_blank())
 }
 
+##' @rdname poplin_boxplot
 ##' @export
-poplin_boxplot.poplin <- function(x, poplin_in, ...) {
-  m <- .verify_and_extract_input(x, poplin_in)
-  poplin_boxplot.default(m, ...)
+poplin_boxplot.poplin <- function(x, xin, group, pre_log2 = FALSE,
+                                  violin = FALSE, ylab = "Intensity", ...) {
+  m <- .verify_and_extract_input(x, xin)
+  poplin_boxplot.default(m, group = group, pre_log2 = pre_log2,
+                         violin = violin, ylab = ylab, ...)
 }

@@ -1,2 +1,6 @@
 ^LICENSE\.md$
 ^README\.Rmd$
+^data-raw$
+^\.github$
+^doc$
+^Meta$

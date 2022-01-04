@@ -3,11 +3,6 @@
 
 # poplin
 
-<!-- badges: start -->
-
-[![R-CMD-check](https://github.com/HimesGroup/poplin/workflows/R-CMD-check/badge.svg)](https://github.com/HimesGroup/poplin/actions)
-<!-- badges: end -->
-
 The goal of poplin package is to provide simple tools for processing
 LC/MS metabolomics data processing, including
 

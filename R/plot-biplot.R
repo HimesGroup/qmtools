@@ -120,7 +120,6 @@ poplin_biplot.default <- function(x, y, comp = c(1, 2), group,
     y$y_adj <- y[, names(y)[2]] * arrow_label_ext
     p <- p + geom_text(
                inherit.aes = FALSE,
-               ## data = y, aes(x = x_adj, y = y_adj, label = label),
                data = y, aes(x = !!quote(x_adj), y = !!quote(y_adj),
                              label = label),
                col = arrow_label_col, size = arrow_label_size
@@ -139,6 +138,7 @@ poplin_biplot.poplin.pca <- function(x, comp = c(1, 2), group,
   comp <- sort(comp)
   n <- nrow(x)
   lam <- attr(x, "sdev")[comp] * sqrt(n)
+  ## Consider Scaling factor
   ## if (scale < 0 || scale > 1)
   ##   warning("'scale' is outside [0, 1]")
   ## if (scale != 0)
@@ -182,12 +182,8 @@ poplin_biplot.poplin <- function(x, xin, comp = c(1, 2), group,
     stop("rownames of 'poplin_reduced(x, xin)' ",
          "'must be non-NULL if label = TRUE.")
   }
+  if (missing(group) && inherits(m, "poplin.plsda")) {
+    group <- attr(m, "Y.observed")
+  }
   poplin_biplot(m, comp = comp, group = group, label = label, ...)
-  ## if (inherits(m, "poplin.pca")) {
-  ##   poplin_biplot.poplin.pca(m, comp = comp, ...)
-  ## } else if (inherits(m, "poplin.plsda")) {
-  ##   poplin_biplot.poplin.plsda(m, comp = comp, ...)
-  ## } else {
-  ##   poplin_biplot.default(m, comp = comp, ...)
-  ## }
 }

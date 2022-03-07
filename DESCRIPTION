@@ -24,18 +24,18 @@ Imports:
     BiocGenerics,
     rlang,
     ggplot2,
+    patchwork,
     heatmaply,
     methods,
+    MsCoreUtils,
     S4Vectors,
     stats,
+    VIM
 Suggests:
     limma,
-    Biobase,
-    hexbin,
     Rtsne,
     missForest,
     vsn,
-    VIM,
     pcaMethods,
     pls,
     testthat (>= 3.0.0),
@@ -47,3 +47,4 @@ Depends:
     SummarizedExperiment
 Config/testthat/edition: 3
 VignetteBuilder: knitr
+LazyData: true

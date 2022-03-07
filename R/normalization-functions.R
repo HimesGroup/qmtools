@@ -1,184 +1,180 @@
-##' @importFrom stats cor fitted lowess median model.matrix na.omit
-##' @importFrom stats prcomp predict residuals sd
-.poplin_normalize <- function(x,
-                              method = c("pqn",  "sum", "mean", "median",
-                                         "mad", "cyclicloess", "vsn", "scale"),
-                              ...) {
-  method <- match.arg(method)
-  .normalize_fun_dispatch(x, method = method, ...)
-}
-
-
-.normalize_fun_dispatch <- function(x, method, ...) {
-  switch(
-    method,
-    pqn = .normalize_pqn(x = x, ...),
-    sum = .normalize_sum(x = x, ...),
-    mean = .normalize_mean(x = x, ...),
-    mad = .normalize_mad(x = x, ...),
-    median = .normalize_median(x = x, ...),
-    cyclicloess = .normalize_cyclicloess(x = x, ...),
-    vsn = .normalize_vsn(x = x, ...),
-    scale = .normalize_scale(x = x, ...)
-  )
-}
-
-
-## PQN normalization
-## The reference suggests to apply integral normalization prior to PQN so
-## consider to add that.
-.normalize_pqn <- function(x, ref_samples = NULL, min_frac = 0.5,
-                           type = c("mean", "median")) {
-  type <- match.arg(type)
-  if ((is.null(ref_samples))) {
-    ref <- x
-  } else {
-    if (!(is.character(ref_samples) || is.numeric(ref_samples))) {
-      stop ("'ref_samples' must be a vector of character or integer.")
-    } else {
-      if (is.character(ref_samples) &&
-          !(all(ref_samples %in% colnames(x)))) {
-        non_match <- setdiff(ref_samples, colnames(x))
-        stop("Reference samples not found in colnames(x): ",
-             non_match, call. = FALSE)
-      } else if (is.numeric(ref_samples) &&
-                 !(all(ref_samples >= 1 & ref_samples <= ncol(x)))) {
-        stop(
-          "Subscript out of bound. 'ref_samples' must be within [1, ncol(x)]."
-        )
-      } else {
-        ref <- x[, ref_samples, drop = FALSE]
-      }
-    }
+##' Probabilistic quotient normalization (PQN)
+##'
+##' Performs probabilistic quotient normalization (PQN) on a matrix-like object
+##' where rows present features and columns represent samples.
+##'
+##' For the calculation of quotients, a reference spectrum needs to be obtained
+##' from a median or mean spectrum based on all spectra of the study or a subset
+##' of the study. Feature intensities are normalized by the median of quotients.
+##' See Dieterle et al. (2006) for details.
+##'
+##' @param x A matrix-like object.
+##' @param ref_samples A vector of sample names or indices specifying reference
+##'   samples for the calculation of quotients. Must be a subset of
+##'   \code{colnames(x)} if it is a character vector. If \code{NULL}, all
+##'   samples are used.
+##' @param min_frac A numeric value between 0 and 1 specifying a minimum
+##'   proportion of reference samples for features to be included in the
+##'   calculation of a reference spectrum.
+##' @param type A method to compute a reference spectrum. Either "median" or
+##'   "mean".
+##' @return A matrix of the same dimension as \code{x} containing the normalized
+##'   intensities.
+##'
+##' @references
+##'
+##' Dieterle F, Ross A, Schlotterbeck G, Senn H. Probabilistic quotient
+##' normalization as robust method to account for dilution of complex biological
+##' mixtures. Application in 1H NMR metabonomics. Anal Chem. 2006 Jul
+##' 1;78(13):4281-90. doi: 10.1021/ac051632c. PMID: 16808434.
+##'
+##' @seealso See [normalizeIntensity] that provides a
+##'   \linkS4class{SummarizedExperiment}-friendly wrapper for this function.
+##' 
+##' @export
+normalizePQN <- function(x, ref_samples = NULL, min_frac = 0.5,
+                         type = c("median", "mean")) {
+  ## The reference paper suggests to apply integral normalization prior to PQN
+  ## so consider to add that.
+  if (!is.matrix(x)) {
+    x <- as.matrix(x)
   }
-  idx_to_keep <- .idx_to_keep_by_missing(ref, "feature", min_frac)
-  ref_sub <- ref[idx_to_keep, , drop = FALSE]
-  x_sub <- x[idx_to_keep, , drop = FALSE]
-  ref_summary <- .mat_stats(ref_sub, margin = 1, type = type)
-  quotients <- apply(x_sub, 2, function(x) x / ref_summary)
-  medians <- .mat_stats(quotients, margin = 2, type = "median")
+  type <- match.arg(type)
+  if (is.null(ref_samples)) {
+    quotients <- .get_quotients(x, ref = x, min_frac = min_frac, type = type)
+  } else {
+    quotients <- .get_quotients(x, ref = x[, ref_samples, drop = FALSE],
+                                min_frac = min_frac, type = type)
+  }
+  medians <- apply(quotients, 2, median, na.rm = TRUE)
   sweep(x, 2, medians, FUN = "/")
 }
 
-.idx_to_keep_by_missing <- function(m, margin = c("sample", "feature"),
-                                    min_frac) {
-  margin <- match.arg(margin)
-  if (margin == "sample") {
-    non_missing_frac <- colSums(!is.na(m)) / nrow(m)
-    which(non_missing_frac >= min_frac)
-  } else {
+.get_quotients <- function(x, ref, min_frac, type) {
+  if (min_frac > 0) {
     non_missing_frac <- rowSums(!is.na(m)) / ncol(m)
-    which(non_missing_frac >= min_frac)
-  }
-}
-
-.mat_stats <- function(m, margin, type = c("mean", "median")) {
-  type <- match.arg(type)
-  switch(
-    type,
-    mean = apply(m, margin, mean, na.rm = TRUE),
-    median = apply(m, margin, median, na.rm = TRUE)
-  )
-}
-
-## other spectral function normalization methods
-.normalize_sum <- function(x, restrict = FALSE, rescale = FALSE) {
-  .normalize_columns(
-    x = x, restrict = restrict, rescale = rescale, method = "sum"
-  )
-}
-
-.normalize_mean <- function(x, restrict = FALSE, rescale = FALSE) {
-  .normalize_columns(
-    x = x, restrict = restrict, rescale = rescale, method = "mean"
-  )
-}
-
-.normalize_median <- function(x, restrict = FALSE, rescale = FALSE) {
-  .normalize_columns(
-    x = x, restrict = restrict, rescale = rescale, method = "median"
-  )
-}
-
-.normalize_mad <- function(x, restrict = FALSE, rescale = FALSE) {
-  .normalize_columns(
-    x = x, restrict = restrict, rescale = rescale, method = "mad"
-  )
-}
-
-.normalize_euclidean <- function(x, restrict = FALSE, rescale = FALSE) {
-  .normalize_columns(
-    x = x, restrict = restrict, rescale = rescale, method = "euclidean"
-  )
-}
-
-##' @importFrom stats mad
-.normalize_columns <- function(x, method = c("sum", "mean", "median",
-                                             "mad", "euclidean"),
-                               restrict = FALSE, rescale = FALSE) {
-  method <- match.arg(method)
-  if (restrict) {
-    x_sub <- na.omit(x)
+    idx_to_keep <- which(non_missing_frac >= min_frac)
+    ref_sub <- ref[idx_to_keep, , drop = FALSE]
+    x_sub <- x[idx_to_keep, , drop = FALSE]
+    if (type == "median") {
+      ref_summary <- apply(ref_sub, 1, median, na.rm = TRUE)
+    } else {
+      ref_summary <- rowMeans(ref_sub, na.rm = TRUE)
+    }
+    apply(x_sub, 2, function(x) x / ref_summary)
   } else {
-    x_sub <- x
+    if (type == "median") {
+      ref_summary <- apply(ref, 1, median, na.rm = TRUE)
+    } else {
+      ref_summary <- rowMeans(ref, na.rm = TRUE)
+    }
+    apply(x, 2, function(x) x / ref_summary)
   }
-  scale_factors <- switch(
-    method,
-    sum = colSums(x_sub, na.rm = TRUE),
-    mean = colMeans(x_sub, na.rm = TRUE),
-    median = apply(x_sub, 2, median, na.rm = TRUE),
-    mad = apply(x_sub, 2, mad, na.rm = TRUE),
-    euclidean = apply(x_sub, 2, function(x) sqrt(sum(x**2, na.rm = TRUE)))
-  )
+ }
+
+##' Scale along columns (samples)
+##'
+##' Function to scale a matrix of intensity data along the columns (samples).
+##'
+##' Sample intensities are divided by the column sums ("div.sum"), means
+##' ("div.mean"), medians ("div.median"), or median absolute deviations
+##' ("div.mad").
+##' 
+##' @param x A matrix-like object.
+##' @param type A scaling method to use.
+##' @param restrict A logical specifying whether only features that are common
+##'   to all samples are used in the calculation of scaling factors.
+##' @param rescale A logical specifying whether the normalized intensities are
+##'   re-scaled by multiplying the median of normalization factors to make look
+##'   similar to the original scale.
+##' @return A matrix of the same dimension as \code{x} containing the scaled
+##'   intensities.
+##'
+##' @seealso See [normalizeIntensity] that provides a
+##'   \linkS4class{SummarizedExperiment}-friendly wrapper for this function.
+##' 
+##' @export
+scaleCols <- function(x,
+                      type = c("div.sum", "div.mean", "div.median", "div.mad"),
+                      restrict = FALSE, rescale = FALSE) {
+  if (!is.matrix(x)) {
+    x <- as.matrix(x)
+  }
+  type <- match.arg(type)
+  if (restrict) {
+    scale_factors <- .get_scale_factors(na.omit(x), type)
+  } else {
+    scale_factors <- .get_scale_factors(x, type)
+  }
   if (rescale) {
     scale_factors <- scale_factors / median(scale_factors)
   }
   sweep(x, 2, scale_factors, FUN = "/")
 }
 
+.get_scale_factors <- function(x, type) {
+  switch(
+    type,
+    div.sum = colSums(x, na.rm = TRUE),
+    div.mean = colMeans(x, na.rm = TRUE),
+    div.median = apply(x, 2, median, na.rm = TRUE),
+    div.mad = apply(x, 2, mad, na.rm = TRUE)
+  )
+}
 
-################################################################################
-## Cyclic LOESS normalization (taken from limma package 09/13/2021)
-################################################################################
-.normalize_cyclicloess <- function(x, pre_log2, weights = NULL, span = 0.7,
-                                   iterations = 3,
-                                   type = c("fast", "affy", "pairs")) {
+##' Scale along rows (features)
+##' 
+##' Function to scale a matrix of intensity data along the rows (features), as
+##' described in van den Berg et al. (2006).
+##'
+##' This function will do the following:
+##' 
+##'   - Auto scaling (unit variance scaling): each feature is mean-centered
+##'     and divided by its standard deviation.
+##'   - Range scaling: each feature is mean-centered and divided by its range.
+##'   - Pareto scaling: each feature is mean-centered and divided by the
+##'     square root of its standard deviation.
+##'   - Vast scaling (variance stability scaling): it is an extension of auto
+##'     scaling, using the product of standard deviation and coefficient of
+##'     variation as a scale factor.
+##'   - Level scaling: each feature is mean-centered and divided by its mean.
+##'   - Sum scaling: each feature is divided by its sum.
+##'   - Max scaling: each feature is divided by its maximum.
+##'
+##' @param x A matrix-like object.
+##' @param type A scaling method to use.
+##' @return A matrix of the same dimension as \code{x} containing the scaled
+##'   intensities.
+##'
+##' @references
+##' 
+##' van den Berg RA, Hoefsloot HC, Westerhuis JA, Smilde AK, van der Werf MJ.
+##' Centering, scaling, and transformations: improving the biological
+##' information content of metabolomics data. BMC Genomics. 2006 Jun 8;7:142.
+##' doi: 10.1186/1471-2164-7-142. PMID: 16762068; PMCID: PMC1534033.
+##'
+##' @seealso See [normalizeIntensity] that provides a
+##'   \linkS4class{SummarizedExperiment}-friendly wrapper for this function.
+##'
+##' @export
+scaleRows <- function(x, type = c("auto", "range", "pareto",
+                                  "vast", "level", "sum", "max")) {
   type <- match.arg(type)
-  if (pre_log2) {
-    x <- log2(x)
+  if (!is.matrix(x)) {
+    x <- as.matrix(x)
   }
-  if (!requireNamespace("limma", quietly = TRUE)) {
-    stop("Package 'limma' is required. Please install and try again.")
-  }
-  limma::normalizeCyclicLoess(x, weights = weights, span = span,
-                              iterations = iterations, method = type)
+  switch(
+    type,
+    auto = t(apply(x, 1, .auto_scale, na.rm = TRUE)),
+    range = t(apply(x, 1, .range_scale, na.rm = TRUE)),
+    pareto = t(apply(x, 1, .pareto_scale, na.rm = TRUE)),
+    vast = t(apply(x, 1, .vast_scale, na.rm = TRUE)),
+    level = t(apply(x, 1, .level_scale, na.rm = TRUE)),
+    sum = MsCoreUtils::normalize_matrix(x, method = "sum"),
+    max = MSCoreUtils::normalize_matrix(x, method = "max")
+  )
 }
 
-#################################################################################
-## VSN: simply provides interface
-#################################################################################
-.normalize_vsn <- function(x, meanSdPlot = FALSE, ...) {
-  if (!requireNamespace("vsn", quietly = TRUE)) {
-    stop("Package 'vsn' is required. Please install and try again.")
-  }
-  if (!requireNamespace("Biobase", quietly = TRUE)) {
-    stop("Package 'Biobase' is required. Please install and try again.")
-  }
-  out <- suppressMessages(vsn::vsnMatrix(x = x, ...))
-  if (meanSdPlot) {
-    if (!requireNamespace("hexbin", quietly = TRUE)) {
-      stop("Package 'hexbin' is required to produce a meanSdPlot. ",
-           "Please install and try again.")
-    } else {
-      vsn::meanSdPlot(out)
-    }
-  }
-  Biobase::exprs(out)
-}
-
-#################################################################################
-## Feature scaler
-#################################################################################
 .auto_scale <- function(x, ...) {
   (x - mean(x, ...)) / sd(x, ...)
 }
@@ -199,36 +195,12 @@
   (x - mean(x, ...)) / mean(x, ...)
 }
 
-.normalize_auto <- function(x) {
-  t(apply(x, 1, .auto_scale, na.rm = TRUE))
-}
-
-.normalize_range <- function(x) {
-  t(apply(x, 1, .range_scale, na.rm = TRUE))
-}
-
-.normalize_pareto <- function(x) {
-  t(apply(x, 1, .pareto_scale, na.rm = TRUE))
-}
-
-.normalize_vast <- function(x) {
-  t(apply(x, 1, .vast_scale, na.rm = TRUE))
-}
-
-.normalize_level <- function(x) {
-  t(apply(x, 1, .level_scale, na.rm = TRUE))
-}
-
-.normalize_scale <- function(x, type = c("auto", "range", "pareto",
-                                         "vast", "level")) {
+################################################################################
+## Cyclic LOESS normalization
+################################################################################
+.normalize_cyclicloess <- function(x, type = c("fast", "affy", "pairs"),
+                                   ...) {
   type <- match.arg(type)
-  switch(
-    type,
-    auto = .normalize_auto(x),
-    range = .normalize_range(x),
-    pareto = .normalize_pareto(x),
-    vast = .normalize_vast(x),
-    level = .normalize_level(x)
-  )
+  .verify_package("limma")
+  limma::normalizeCyclicLoess(x, method = type, ...)
 }
-

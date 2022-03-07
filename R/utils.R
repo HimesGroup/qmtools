@@ -47,7 +47,12 @@
   x
 }
 
-## Reserved for future use
-## `%||%` <- function(x, y) {
-##   if (is.null(x)) y else x
-## }
+.verify_package <- function(pkg) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    stop("Package '", pkg,  "' is required. Please install and try again.")
+  }
+}
+
+`%||%` <- function(x, y) {
+  if (is.null(x)) y else x
+}

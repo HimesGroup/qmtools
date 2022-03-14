@@ -30,6 +30,11 @@
 ##'
 ##' @seealso See [normalizeIntensity] that provides a
 ##'   \linkS4class{SummarizedExperiment}-friendly wrapper for this function.
+##'
+##' @examples
+##'
+##' m <- assay(faahko_se, "knn")
+##' normalizePQN(m)
 ##' 
 ##' @export
 normalizePQN <- function(x, ref_samples = NULL, min_frac = 0.5,
@@ -52,7 +57,7 @@ normalizePQN <- function(x, ref_samples = NULL, min_frac = 0.5,
 
 .get_quotients <- function(x, ref, min_frac, type) {
   if (min_frac > 0) {
-    non_missing_frac <- rowSums(!is.na(m)) / ncol(m)
+    non_missing_frac <- rowSums(!is.na(x)) / ncol(x)
     idx_to_keep <- which(non_missing_frac >= min_frac)
     ref_sub <- ref[idx_to_keep, , drop = FALSE]
     x_sub <- x[idx_to_keep, , drop = FALSE]
@@ -79,7 +84,7 @@ normalizePQN <- function(x, ref_samples = NULL, min_frac = 0.5,
 ##' Sample intensities are divided by the column sums ("div.sum"), means
 ##' ("div.mean"), medians ("div.median"), or median absolute deviations
 ##' ("div.mad").
-##' 
+##'
 ##' @param x A matrix-like object.
 ##' @param type A scaling method to use.
 ##' @param restrict A logical specifying whether only features that are common
@@ -92,6 +97,12 @@ normalizePQN <- function(x, ref_samples = NULL, min_frac = 0.5,
 ##'
 ##' @seealso See [normalizeIntensity] that provides a
 ##'   \linkS4class{SummarizedExperiment}-friendly wrapper for this function.
+##'
+##'
+##' @examples
+##'
+##' m <- assay(faahko_se, "knn")
+##' scaleCols(m)
 ##' 
 ##' @export
 scaleCols <- function(x,
@@ -123,12 +134,12 @@ scaleCols <- function(x,
 }
 
 ##' Scale along rows (features)
-##' 
+##'
 ##' Function to scale a matrix of intensity data along the rows (features), as
 ##' described in van den Berg et al. (2006).
 ##'
 ##' This function will do the following:
-##' 
+##'
 ##'   - Auto scaling (unit variance scaling): each feature is mean-centered
 ##'     and divided by its standard deviation.
 ##'   - Range scaling: each feature is mean-centered and divided by its range.
@@ -147,7 +158,7 @@ scaleCols <- function(x,
 ##'   intensities.
 ##'
 ##' @references
-##' 
+##'
 ##' van den Berg RA, Hoefsloot HC, Westerhuis JA, Smilde AK, van der Werf MJ.
 ##' Centering, scaling, and transformations: improving the biological
 ##' information content of metabolomics data. BMC Genomics. 2006 Jun 8;7:142.
@@ -155,6 +166,11 @@ scaleCols <- function(x,
 ##'
 ##' @seealso See [normalizeIntensity] that provides a
 ##'   \linkS4class{SummarizedExperiment}-friendly wrapper for this function.
+##'
+##' @examples
+##' 
+##' m <- assay(faahko_se, "knn")
+##' scaleRows(m, type = "pareto")
 ##'
 ##' @export
 scaleRows <- function(x, type = c("auto", "range", "pareto",
@@ -171,7 +187,7 @@ scaleRows <- function(x, type = c("auto", "range", "pareto",
     vast = t(apply(x, 1, .vast_scale, na.rm = TRUE)),
     level = t(apply(x, 1, .level_scale, na.rm = TRUE)),
     sum = MsCoreUtils::normalize_matrix(x, method = "sum"),
-    max = MSCoreUtils::normalize_matrix(x, method = "max")
+    max = MsCoreUtils::normalize_matrix(x, method = "max")
   )
 }
 

@@ -6,7 +6,7 @@
 \usage{
 plotCorr(
   x,
-  xin,
+  i,
   type = c("sample", "feature"),
   log2 = FALSE,
   use = c("everything", "all.obs", "complete.obs", "na.or.complete",
@@ -29,8 +29,8 @@ plotCorr(
 \arguments{
 \item{x}{A matrix-like object or \linkS4class{SummarizedExperiment} object.}
 
-\item{xin}{A string specifying which assay values to use when \code{x} is a
-SummarizedExperiment object.}
+\item{i}{A string or integer value specifying which assay values to use
+when \code{x} is a SummarizedExperiment object.}
 
 \item{type}{A string specifying whether a correlation matrix is computed
 based on samples or features.}
@@ -38,7 +38,7 @@ based on samples or features.}
 \item{log2}{A logical specifying whether feature intensities needs to be
 log2-transformed before calculating a correlation matrix.}
 
-\item{use}{A string specifying the method to compute correlations in the
+\item{use}{A string specifying which method to compute correlations in the
 presence of missing values. Refer to \code{?cor} for details.}
 
 \item{method}{A string specifying which correlation coefficient is to be
@@ -80,7 +80,7 @@ which to color the dendrogram's branches in the columns. If \code{NA}, then
 \item{...}{Additional arguments passed to \link[heatmaply:heatmaply]{heatmaply::heatmaply}.}
 }
 \value{
-A patchwork object of aligned plots.
+A patchwork object of aligned ggplots.
 }
 \description{
 Visualizes correlations between samples or features with a
@@ -90,14 +90,16 @@ visualized using a heatmap with dendrograms.
 }
 \examples{
 
-data(faahko_poplin)
+## Sample group
+g <- colData(faahko_se)$sample_group
 
-## poplin object
-poplin_corplot(faahko_poplin, xin = "knn_cyclic")
+## SummarizedExperiment object
+plotCorr(faahko_se, i = "knn_vsn", method = "spearman", k_col = 4)
 
-## matrix
-m <- poplin_data(faahko_poplin, "knn_cyclic")
-poplin_corplot(m, label = TRUE)
+## Matrix
+m <- assay(faahko_se, "knn_vsn")
+plotCorr(m[1:50, ], type = "feature", method = "spearman")
+
 }
 \references{
 Tal Galili, Alan O'Callaghan, Jonathan Sidi, Carson Sievert;

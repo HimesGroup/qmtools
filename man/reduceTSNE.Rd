@@ -44,19 +44,10 @@ to t-SNE.
 }
 \examples{
 
-data(faahko_poplin)
+m <- assay(faahko_se, "knn_vsn")
+res <- reduceTSNE(m, perplexity = 3)
+summary(res)
 
-if (requireNamespace("Rtsne", quietly = TRUE)) {
-  ## poplin object
-  out <- reduce_tsne(faahko_poplin, xin = "knn_cyclic", xout = "tsne",
-                     normalize = TRUE, perplexity = 3)
-  summary(poplin_reduced(out, "tsne"))
-
-  ## matrix
-  m <- poplin_data(faahko_poplin, "knn_cyclic")
-  out <- reduce_tsne(m, normalize = TRUE, perplexity = 3, ncomp = 3)
-  summary(out)
-}
 }
 \references{
 L.J.P. van der Maaten and G.E. Hinton. Visualizing High-Dimensional Data
@@ -69,7 +60,7 @@ Jesse H. Krijthe (2015). Rtsne: T-Distributed Stochastic Neighbor Embedding
 using a Barnes-Hut Implementation, URL: https://github.com/jkrijthe/Rtsne
 }
 \seealso{
-See \link{reduceIntensity} that provides a
+See \link{reduceFeatures} that provides a
 \linkS4class{SummarizedExperiment}-friendly wrapper for this function.
 
 See \link{plotReduced} for visualization.

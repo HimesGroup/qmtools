@@ -32,7 +32,7 @@ plotReduced(
 }
 \arguments{
 \item{x}{A matrix containing the dimension-reduced data typically produced
-by \link{reduceIntensity}.}
+by \link{reduceFeatures}.}
 
 \item{comp}{A numeric vector of length 2 specifying the components to
 display.}
@@ -96,20 +96,19 @@ A ggplot object.
 }
 \description{
 Function to visualize dimension-reduced data matrices mainly produced by
-\link{reduceIntensity}, including \code{reduced.pca}, \code{reduced.tsne}, and
+\link{reduceFeatures}, including \code{reduced.pca}, \code{reduced.tsne}, and
 \code{reduced.plsda} objects (or a matrix with the same structure).
 }
 \examples{
 
-data(faahko_poplin)
+## Sample group
+g <- colData(faahko_se)$sample_group
 
-## sample group variable
-group <- colData(faahko_poplin)$sample_group
+## PCA
+pca_res <- reduceFeatures(faahko_se, i = "knn_vsn", method = "pca")
 
-## poplin object
-poplin_scoreplot(faahko_poplin, xin = "pca", group = group)
+## Visualizes the result
+plotReduced(pca_res, group = g)
+plotReduced(pca_res, group = g, label = TRUE, ellipse = TRUE)
 
-## matrix
-m <- poplin_reduced(faahko_poplin, "pca")
-poplin_scoreplot(m, group = group, label = TRUE)
 }

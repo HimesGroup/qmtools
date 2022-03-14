@@ -35,6 +35,12 @@ Sample intensities are divided by the column sums ("div.sum"), means
 ("div.mean"), medians ("div.median"), or median absolute deviations
 ("div.mad").
 }
+\examples{
+
+m <- assay(faahko_se, "knn")
+scaleCols(m)
+
+}
 \seealso{
 See \link{normalizeIntensity} that provides a
 \linkS4class{SummarizedExperiment}-friendly wrapper for this function.

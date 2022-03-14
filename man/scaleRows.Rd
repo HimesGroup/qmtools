@@ -38,6 +38,12 @@ variation as a scale factor.
 \item Max scaling: each feature is divided by its maximum.
 }
 }
+\examples{
+
+m <- assay(faahko_se, "knn")
+scaleRows(m, type = "pareto")
+
+}
 \references{
 van den Berg RA, Hoefsloot HC, Westerhuis JA, Smilde AK, van der Werf MJ.
 Centering, scaling, and transformations: improving the biological

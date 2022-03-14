@@ -4,13 +4,13 @@
 \alias{plotBox}
 \title{Box plot}
 \usage{
-plotBox(x, xin, group, log2 = FALSE, violin = FALSE, ylab = "Intensity")
+plotBox(x, i, group, log2 = FALSE, violin = FALSE, ylab = "Intensity")
 }
 \arguments{
 \item{x}{A matrix-like object or \linkS4class{SummarizedExperiment} object.}
 
-\item{xin}{A string specifying which assay values to use when \code{x} is a
-SummarizedExperiment object.}
+\item{i}{A string or integer value specifying which assay values to use
+when \code{x} is a SummarizedExperiment object.}
 
 \item{group}{A discrete variable to visualize the grouping structure.}
 
@@ -32,15 +32,14 @@ samples.
 }
 \examples{
 
-data(faahko_poplin)
+## Sample group
+g <- colData(faahko_se)$sample_group
 
-## sample group variable
-group <- colData(faahko_poplin)$sample_group
+## SummarizedExperiment object
+plotBox(faahko_se, i = "knn", group = g, log2 = TRUE) # before normalization
 
-## poplin object
-poplin_boxplot(faahko_poplin, xin = "knn_cyclic", group = group)
+## Matrix
+m <- assay(faahko_se, "knn_vsn")
+plotBox(m, group = g) # after normalization
 
-## matrix
-m <- poplin_data(faahko_poplin, "knn_cyclic")
-poplin_boxplot(m, group = group)
 }

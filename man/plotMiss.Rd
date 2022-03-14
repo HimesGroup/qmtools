@@ -6,7 +6,7 @@
 \usage{
 plotMiss(
   x,
-  xin,
+  i,
   group,
   dendrogram_row = TRUE,
   dendrogram_col = FALSE,
@@ -22,8 +22,8 @@ plotMiss(
 \arguments{
 \item{x}{A matrix-like object or \linkS4class{SummarizedExperiment} object.}
 
-\item{xin}{A string specifying which assay values to use when \code{x} is a
-SummarizedExperiment object.}
+\item{i}{A string or integer value specifying which assay values to use
+when \code{x} is a SummarizedExperiment object.}
 
 \item{group}{A discrete variable to change colors of the barplot by sample
 groups.}
@@ -56,7 +56,7 @@ which to color the dendrogram's branches in the columns. If \code{NA}, then
 \item{...}{Additional arguments passed to \link[heatmaply:heatmaply]{heatmaply::heatmaply}.}
 }
 \value{
-A patchwork object of aligned plots
+A patchwork object of aligned ggplots
 }
 \description{
 Visualizes missing values with a \link{SummarizedExperiment} object or
@@ -68,14 +68,16 @@ heatmap with dendrograms.
 }
 \examples{
 
-data(faahko_poplin)
+## Sample group
+g <- colData(faahko_se)$sample_group
 
-## poplin object
-poplin_naplot(faahko_poplin, xin = "raw")
+## SummarizedExperiment object
+plotMiss(faahko_se, i = 1, group = g)
 
-## matrix
-m <- poplin_raw(faahko_poplin, "raw")
-poplin_naplot(m)
+## Matrix
+m <- assay(faahko_se, i = 1)
+plotMiss(m, group = g, dendrogram_col = TRUE)
+
 }
 \references{
 Tal Galili, Alan O'Callaghan, Jonathan Sidi, Carson Sievert;

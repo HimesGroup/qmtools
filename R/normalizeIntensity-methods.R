@@ -45,10 +45,10 @@
 ##'
 ##' @param x A matrix-like object or \linkS4class{SummarizedExperiment} object.
 ##' @param method A string specifying which normalization method to use.
-##' @param xin A string specifying which assay values to use when \code{x} is a
-##'   SummarizedExperiment object.
-##' @param xout A string specifying the name of assay to assign the normalized
-##'   intensities to \code{x} when \code{x} is a SummarizedExperiment object. If
+##' @param i A string or integer value specifying which assay values to use
+##'   when \code{x} is a SummarizedExperiment object.
+##' @param name A string specifying the name to be used to store the normalized
+##'   intensities in \code{x} when \code{x} is a SummarizedExperiment object. If
 ##'   not specified, a matrix containing the normalized intensities is returned.
 ##' @param ... Arguments passed to a specific normalization method.
 ##' @return A matrix or \linkS4class{SummarizedExperiment} object of the same
@@ -97,16 +97,15 @@
 ##'
 ##' @examples
 ##'
-##' data(faahko_poplin)
-##'
-##' ## poplin object
-##' normalizeIntensity(faahko_poplin, method = "pqn",
-##'                  xin = "knn", xout = "knn_pqn")
-##'
-##' ## matrix
-##' m <- poplin_data(faahko_poplin, "knn")
-##' normalizeIntensity(m)
-##' @importFrom stats na.omit mad
+##' ## SummarizedExperiment object
+##' se <- normalizeIntensity(faahko_se, i = "knn", name = "knn_pqn",
+##'                          method = "pqn")
+##' assayNames(se)
+##'                    
+##' ## Matrix
+##' m <- assay(faahko_se, "knn")
+##' normalizeIntensity(m, method = "feature.scale", type = "pareto")
+##' 
 NULL
 
 ##' @rdname normalizeIntensity
@@ -120,11 +119,11 @@ setMethod(
 ##' @rdname normalizeIntensity
 setMethod(
   "normalizeIntensity", "SummarizedExperiment",
-  function(x, method, xin, xout, ...) {
-    if (missing(xout)) {
-      .normalizeIntensity(assay(x, xin), method = method, ...)
+  function(x, method, i, name, ...) {
+    if (missing(name)) {
+      .normalizeIntensity(assay(x, i), method = method, ...)
     } else {
-      assay(x, xout) <- .normalizeIntensity(assay(x, xin), method = method, ...)
+      assay(x, name) <- .normalizeIntensity(assay(x, i), method = method, ...)
       x
     }
   }

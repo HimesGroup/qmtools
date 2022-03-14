@@ -1,80 +1,36 @@
-pp <- faahko_poplin
-y <- factor(colData(pp)$sample_group, levels = c("WT", "KO"))
+g <- colData(faahko_sub)$sample_group
 
-test_that("poplin_naplot works", {
-  expect_error(poplin_naplot(pp, xin = "raw"), NA)
-
-  m <- poplin_raw(pp, "raw")
-  expect_error(poplin_naplot(m), NA)
-
-  expect_error(poplin_naplot(m, label = TRUE), NA)
+test_that("plotMiss works.", {
+  p1 <- plotMiss(faahko_sub, i = "raw")
+  expect_s3_class(p1, "patchwork")
+  p2 <- plotMiss(assay(faahko_sub, i = "raw"), group = g)
+  expect_s3_class(p2, "patchwork")
 })
 
-test_that("poplin_corplot works", {
-  expect_error(poplin_corplot(pp, xin = "knn"), NA)
-
-  m <- poplin_data(pp, "knn")
-  expect_error(poplin_corplot(m), NA)
-
-  expect_error(poplin_corplot(m, label = TRUE), NA)
+test_that("plotBox works.", {
+  p1 <- plotBox(faahko_sub, i = "raw")
+  expect_s3_class(p1, "ggplot")
+  p2 <- plotBox(assay(faahko_sub, i = "raw"), group = g)
+  expect_s3_class(p2, "ggplot")
 })
 
-test_that("poplin_boxplot works", {
-  expect_error(poplin_boxplot(pp, xin = "knn", pre_log2 = TRUE), NA)
-
-  m <- poplin_data(pp, "knn")
-  expect_error(poplin_boxplot(m, pre_log2 = TRUE), NA)
-
-  expect_error(poplin_boxplot(m, group = y, pre_log2 = FALSE, ylab = "I"), NA)
+test_that("plotReduced works.", {
+  out_pca <- reduceFeatures(faahko_sub, i = "knn_vsn", method = "pca")
+  out_tsne <- reduceFeatures(faahko_sub, i = "knn_vsn", method = "tsne",
+                             perplexity = 1)
+  out_plsda <- reduceFeatures(faahko_sub, i = "knn_vsn", method = "plsda",
+                              y = factor(g))
+  p1 <- plotReduced(out_pca, group = g)
+  expect_s3_class(p1, "ggplot")
+  p2 <- plotReduced(out_tsne, group = g)
+  expect_s3_class(p2, "ggplot")
+  p3 <- plotReduced(out_plsda, biplot = TRUE)
+  expect_s3_class(p3, "ggplot")
 })
 
-test_that("poplin_scoreplot works", {
-  
-  ## PCA
-  expect_error(poplin_scoreplot(pp, xin = "pca", group = y), NA)
+test_that("plotRTgroup works.", {
+  se <- clusterFeatures(faahko_sub, i = "knn_vsn", rtime_var = "rtmed")
 
-  m <- poplin_reduced(pp, "pca")
-  expect_error(poplin_scoreplot(m, group = y, label = TRUE), NA)
-
-  expect_error(poplin_scoreplot(m, group = y, label = TRUE, ellipse = TRUE), NA)
-
-  ## t-SNE
-  expect_error(poplin_scoreplot(pp, xin = "tsne", group = y), NA)
-
-  m <- poplin_reduced(pp, "tsne")
-  expect_error(poplin_scoreplot(m, group = y, label = TRUE), NA)
-
-  expect_error(poplin_scoreplot(m, group = y, label = TRUE, ellipse = TRUE,
-                                xlab = "X"), NA)
-
-  ## PLS-DA
-  expect_error(poplin_scoreplot(pp, xin = "plsda"), NA)
-
-  m <- poplin_reduced(pp, "plsda")
-  expect_error(poplin_scoreplot(m, group = y, label = TRUE), NA)
-
-  expect_error(poplin_scoreplot(m, group = y, label = TRUE, ellipse = TRUE,
-                                legend = FALSE), NA)
-})
-
-test_that("poplin_biplot works", {
-  
-  ## PCA
-  expect_error(poplin_biplot(pp, xin = "pca", group = y), NA)
-
-  m <- poplin_reduced(pp, "pca")
-  expect_error(poplin_biplot(m, group = y, label = TRUE), NA)
-
-  expect_error(poplin_biplot(m, group = y, label = TRUE,
-                             arrow_label = FALSE), NA)
-
-  ## PLS-DA
-  expect_error(poplin_biplot(pp, xin = "plsda", group = y), NA)
-
-  m <- poplin_reduced(pp, "plsda")
-  expect_error(poplin_biplot(m, group = y, label = TRUE), NA)
-
-  expect_error(poplin_biplot(m, group = y, label = TRUE,
-                             arrow_col = "orange"), NA)
-
+  expect_null(plotRTgroup(se, i = "knn_vsn", group = "FG.01", type = "graph"))
+  expect_null(plotRTgroup(se, i = "knn_vsn", group = "FG.01", type = "pairs"))
 })

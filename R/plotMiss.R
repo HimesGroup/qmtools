@@ -8,8 +8,8 @@
 ##' heatmap with dendrograms.
 ##'
 ##' @param x A matrix-like object or \linkS4class{SummarizedExperiment} object.
-##' @param xin A string specifying which assay values to use when \code{x} is a
-##'   SummarizedExperiment object.
+##' @param i A string or integer value specifying which assay values to use
+##'   when \code{x} is a SummarizedExperiment object.
 ##' @param group A discrete variable to change colors of the barplot by sample
 ##'   groups.
 ##' @param dendrogram_row A logical specifying whether dendogram is computed and
@@ -31,8 +31,8 @@
 ##'   [dendextend::find_k] is used to deduce the optimal number of clusters.
 ##' @param ... Additional arguments passed to [heatmaply::heatmaply].
 ##'
-##' @return A patchwork object of aligned plots
-##' 
+##' @return A patchwork object of aligned ggplots
+##'
 ##' @references
 ##'
 ##' Tal Galili, Alan O'Callaghan, Jonathan Sidi, Carson Sievert;
@@ -42,16 +42,18 @@
 ##'
 ##' @examples
 ##'
-##' data(faahko_poplin)
+##' ## Sample group
+##' g <- colData(faahko_se)$sample_group
 ##'
-##' ## poplin object
-##' poplin_naplot(faahko_poplin, xin = "raw")
+##' ## SummarizedExperiment object
+##' plotMiss(faahko_se, i = 1, group = g)
 ##'
-##' ## matrix
-##' m <- poplin_raw(faahko_poplin, "raw")
-##' poplin_naplot(m)
+##' ## Matrix
+##' m <- assay(faahko_se, i = 1)
+##' plotMiss(m, group = g, dendrogram_col = TRUE)
+##'
 ##' @export
-plotMiss <- function(x, xin, group,
+plotMiss <- function(x, i, group,
                      dendrogram_row = TRUE,
                      dendrogram_col = FALSE,
                      colors = viridis::viridis(2),
@@ -59,56 +61,57 @@ plotMiss <- function(x, xin, group,
                      showticklabels = c(TRUE, FALSE),
                      row_dend_left = FALSE,
                      k_row = 1, k_col = 1, ...) {
-  if (is(x, "SummarizedExperiment")) {
-    x <- assay(x, xin)
-  }
-  xm <- heatmaply::is.na10(x)
-  p_bar <- .na_barplot(xm, group = group)
-  p <- heatmaply::heatmaply(xm, colors = colors,
-                            showticklabels = showticklabels,
-                            row_dend_left = row_dend_left,
-                            Rowv = dendrogram_row, Colv = dendrogram_col,
-                            k_row = k_row, k_col = k_col,
-                            return_ppxpy = TRUE, plot_method = "ggplot",
-                            ...)
-  if (!row_dend_left) {
-    p$p <- p$p + theme(legend.position = "left")
-  }
-  if (hide_colorbar) {
-    p$p <- p$p + theme(legend.position = "none")
-  }
-  if (!dendrogram_row && !dendrogram_col) {
-    p <- p$p
-  } else {
-    p <- .arrange_plots(p, row_dend_left = row_dend_left,
-                        widths = c(0.8, 0.2), heights = c(0.1, 0.9),
-                        dendrogram_row = dendrogram_row,
-                        dendrogram_col = dendrogram_col)
-  }
-  p_bar + p + plot_layout(widths = c(0.4, 0.6))
+    if (is(x, "SummarizedExperiment")) {
+        x <- assay(x, i)
+    }
+    xm <- heatmaply::is.na10(x)
+    p_bar <- .na_barplot(xm, group = group)
+    p <- heatmaply::heatmaply(xm, colors = colors,
+                              showticklabels = showticklabels,
+                              row_dend_left = row_dend_left,
+                              Rowv = dendrogram_row, Colv = dendrogram_col,
+                              k_row = k_row, k_col = k_col,
+                              return_ppxpy = TRUE, plot_method = "ggplot",
+                              ...)
+    if (!row_dend_left) {
+        p$p <- p$p + theme(legend.position = "left")
+    }
+    if (hide_colorbar) {
+        p$p <- p$p + theme(legend.position = "none")
+    }
+    if (!dendrogram_row && !dendrogram_col) {
+        p <- p$p
+    } else {
+        p <- .arrange_plots(p, row_dend_left = row_dend_left,
+                            widths = c(0.8, 0.2), heights = c(0.1, 0.9),
+                            dendrogram_row = dendrogram_row,
+                            dendrogram_col = dendrogram_col)
+    }
+    p_bar + p + plot_layout(widths = c(0.4, 0.6))
 }
 
-.na_barplot <- function(x, group) {
-  mc <- apply(m, 2, function(x) {
-    100 * sum(is.na(x)) / nrow(m)
-  })
-   d <- data.frame(id = names(mc), mc = mc)
-  if (!missing(group)) {
-    d$group <- group
-  }
-  if (missing(group)) {
-    p <- ggplot(d, aes(x = !!quote(id), y = !!quote(mc))) +
-      ggplot2::geom_col(fill = "skyblue")
-  } else {
-    p <- ggplot(d, aes(x = !!quote(id), y = !!quote(mc),
-                       fill = !!quote(group))) +
-      ggplot2::geom_col()
-  }
-  p +
-    ylab("Missing values %") +
-    scale_y_continuous(expand = c(0.01, 0.01)) +
-    theme_bw() +
-    theme(legend.title = element_blank(),
-          axis.title.x = element_blank(),
-          axis.text.x = element_text(angle = 45, hjust = 1))
+.na_barplot <- function(m, group) {
+    mc <- apply(m, 2, function(x) {
+        100 * sum(x) / nrow(m)
+    })
+    d <- data.frame(id = factor(names(mc), levels = unique(names(mc))),
+                    mc = mc)
+    if (!missing(group)) {
+        d$group <- group
+    }
+    if (missing(group)) {
+        p <- ggplot(d, aes(x = !!quote(id), y = !!quote(mc))) +
+            ggplot2::geom_col(fill = "skyblue")
+    } else {
+        p <- ggplot(d, aes(x = !!quote(id), y = !!quote(mc),
+                           fill = !!quote(group))) +
+            ggplot2::geom_col()
+    }
+    p +
+        ylab("Missing values %") +
+        scale_y_continuous(expand = c(0.01, 0.01)) +
+        theme_bw() +
+        theme(legend.title = element_blank(),
+              axis.title.x = element_blank(),
+              axis.text.x = element_text(angle = 45, hjust = 1))
 }

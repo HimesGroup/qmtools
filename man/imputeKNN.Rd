@@ -26,11 +26,15 @@ imputation.}
 k-nearest features or by k-nearest samples. Either "feature" or "sample".}
 
 \item{scale}{A logical specifying whether \code{x} needs to be standardized prior
-to the imputation when Euclidean distance is used. The imputed values
-are re-transformed so that they are on the original scales.}
+to the imputation when Euclidean distance is used. The imputed values are
+re-transformed so that they are on the original scales.}
 
 \item{...}{Arguments passed to \link[VIM:kNN]{VIM::kNN} (Gower distance) or
 \link[impute:impute.knn]{impute::impute.knn} (Euclidean distance).}
+}
+\value{
+A matrix of the same dimension as \code{x} containing the imputed
+intensities.
 }
 \description{
 Performs k-nearest neighbor (kNN) imputation on a matrix-like object where
@@ -43,7 +47,13 @@ standardization of input data to avoid variance-based weighting of variables
 (make variables on similar scales). When Gower distance is used, the
 imputation can be done with original units (would get the same result with
 the standardized input on a different scale). The \code{type} "gower" utilizes
-the \link{VIM:kNN} and "euclidean" uses the \link[impute:impute.knn]{impute::impute.knn}.
+the \link[VIM:kNN]{VIM::kNN} and "euclidean" uses the \link[impute:impute.knn]{impute::impute.knn}.
+}
+\examples{
+
+m <- assay(faahko_se, "raw")
+imputeKNN(m)
+
 }
 \references{
 Trevor Hastie, Robert Tibshirani, Balasubramanian Narasimhan and Gilbert Chu

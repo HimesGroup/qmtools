@@ -62,22 +62,10 @@ PLS-DA.
 }
 \examples{
 
-data(faahko_poplin)
-
-if (requireNamespace("pls", quietly = TRUE)) {
-  ## response vector
-  y <- factor(colData(faahko_poplin)$sample_group, levels = c("WT", "KO"))
-
-  ## poplin object
-  out <- reduce_plsda(faahko_poplin, xin = "knn_cyclic", xout = "plsda",
-                      y = y)
-  summary(poplin_reduced(out, "plsda"))
-
-  ## matrix
-  m <- poplin_data(faahko_poplin, "knn_cyclic")
-  out <- reduce_plsda(m, y = y, ncomp = 3)
-  summary(out)
-}
+m <- assay(faahko_se, "knn_vsn")
+y <- factor(colData(faahko_se)$sample_group)
+res <- reducePLSDA(m, y = y)
+summary(res)
 }
 \references{
 Kristian Hovde Liland, Bjørn-Helge Mevik and Ron Wehrens (2021). pls:
@@ -85,7 +73,7 @@ Partial Least Squares and Principal Component Regression. R package version
 2.8-0. https://CRAN.R-project.org/package=pls
 }
 \seealso{
-See \link{reduceIntensity} that provides a
+See \link{reduceFeatures} that provides a
 \linkS4class{SummarizedExperiment}-friendly wrapper for this function.
 
 See \link{plotReduced} for visualization.

@@ -8,7 +8,7 @@
 \usage{
 \S4method{normalizeIntensity}{ANY}(x, method, ...)
 
-\S4method{normalizeIntensity}{SummarizedExperiment}(x, method, xin, xout, ...)
+\S4method{normalizeIntensity}{SummarizedExperiment}(x, method, i, name, ...)
 }
 \arguments{
 \item{x}{A matrix-like object or \linkS4class{SummarizedExperiment} object.}
@@ -17,11 +17,11 @@
 
 \item{...}{Arguments passed to a specific normalization method.}
 
-\item{xin}{A string specifying which assay values to use when \code{x} is a
-SummarizedExperiment object.}
+\item{i}{A string or integer value specifying which assay values to use
+when \code{x} is a SummarizedExperiment object.}
 
-\item{xout}{A string specifying the name of assay to assign the normalized
-intensities to \code{x} when \code{x} is a SummarizedExperiment object. If
+\item{name}{A string specifying the name to be used to store the normalized
+intensities in \code{x} when \code{x} is a SummarizedExperiment object. If
 not specified, a matrix containing the normalized intensities is returned.}
 }
 \value{
@@ -69,15 +69,15 @@ described in Bolstad et al. (2003). See the
 }
 \examples{
 
-data(faahko_poplin)
+## SummarizedExperiment object
+se <- normalizeIntensity(faahko_se, i = "knn", name = "knn_pqn",
+                         method = "pqn")
+assayNames(se)
+                   
+## Matrix
+m <- assay(faahko_se, "knn")
+normalizeIntensity(m, method = "feature.scale", type = "pareto")
 
-## poplin object
-normalizeIntensity(faahko_poplin, method = "pqn",
-                 xin = "knn", xout = "knn_pqn")
-
-## matrix
-m <- poplin_data(faahko_poplin, "knn")
-normalizeIntensity(m)
 }
 \references{
 Laurent Gatto, Johannes Rainer and Sebastian Gibb (2021).

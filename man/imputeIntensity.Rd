@@ -8,7 +8,7 @@
 \usage{
 \S4method{imputeIntensity}{ANY}(x, method, ...)
 
-\S4method{imputeIntensity}{SummarizedExperiment}(x, method, xin, xout, ...)
+\S4method{imputeIntensity}{SummarizedExperiment}(x, method, i, name, ...)
 }
 \arguments{
 \item{x}{A matrix-like object or \linkS4class{SummarizedExperiment} object.}
@@ -17,11 +17,11 @@
 
 \item{...}{Arguments passed to a specific imputation method.}
 
-\item{xin}{A string specifying which assay values to use when \code{x} is a
-SummarizedExperiment object.}
+\item{i}{A string or integer value specifying which assay values to use
+when \code{x} is a SummarizedExperiment object.}
 
-\item{xout}{A string specifying the name of assay to assign the imputed
-intensities to \code{x} when \code{x} is a SummarizedExperiment object. If
+\item{name}{A string specifying the name to be used to store the imputed
+intensities in \code{x} when \code{x} is a SummarizedExperiment object. If
 not specified, a matrix containing the imputed intensities is returned.}
 }
 \value{
@@ -70,16 +70,14 @@ fractionation/separation gradient.
 }
 \examples{
 
-data(faahko_poplin)
+## SummarizedExperiment object
+se <- imputeIntensity(faahko_se, i = "raw", name = "imp1", method = "knn")
+assayNames(se)
 
-if (requireNamespace("VIM", quietly = TRUE)) {
- ## poplin object
- poplin_impute(faahko_poplin, method = "knn", xin = "raw", xout = "knn")
+## Matrix
+m <- assay(faahko_se, i = "raw")
+imputeIntensity(m, method = "min")
 
- ## matrix
- m <- poplin_raw(faahko_poplin, "raw")
- poplin_impute(m, method = "knn")
-}
 }
 \references{
 Laurent Gatto, Johannes Rainer and Sebastian Gibb (2021).

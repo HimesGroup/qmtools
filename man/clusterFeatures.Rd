@@ -6,22 +6,23 @@
 \usage{
 clusterFeatures(
   x,
-  xin,
+  i,
   rtime_var = "rtime",
   rt_cut = 10,
   cor_cut = 0.7,
   rt_grouping = c("hclust", "closest", "consecutive"),
-  cor_grouping = c("louvain", "AbundanceSimilar", "none"),
+  cor_grouping = c("louvain", "SimilarityMatrix", "connected", "none"),
   cor_use = c("everything", "all.obs", "complete.obs", "na.or.complete",
     "pairwise.complete.obs"),
   cor_method = c("pearson", "kendall", "spearman"),
-  log2 = FALSE
+  log2 = FALSE,
+  hclust_linkage = "complete"
 )
 }
 \arguments{
 \item{x}{A \linkS4class{SummarizedExperiment} object.}
 
-\item{xin}{A string specifying which assay values to use.}
+\item{i}{A string or integer value specifying which assay values to use.}
 
 \item{rtime_var}{A string specifying the names of variable containing a
 numeric vector of retention times in \code{rowData(x)}.}
@@ -44,8 +45,11 @@ the presence of missing values. Refer to \code{?cor} for details.}
 \item{cor_method}{A string specifying which correlation coefficient is to be
 computed. See \code{?cor} for details.}
 
-\item{log2}{A logical specifying whether feature intensities needs to be
+\item{log2}{A logical specifying whether feature intensities need to be
 log2-transformed before calculating a correlation matrix.}
+
+\item{hclust_linkage}{A string specifying the linkage method to be used when
+\code{rt_grouping} is "hclust".}
 }
 \value{
 A \linkS4class{SummarizedExperiment} object with the grouping
@@ -53,7 +57,7 @@ results added to columns "rtime_group" (initial grouping on retention
 times) and "feature_group" in its \code{rowData}.
 }
 \description{
-Function to group LC-MS features according to their retention time and
+Function to cluster LC-MS features according to their retention time and
 intensity correlation across samples with a
 \linkS4class{SummarizedExperiment}.
 }
@@ -72,25 +76,38 @@ patterns of the intensity correlations across samples to identify a subset
 of features from the same compound.
 }
 
-The retention time-based grouping is performed using a hierarchical
+The retention time-based grouping is performed using either a hierarchical
 clustering via \link{hclust} or the methods available in the \pkg{MsFeatures}
 package via \link[MsFeatures:groupClosest]{MsFeatures::groupClosest} and \link[MsFeatures:groupConsecutive]{MsFeatures::groupConsecutive}.
-For the \code{rt_grouping} = "hclust", complete-linkage clustering is
-conducted using the Manhattan distance (i.e., difference in retention times)
-where the distance between two clusters is defined as the difference in
-retention times between the farthest pair of elements in the two clusters.
-Group memberships are assigned by specifying the cut height for the distance
-metric. For the "closest" and "consecutive", please refer to
+For the \code{rt_grouping} = "hclust", by default, complete-linkage
+clustering is conducted using the Manhattan distance (i.e., difference in
+retention times) where the distance between two clusters is defined as the
+difference in retention times between the farthest pair of elements in the
+two clusters. Group memberships are assigned by specifying the cut height
+for the distance metric. Other linkage methods can be specified with
+\code{hclust_linkage}. Please refer to \code{?hclust} for details. For the
+"closest" and "consecutive", please refer to
 \code{?MsFeatures::groupClosest} and \code{?MsFeatures::groupConsecutive}
-for details.
+for the details of algorithms.
 
-For the correlation-based grouping, \code{cor_grouping} = "louvain" creates
-a undirected graph using feature correlations as an adjacency matrix.
-Correlations below the cut-off specified by \code{cor_cut} will be ignored. The
-Louvain algorithm is used to group features via \link[igraph:cluster_louvain]{igraph::cluster_louvain}.
-For the "AbundanceSimilar", \link[MsFeatures:groupSimilarityMatrix]{MsFeatures::groupSimilarityMatrix} is used for
-feature grouping. Please refer to \code{?MsFeatures::groupSimilarityMatrix}
-for details.
+For the correlation-based grouping, \code{cor_grouping} = "connected"
+creates a undirected graph using feature correlations as an adjacency matrix
+(i.e., correlations serve as edge weights). The edges whose weights are
+below the cut-off specified by \code{cor_cut} will be removed from the graph,
+separating features into several disconnected subgroups. Features in the
+same subgroup will be assigned to the same feature cluster. For the
+"louvain", the function further applies the Louvain algorithm to the graph
+in order to identify densely connected features via
+\link[igraph:cluster_louvain]{igraph::cluster_louvain}. For the "SimilarityMatrix",
+\link[MsFeatures:groupSimilarityMatrix]{MsFeatures::groupSimilarityMatrix} is used for feature grouping. Please
+refer to \code{?MsFeatures::groupSimilarityMatrix} for the details of
+algorithm.
+}
+\examples{
+
+se <- clusterFeatures(faahko_se, i = "knn_vsn", rtime_var = "rtmed")
+rowData(se)[, c("rtmed", "rtime_group", "feature_group")]
+
 }
 \references{
 Johannes Rainer (2022). MsFeatures: Functionality for Mass Spectrometry
@@ -108,4 +125,6 @@ research, InterJournal, Complex Systems 1695. 2006. https://igraph.org
 See \link{hclust}, \link{cutree}, \link[MsFeatures:groupClosest]{MsFeatures::groupClosest},
 \link[MsFeatures:groupConsecutive]{MsFeatures::groupConsecutive}, \link[MsFeatures:groupSimilarityMatrix]{MsFeatures::groupSimilarityMatrix}, and
 \link[igraph:cluster_louvain]{igraph::cluster_louvain} for the underlying functions that do work.
+
+See \link{plotRTgroup} to visualize the grouping result.
 }

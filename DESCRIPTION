@@ -21,16 +21,18 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 biocViews: Metabolomics, MassSpectrometry, DataRepresentation, Preprocessing, Normalization
 Imports: 
-    BiocGenerics,
     rlang,
     ggplot2,
     patchwork,
     heatmaply,
     methods,
     MsCoreUtils,
-    S4Vectors,
     stats,
-    VIM
+    igraph,
+    VIM,
+    scales,
+    grDevices,
+    graphics
 Suggests:
     limma,
     Rtsne,
@@ -38,6 +40,9 @@ Suggests:
     vsn,
     pcaMethods,
     pls,
+    MsFeatures,
+    impute,
+    imputeLCMD,
     testthat (>= 3.0.0),
     BiocStyle,
     knitr,
@@ -47,4 +52,4 @@ Depends:
     SummarizedExperiment
 Config/testthat/edition: 3
 VignetteBuilder: knitr
-LazyData: true
+LazyData: false

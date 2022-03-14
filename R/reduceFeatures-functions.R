@@ -1,7 +1,7 @@
 ##' Principal component analysis (PCA)
 ##'
-##' Performs PCA on a matrix-like object where rows represent features and columns
-##' represents samples.
+##' Performs PCA on a matrix-like object where rows represent features and
+##' columns represents samples.
 ##'
 ##' For the data without missing values, PCA is performed with the transpose of
 ##' `x` via singular value decomposition. Otherwise, PCA is performed with the
@@ -33,7 +33,7 @@
 ##'   if `x` has no missing values.
 ##' @return A reduced.pca object with the same number of rows as \code{ncol(x)}
 ##'   containing the dimension reduction result.
-##' 
+##'
 ##' @references
 ##'
 ##' Wold, H. (1966). Estimation of principal components and related models by
@@ -43,92 +43,85 @@
 ##' Stacklies, W., Redestig, H., Scholz, M., Walther, D. and Selbig, J.
 ##' pcaMethods -- a Bioconductor package providing PCA methods for incomplete
 ##' data. Bioinformatics, 2007, 23, 1164-1167
-##' 
-##' @seealso See [reduceIntensity] that provides a
+##'
+##' @seealso See [reduceFeatures] that provides a
 ##'   \linkS4class{SummarizedExperiment}-friendly wrapper for this function.
 ##'
 ##' See [plotReduced] for visualization.
-##' 
+##'
 ##' See [pcaMethods::nipalsPca] for the underlying function that does the work.
 ##'
 ##' @examples
 ##'
-##' data(faahko_poplin)
-##' 
-##' ## poplin object
-##' out <- reduce_pca(faahko_poplin, xin = "knn_cyclic", xout = "pca")
-##' summary(poplin_reduced(out, "pca"))
+##' m <- assay(faahko_se, "knn_vsn")
+##' res <- reducePCA(m, ncomp = 3)
+##' summary(res)
 ##'
-##' ## matrix
-##' m <- poplin_data(faahko_poplin, "knn_cyclic")
-##' out <- reduce_pca(m, ncomp = 3)
-##' summary(out)
 ##' @export
 reducePCA <- function(x, ncomp = 2, center = TRUE, scale = FALSE, ...) {
-  if (!is.matrix(x)) {
-    x <- as.matrix(x)
-  }
-  if (ncomp > min(dim(x))) {
-    stop("'ncomp' must be <= min(dim(x))")
-  }
-  xt <- t(x) # transpose matrix;
-  if (center || scale) {
-    xt <- scale(xt, center = center, scale = scale)
-  }
-  if (any(is.infinite(x))) {
-    stop("Infinite value(s) in 'x'.")
-  }
-  if (!anyNA(x)) {
-    out <- .pca_svd(xt, ncomp = ncomp)
-  } else {
-    miss_pct <- 100 * sum(is.na(x)) / prod(dim(x))
-    cat("Missing value(s) in 'x'.\n")
-    cat(format(miss_pct, digits = 2), "% of values are missing. ")
-    cat("Please consider missing value imputation.\n")
-    if (!requireNamespace("pcaMethods", quietly = TRUE)) {
-      stop(
-        "Package 'pcaMethods' is required to perform PCA with missing values. ",
-        "Please install and try again or impute missing values."
-      )
-    } else {
-      cat("Performing NIPALS PCA...\n")
-      out <- .pca_nipals(xt, ncomp = ncomp)
+    if (!is.matrix(x)) {
+        x <- as.matrix(x)
     }
-  }
-  attr(out, "centered") <- center
-  attr(out, "scaled") <- scale
-  class(out) <- c("reduced.pca", class(out))
-  ## class(out) <- "reduced.pca"
-  out
+    if (ncomp > min(dim(x))) {
+        stop("'ncomp' must be <= min(dim(x))")
+    }
+    xt <- t(x) # transpose matrix;
+    if (center || scale) {
+        xt <- scale(xt, center = center, scale = scale)
+    }
+    if (any(is.infinite(x))) {
+        stop("Infinite value(s) in 'x'.")
+    }
+    if (!anyNA(x)) {
+        out <- .pca_svd(xt, ncomp = ncomp)
+    } else {
+        miss_pct <- 100 * sum(is.na(x)) / prod(dim(x))
+        cat("Missing value(s) in 'x'.\n")
+        cat(format(miss_pct, digits = 2), "% of values are missing. ")
+        cat("Please consider missing value imputation.\n")
+        if (!requireNamespace("pcaMethods", quietly = TRUE)) {
+            stop("Package 'pcaMethods' is required to perform ",
+                 "PCA with missing values. ",
+                 "Please install and try again or impute missing values.")
+        } else {
+            cat("Performing NIPALS PCA...\n")
+            out <- .pca_nipals(xt, ncomp = ncomp)
+        }
+    }
+    attr(out, "centered") <- center
+    attr(out, "scaled") <- scale
+    class(out) <- c("reduced.pca", class(out))
+    ## class(out) <- "reduced.pca"
+    out
 }
 
 .pca_svd <- function(x, ncomp) {
-  pc <- prcomp(x, center = FALSE, scale. = FALSE)
-  imp <- summary(pc)$importance
-  out <- pc$x[, seq_len(ncomp)]
-  attr(out, "method") <- "PCA (SVD)"
-  attr(out, "ncomp") <- ncomp
-  attr(out, "R2") <- imp[2, seq_len(ncomp)]
-  attr(out, "R2cum") <- imp[3, seq_len(ncomp)]
-  attr(out, "loadings") <- pc$rotation[, seq_len(ncomp)]
-  attr(out, "sdev") <- pc$sdev[seq_len(ncomp)]
-  out
+    pc <- prcomp(x, center = FALSE, scale. = FALSE)
+    imp <- summary(pc)$importance
+    out <- pc$x[, seq_len(ncomp)]
+    attr(out, "method") <- "PCA (SVD)"
+    attr(out, "ncomp") <- ncomp
+    attr(out, "R2") <- imp[2, seq_len(ncomp)]
+    attr(out, "R2cum") <- imp[3, seq_len(ncomp)]
+    attr(out, "loadings") <- pc$rotation[, seq_len(ncomp)]
+    attr(out, "sdev") <- pc$sdev[seq_len(ncomp)]
+    out
 }
 
 .pca_nipals <- function(x, ncomp, ...) {
-  res <- pcaMethods::nipalsPca(Matrix = x, nPcs = ncomp, ...)
-  out <- res@scores
-  colnames(out) <- paste0("PC", seq_len(ncol(out)))
-  rownames(out) <- rownames(x)
-  colnames(res@loadings) <- paste0("PC", seq_len(ncol(out)))
-  rownames(res@loadings) <- colnames(x)
-  attr(out, "method") <- "PCA (NIPALS)"
-  attr(out, "ncomp") <- ncomp
-  attr(out, "R2") <- c(res@R2cum[1], diff(res@R2cum))
-  attr(out, "R2cum") <- res@R2cum
-  attr(out, "loadings") <- res@loadings
-  attr(out, "sdev") <- apply(res@scores, 2, sd)
-  out
+    res <- pcaMethods::nipalsPca(Matrix = x, nPcs = ncomp, ...)
+    out <- res@scores
+    colnames(out) <- paste0("PC", seq_len(ncol(out)))
+    rownames(out) <- rownames(x)
+    colnames(res@loadings) <- paste0("PC", seq_len(ncol(out)))
+    rownames(res@loadings) <- colnames(x)
+    attr(out, "method") <- "PCA (NIPALS)"
+    attr(out, "ncomp") <- ncomp
+    attr(out, "R2") <- c(res@R2cum[1], diff(res@R2cum))
+    attr(out, "R2cum") <- res@R2cum
+    attr(out, "loadings") <- res@loadings
+    attr(out, "sdev") <- apply(res@scores, 2, sd)
+    out
 }
 
 
@@ -162,7 +155,7 @@ reducePCA <- function(x, ncomp = 2, center = TRUE, scale = FALSE, ...) {
 ##'   containing the dimension reduction result.
 ##'
 ##' @references
-##' 
+##'
 ##' L.J.P. van der Maaten and G.E. Hinton. Visualizing High-Dimensional Data
 ##' Using t-SNE. Journal of Machine Learning Research 9(Nov):2579-2605, 2008.
 ##'
@@ -172,60 +165,51 @@ reducePCA <- function(x, ncomp = 2, center = TRUE, scale = FALSE, ...) {
 ##' Jesse H. Krijthe (2015). Rtsne: T-Distributed Stochastic Neighbor Embedding
 ##' using a Barnes-Hut Implementation, URL: https://github.com/jkrijthe/Rtsne
 ##'
-##' @seealso See [reduceIntensity] that provides a
+##' @seealso See [reduceFeatures] that provides a
 ##'   \linkS4class{SummarizedExperiment}-friendly wrapper for this function.
 ##'
 ##' See [plotReduced] for visualization.
 ##'
 ##' See [Rtsne::Rtsne] for the underlying function that does the work.
-##' 
+##'
 ##' @examples
 ##'
-##' data(faahko_poplin)
-##' 
-##' if (requireNamespace("Rtsne", quietly = TRUE)) {
-##'   ## poplin object
-##'   out <- reduce_tsne(faahko_poplin, xin = "knn_cyclic", xout = "tsne",
-##'                      normalize = TRUE, perplexity = 3)
-##'   summary(poplin_reduced(out, "tsne"))
-##' 
-##'   ## matrix
-##'   m <- poplin_data(faahko_poplin, "knn_cyclic")
-##'   out <- reduce_tsne(m, normalize = TRUE, perplexity = 3, ncomp = 3)
-##'   summary(out)
-##' }
+##' m <- assay(faahko_se, "knn_vsn")
+##' res <- reduceTSNE(m, perplexity = 3)
+##' summary(res)
+##'
 ##' @export
 reduceTSNE <- function(x, ncomp = 2, normalize = TRUE, ...) {
-  .verify_package("Rtsne")
-  if (!is.matrix(x)) {
-    x <- as.matrix(x)
-  }
-  if (any(!is.finite(x))) {
-    stop("infinite or missing values in 'x'.")
-  }
-  xt <- t(x) # transpose matrix;
-  if (normalize) {
-    xt <- Rtsne::normalize_input(xt)
-  }
-  res <- Rtsne::Rtsne(xt, dims = ncomp, ...)
-  out <- res$Y
-  colnames(out) <- paste0("tSNE", seq_len(ncol(out)))
-  rownames(out) <- colnames(x)
-  attr(out, "method") <- "t-SNE"
-  attr(out, "ncomp") <- ncomp
-  attr(out, "perplexity") <- res$perplexity
-  attr(out, "theta") <- res$theta
-  attr(out, "costs") <- res$cost
-  attr(out, "itercosts") <- res$itercost
-  attr(out, "stop_lying_iter") <- res$stop_lying_iter
-  attr(out, "mom_switch_iter") <- res$mom_switch_iter
-  attr(out, "momentum") <- res$momentum
-  attr(out, "final_momentum") <- res$final_momentum
-  attr(out, "eta") <- res$eta
-  attr(out, "exaggeration_factor") <- res$exaggeration_factor
-  attr(out, "normalized") <- normalize
-  class(out) <- c("reduced.tsne", class(out))
-  out
+    .verify_package("Rtsne")
+    if (!is.matrix(x)) {
+        x <- as.matrix(x)
+    }
+    if (any(!is.finite(x))) {
+        stop("infinite or missing values in 'x'.")
+    }
+    xt <- t(x) # transpose matrix;
+    if (normalize) {
+        xt <- Rtsne::normalize_input(xt)
+    }
+    res <- Rtsne::Rtsne(xt, dims = ncomp, ...)
+    out <- res$Y
+    colnames(out) <- paste0("tSNE", seq_len(ncol(out)))
+    rownames(out) <- colnames(x)
+    attr(out, "method") <- "t-SNE"
+    attr(out, "ncomp") <- ncomp
+    attr(out, "perplexity") <- res$perplexity
+    attr(out, "theta") <- res$theta
+    attr(out, "costs") <- res$cost
+    attr(out, "itercosts") <- res$itercost
+    attr(out, "stop_lying_iter") <- res$stop_lying_iter
+    attr(out, "mom_switch_iter") <- res$mom_switch_iter
+    attr(out, "momentum") <- res$momentum
+    attr(out, "final_momentum") <- res$final_momentum
+    attr(out, "eta") <- res$eta
+    attr(out, "exaggeration_factor") <- res$exaggeration_factor
+    attr(out, "normalized") <- normalize
+    class(out) <- c("reduced.tsne", class(out))
+    out
 }
 
 ##' Partial least squares-discriminant analysis (PLS-DA)
@@ -250,7 +234,7 @@ reduceTSNE <- function(x, ncomp = 2, normalize = TRUE, ...) {
 ##' * `coefficient`: An array of regression coefficients.
 ##' * `loadings`: A matrix of loadings.
 ##' * `loadings.weights`: A matrix of loading weights.
-##' * `Y.observed`: A vector of observed responses. 
+##' * `Y.observed`: A vector of observed responses.
 ##' * `Y.predicted`: A vector of predicted responses.
 ##' * `Y.scores`: A matrix of Y-scores.
 ##' * `Y.loadings`: A matrix of Y-loadings.
@@ -275,82 +259,70 @@ reduceTSNE <- function(x, ncomp = 2, normalize = TRUE, ...) {
 ##'   \code{ncol(x)} containing the dimension reduction result.
 ##'
 ##' @references
-##' 
+##'
 ##' Kristian Hovde Liland, Bjørn-Helge Mevik and Ron Wehrens (2021). pls:
 ##' Partial Least Squares and Principal Component Regression. R package version
 ##' 2.8-0. https://CRAN.R-project.org/package=pls
 ##'
-##' @seealso See [reduceIntensity] that provides a
+##' @seealso See [reduceFeatures] that provides a
 ##'   \linkS4class{SummarizedExperiment}-friendly wrapper for this function.
 ##'
 ##' See [plotReduced] for visualization.
 ##'
 ##' See [pls::plsr] for the underlying function that does the work.
-##' 
+##'
 ##' @examples
 ##'
-##' data(faahko_poplin)
-##' 
-##' if (requireNamespace("pls", quietly = TRUE)) {
-##'   ## response vector
-##'   y <- factor(colData(faahko_poplin)$sample_group, levels = c("WT", "KO"))
-##'
-##'   ## poplin object
-##'   out <- reduce_plsda(faahko_poplin, xin = "knn_cyclic", xout = "plsda",
-##'                       y = y)
-##'   summary(poplin_reduced(out, "plsda"))
-##'
-##'   ## matrix
-##'   m <- poplin_data(faahko_poplin, "knn_cyclic")
-##'   out <- reduce_plsda(m, y = y, ncomp = 3)
-##'   summary(out)
-##' }
+##' m <- assay(faahko_se, "knn_vsn")
+##' y <- factor(colData(faahko_se)$sample_group)
+##' res <- reducePLSDA(m, y = y)
+##' summary(res)
+##
 ##' @export
 reducePLSDA <- function(x, y, ncomp = 2, center = TRUE, scale = FALSE,
                         ...) {
-  .verify_package("pls")
-  if (!is.matrix(x)) {
-    x <- as.matrix(x)
-  }
-  if (!is.factor(y)) {
-    stop("'y' must be a factor.")
-  }
-  if (any(!is.finite(y))) {
-    stop("infinite or missing values in 'y'.")
-  }
-  if (any(!is.finite(x))) {
-    stop("infinite or missing values in 'x'.")
-  }
-  xt <- t(x)
-  y_levels <- levels(y)
-  y_dummy <- model.matrix(~ y - 1)
-  colnames(y_dummy) <- gsub("^y", "", colnames(y_dummy))
+    .verify_package("pls")
+    if (!is.matrix(x)) {
+        x <- as.matrix(x)
+    }
+    if (!is.factor(y)) {
+        stop("'y' must be a factor.")
+    }
+    if (any(!is.finite(y))) {
+        stop("infinite or missing values in 'y'.")
+    }
+    if (any(!is.finite(x))) {
+        stop("infinite or missing values in 'x'.")
+    }
+    xt <- t(x)
+    y_levels <- levels(y)
+    y_dummy <- model.matrix(~ y - 1)
+    colnames(y_dummy) <- gsub("^y", "", colnames(y_dummy))
 
-  d <- data.frame(y = I(y_dummy), x = I(xt), row.names = colnames(x))
-  fit <- pls::plsr(y ~ x, data = d, ncomp = ncomp,
-                   center = center, scale = scale, ...)
-  out <- pls::scores(fit)
-  ## colnames(out) <- paste0("Comp", 1:ncol(out))
-  pred_vals <- predict(fit, ncomp = fit$ncomp)
-  y_predicted <- colnames(pred_vals)[apply(pred_vals, 1, which.max)]
+    d <- data.frame(y = I(y_dummy), x = I(xt), row.names = colnames(x))
+    fit <- pls::plsr(y ~ x, data = d, ncomp = ncomp,
+                     center = center, scale = scale, ...)
+    out <- pls::scores(fit)
+    pred_vals <- predict(fit, ncomp = fit$ncomp)
+    y_predicted <- colnames(pred_vals)[apply(pred_vals, 1, which.max)]
 
-  attr(out, "method") <- paste0("PLS-DA (", fit$method, ")")
-  attr(out, "responses") <- pls::respnames(fit)
-  attr(out, "predictors") <- pls::prednames(fit)
-  attr(out, "coefficients") <- fit$coefficients
-  attr(out, "loadings") <- fit$loadings
-  attr(out, "loadings.weights") <- fit$loadings.weights
-  attr(out, "Y.observed") <- y
-  attr(out, "Y.predicted") <- y_predicted
-  attr(out, "Y.scores") <- fit$Yscores
-  attr(out, "Y.loadings") <- fit$Yloadings
-  attr(out, "projection") <- fit$projection
-  attr(out, "fitted.values") <- fitted(fit)
-  attr(out, "residuals") <- residuals(fit)
-  attr(out, "ncomp") <- fit$ncomp
-  attr(out, "centered") <- center
-  attr(out, "scaled") <- scale
-  attr(out, "validation") <- fit$validation
-  class(out) <- c("reduced.plsda", "matrix", class(out))
-  out
+    attr(out, "method") <- paste0("PLS-DA (", fit$method, ")")
+    attr(out, "responses") <- pls::respnames(fit)
+    attr(out, "predictors") <- pls::prednames(fit)
+    attr(out, "coefficients") <- fit$coefficients
+    attr(out, "loadings") <- fit$loadings
+    attr(out, "loadings.weights") <- fit$loadings.weights
+    attr(out, "Y.observed") <- y
+    attr(out, "Y.predicted") <- y_predicted
+    attr(out, "Y.scores") <- fit$Yscores
+    attr(out, "Y.loadings") <- fit$Yloadings
+    attr(out, "projection") <- fit$projection
+    attr(out, "fitted.values") <- fitted(fit)
+    attr(out, "residuals") <- residuals(fit)
+    attr(out, "ncomp") <- fit$ncomp
+    attr(out, "centered") <- center
+    attr(out, "scaled") <- scale
+    attr(out, "validation") <- fit$validation
+    class(out) <- c("reduced.plsda", "matrix", class(out))
+    out
 }

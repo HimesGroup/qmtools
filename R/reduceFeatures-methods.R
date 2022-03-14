@@ -14,14 +14,14 @@
 ##'
 ##' `tsne` performs t-SNE using the [Rtsne::Rtsne]. See [reduceTSNE] for
 ##' details.
-##' 
+##'
 ##' `plsda` performs PLS-DA using a standard PLS model for classification with
 ##' the [pls::plsr]. See [reducePLSDA] for details.
-##' 
+##'
 ##' @param x A matrix-like object or \linkS4class{SummarizedExperiment} object.
 ##' @param method A string specifying which dimension-reduction method to use.
-##' @param xin Character specifying the name of data to retrieve from \code{x}
-##'   when \code{x} is a poplin object.
+##' @param i A string or integer value specifying which assay values to use
+##'   when \code{x} is a SummarizedExperiment object.
 ##' @param y A factor vector for the information about each sample's group.
 ##' @param ncomp A integer specifying the number of components extract.
 ##' @param ... Arguments passed to a specific dimension-reduction method.
@@ -29,7 +29,7 @@
 ##'   dimension-reduction method used.
 ##'
 ##' @references
-##' 
+##'
 ##' Wold, H. (1966). Estimation of principal components and related models by
 ##' iterative least squares. In P. R. Krishnajah (Ed.), Multivariate analysis
 ##' (pp. 391-420). NewYork: Academic Press.
@@ -54,55 +54,49 @@
 ##' @seealso See [reducePCA], [reduceTSNE], and [reducePLSDA] for the underlying
 ##'   functions that do the work for the underlying functions that do the work.
 ##'
-##' @name reduceIntensity
-##' 
+##' @name reduceFeatures
+##'
 ##' @examples
 ##'
-##' data(faahko_poplin)
-##' 
-##' ## poplin object
-##' out <- poplin_reduce(faahko_poplin, method = "pca",
-##'                      xin = "knn_cyclic", xout = "pca")
-##' summary(poplin_reduced(out, "pca"))
+##' ## SummarizedExperiment object
+##' res_pca <- reduceFeatures(faahko_se, i = "knn_vsn", method = "pca")
+##' summary(res_pca)
 ##'
-##' ## matrix
-##' m <- poplin_data(faahko_poplin, "knn_cyclic")
-##' poplin_reduce(m, method = "pca")
-##' summary(out)
+##' ## Matrix
+##' y <- factor(colData(faahko_se)$sample_group)
+##' m <- assay(faahko_se, i = "knn_vsn")
+##' res_plsda <- reduceFeatures(m, method = "plsda", y = y, ncomp = 3)
+##' summary(res_plsda)
+##'
 NULL
 
-##' @rdname reduceIntensity
+##' @rdname reduceFeatures
 setMethod(
-  "reduceIntensity", "ANY",
-  function(x, method = c("pca", "tsne", "plsda"), y, ncomp = 2, ...) {
-    .reduceIntensity(x, method = method, y = y, ncomp = ncomp, ...)
-  }
-)
-
-##' @rdname reduceIntensity 
-setMethod(
-  "reduceIntensity", "SummarizedExperiment",
-  function(x, method = c("pca", "tsne", "plsda"), y, ncomp = 2,
-           xin, xout, ...) {
-    if (missing(xout)) {
-      .reduceIntensity(assay(x, xin), method = method, ...)
-    } else {
-      assay(x, xout) <- .reduceIntensity(assay(x, xin), method = method, ...)
-      x
+    "reduceFeatures", "ANY",
+    function(x, method = c("pca", "tsne", "plsda"), ncomp = 2, y, ...) {
+        .reduceFeatures(x, method = method, ncomp = ncomp, y, ...)
     }
-  }
 )
 
-.reduceIntensity <- function(x, method = c("pca", "tsne", "plsda"), y,
-                            ncomp = 2, ...) {
-  method <- match.arg(method)
-  if (length(ncomp) != 1 || ncomp < 1) {
-    stop("'ncomp' must be a positive integer of length 1.")
-  }
-  switch(
-    method,
-    pca = reducePCA(x, ncomp = ncomp, ...),
-    tsne = reduceTSNE(x, ncomp = ncomp, ...),
-    plsda = reducePLSDA(x, y = y, ncomp = ncomp, ...)
-  )
+##' @rdname reduceFeatures
+setMethod(
+    "reduceFeatures", "SummarizedExperiment",
+    function(x, method = c("pca", "tsne", "plsda"), ncomp = 2,
+             i, y, ...) {
+        .reduceFeatures(assay(x, i), method = method, ncomp = ncomp, y, ...)
+    }
+)
+
+.reduceFeatures <- function(x, method = c("pca", "tsne", "plsda"),
+                            ncomp = 2, y, ...) {
+    method <- match.arg(method)
+    if (length(ncomp) != 1 || ncomp < 1) {
+        stop("'ncomp' must be a positive integer of length 1.")
+    }
+    switch(
+        method,
+        pca = reducePCA(x, ncomp = ncomp, ...),
+        tsne = reduceTSNE(x, ncomp = ncomp, ...),
+        plsda = reducePLSDA(x, ncomp = ncomp, y = y, ...)
+    )
 }

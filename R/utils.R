@@ -1,58 +1,24 @@
-.replace_empty_names <- function(names, N, msg, name_pattern) {
-  if (is.null(names) && N > 0) {
-    warning("'", msg, "' is NULL, replacing with '", name_pattern, "'")
-    names <- paste0(name_pattern, seq_len(N))
-  } else if (any(empty <- names=="")) {
-    warning("'", msg, "' contains empty strings, replacing with '",
-            name_pattern, "'")
-    names[empty] <- paste0(name_pattern, seq_len(sum(empty)))
-  }
-  names
-}
-
-.check_name_duplicates <- function(assay_names, value_names, msg1, msg2) {
-  if (!is.null(value_names)) {
-    ## Non-empty names must be unique
-    if (anyDuplicated(value_names[value_names != ""])) {
-      stop("'", msg1, "' contains duplicates. ", msg2)
-    }
-    if (any(value_names %in% assay_names)) {
-      stop("'", msg1, "' must not overlap with poplin_raw_names(x). ", msg2)
-    }
-  }
-}
-
-##' @export
-.verify_and_extract_input <- function(x, name) {
-  name_pool <- c(assayNames(x), poplin_data_names(x))
-  if (!(name %in% name_pool)) {
-    stop("data '", name, "' is not found in the poplin object.\n",
-         "Input must be one of c(poplin_raw_names(x), poplin_data_names(x).")
-  }
-  tryCatch(
-    assay(x, name),
-    error = function(err) poplin_data(x, name)
-  )
-}
-
-.poplin_extract_and_assign <- function(x, fun, xin, xout, ...) {
-  m <- .verify_and_extract_input(x, xin)
-  poplin_data(x, xout) <- fun(m, ...)
-  x
-}
-
-.reduced_extract_and_assign <- function(x, fun, xin, xout, ...) {
-  m <- .verify_and_extract_input(x, xin)
-  poplin_reduced(x, xout) <- fun(m, ...)
-  x
-}
+##' @importClassesFrom SummarizedExperiment SummarizedExperiment
+##' @importMethodsFrom SummarizedExperiment assay assay<-
+##' @importMethodsFrom SummarizedExperiment rowData rowData<-
+##' @importFrom grDevices dev.flush dev.hold
+##' @importFrom graphics Axis box mtext par points rect strwidth text
+##' @importFrom methods is
+##' @importFrom stats cor cutree dist fitted hclust median model.matrix prcomp
+##' @importFrom stats predict residuals sd reshape na.omit mad
+##' @importFrom ggplot2 ggplot aes geom_point geom_text stat_ellipse
+##' @importFrom ggplot2 xlab ylab ggtitle theme_bw theme element_blank
+##' @importFrom ggplot2 scale_color_manual scale_fill_manual scale_shape_manual
+##' @importFrom ggplot2 geom_segment scale_x_continuous scale_y_continuous
+##' @importFrom ggplot2 sec_axis geom_boxplot geom_violin element_text
+##' @importFrom patchwork plot_layout
 
 .verify_package <- function(pkg) {
-  if (!requireNamespace(pkg, quietly = TRUE)) {
-    stop("Package '", pkg,  "' is required. Please install and try again.")
-  }
+    if (!requireNamespace(pkg, quietly = TRUE)) {
+        stop("Package '", pkg, "' is required. Please install and try again.")
+    }
 }
 
 `%||%` <- function(x, y) {
-  if (is.null(x)) y else x
+    if (is.null(x)) y else x
 }

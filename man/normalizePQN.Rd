@@ -35,6 +35,12 @@ from a median or mean spectrum based on all spectra of the study or a subset
 of the study. Feature intensities are normalized by the median of quotients.
 See Dieterle et al. (2006) for details.
 }
+\examples{
+
+m <- assay(faahko_se, "knn")
+normalizePQN(m)
+
+}
 \references{
 Dieterle F, Ross A, Schlotterbeck G, Senn H. Probabilistic quotient
 normalization as robust method to account for dilution of complex biological

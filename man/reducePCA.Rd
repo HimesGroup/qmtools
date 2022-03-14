@@ -25,8 +25,8 @@ A reduced.pca object with the same number of rows as \code{ncol(x)}
 containing the dimension reduction result.
 }
 \description{
-Performs PCA on a matrix-like object where rows represent features and columns
-represents samples.
+Performs PCA on a matrix-like object where rows represent features and
+columns represents samples.
 }
 \details{
 For the data without missing values, PCA is performed with the transpose of
@@ -52,16 +52,10 @@ prior to PCA.
 }
 \examples{
 
-data(faahko_poplin)
+m <- assay(faahko_se, "knn_vsn")
+res <- reducePCA(m, ncomp = 3)
+summary(res)
 
-## poplin object
-out <- reduce_pca(faahko_poplin, xin = "knn_cyclic", xout = "pca")
-summary(poplin_reduced(out, "pca"))
-
-## matrix
-m <- poplin_data(faahko_poplin, "knn_cyclic")
-out <- reduce_pca(m, ncomp = 3)
-summary(out)
 }
 \references{
 Wold, H. (1966). Estimation of principal components and related models by
@@ -73,7 +67,7 @@ pcaMethods -- a Bioconductor package providing PCA methods for incomplete
 data. Bioinformatics, 2007, 23, 1164-1167
 }
 \seealso{
-See \link{reduceIntensity} that provides a
+See \link{reduceFeatures} that provides a
 \linkS4class{SummarizedExperiment}-friendly wrapper for this function.
 
 See \link{plotReduced} for visualization.

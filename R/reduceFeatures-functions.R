@@ -53,6 +53,8 @@
 ##'
 ##' @examples
 ##'
+##' data(faahko_se)
+##'
 ##' m <- assay(faahko_se, "knn_vsn")
 ##' res <- reducePCA(m, ncomp = 3)
 ##' summary(res)
@@ -174,6 +176,8 @@ reducePCA <- function(x, ncomp = 2, center = TRUE, scale = FALSE, ...) {
 ##'
 ##' @examples
 ##'
+##' data(faahko_se)
+##'
 ##' m <- assay(faahko_se, "knn_vsn")
 ##' res <- reduceTSNE(m, perplexity = 3)
 ##' summary(res)
@@ -272,6 +276,8 @@ reduceTSNE <- function(x, ncomp = 2, normalize = TRUE, ...) {
 ##' See [pls::plsr] for the underlying function that does the work.
 ##'
 ##' @examples
+##'
+##' data(faahko_se)
 ##'
 ##' m <- assay(faahko_se, "knn_vsn")
 ##' y <- factor(colData(faahko_se)$sample_group)

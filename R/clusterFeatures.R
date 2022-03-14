@@ -91,10 +91,12 @@
 ##' See [plotRTgroup] to visualize the grouping result.
 ##'
 ##' @examples
-##' 
+##'
+##' data(faahko_se)
+##'
 ##' se <- clusterFeatures(faahko_se, i = "knn_vsn", rtime_var = "rtmed")
 ##' rowData(se)[, c("rtmed", "rtime_group", "feature_group")]
-##' 
+##'
 ##' @export
 clusterFeatures <- function(x, i, rtime_var = "rtime",
                             rt_cut = 10, cor_cut = 0.7,

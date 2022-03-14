@@ -50,6 +50,8 @@
 ##'
 ##' @examples
 ##'
+##' data(faahko_se)
+##'
 ##' ## Sample group
 ##' g <- colData(faahko_se)$sample_group
 ##'
@@ -59,7 +61,7 @@
 ##' ## Matrix
 ##' m <- assay(faahko_se, "knn_vsn")
 ##' plotCorr(m[1:50, ], type = "feature", method = "spearman")
-##' 
+##'
 ##' @export
 plotCorr <- function(x, i,
                      type = c("sample", "feature"), log2 = FALSE,

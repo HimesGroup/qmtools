@@ -1,0 +1,273 @@
+---
+title: "Processing quantitative metabolomics data with the poplin package"
+author:
+  - name: Jaehyun Joo
+    affiliation: University of Pennsylvania
+    email: jaehyunjoo@outlook.com
+output: 
+    BiocStyle::html_document:
+        toc_float: true
+vignette: >
+  %\VignetteIndexEntry{Quantitative metabolomics data processing}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  message = FALSE,
+  fig.height = 10,
+  fig.width = 10
+)
+```
+
+# Introduction
+
+The `poplin` package provides basic tools for imputation, normalization, and
+dimension-reduction of metabolomics data with the standard
+`SummarizedExperiment` class. It also provides several helper functions to
+assist visualization of data. This vignette is intended to brief descriptions of
+these tools with toy examples.
+
+# Installation
+
+The package can be installed with `r CRANpkg("BiocManager")` by 
+issuing `BiocManager::install("poplin")`.
+
+# Data preparation
+
+To demonstrate the use of the `poplin` functions, we will use the 
+[FAAH knockout LC/MS](https://pubs.acs.org/doi/10.1021/bi0480335) data, 
+containing quantified LC/MS peaks from the spinal cords of 6 wild-type and 
+6 FAAH (fatty acid amide hydrolase) knockout mice.
+
+```{r setup}
+library(poplin)
+library(SummarizedExperiment)
+library(vsn)
+library(pls)
+library(ggplot2)
+library(patchwork)
+set.seed(1e8)
+
+data(faahko_se)
+
+## Only keep the first assay for the vignette
+assays(faahko_se)[2:4] <- NULL
+faahko_se
+```
+# Imputation
+
+Missing values are common in metabolomics data. For example, ions may have 
+a low abundance that does not reach the limit of detection of the instrument. 
+Unexpected stochastic fluctuations and technical error may also cause 
+missing values even though ions present at detectable levels. 
+We could use the `plotMiss` function to explore the mechanisms generating 
+the missing values. The bar plot on the left panel shows the amount of missing 
+values in each samples and the right panel helps to identify the structure of 
+missing values with a hierarchically-clustered heatmap.
+
+```{r plotMiss, fig.wide = TRUE, fig.height = 5}
+## Sample group information
+g <- factor(colData(faahko_se)$sample_group, levels = c("WT", "KO"))
+
+## Visualization of missing values
+plotMiss(faahko_se, i = "raw", group = g)
+```
+Overall, the knockout mice have a higher percentage of missing values.
+The features on top of the heatmap in general only present at the knockout mice, 
+suggesting that some of missing values are at least not random 
+(perhaps due to altered metabolisms by the experimental condition). 
+In almost all cases, visualization and inspection of missing values are 
+a time-intensive step, but greatly improve the ability to uncover the nature of 
+missing values in data and help to choose an appropriate imputation method.
+
+The imputation of missing values can be done with the `imputeIntensity`
+function. Several imputation methods are available such as k-Nearest Neighbor 
+(kNN), Random Forest (RF), Bayesian PCA, and other methods available in 
+`r Biocpkg("MsCoreUtils")`. By default, the kNN is used to impute missing values
+using the Gower distance. The kNN is a distance-based 
+algorithm that typically requires to scale the data to avoid variance-based 
+weighing. Since the Gower distance used, the imputation can be performed 
+with the original scales, which may be helpful to non-technical users. 
+
+```{r knn, fig.wide = TRUE, fig.height = 5}
+se <- imputeIntensity(faahko_se, i = "raw", name = "knn", method = "knn")
+se # The result was stored in assays slot: "knn"
+
+## Standardization of input does not influence the result
+m <- assay(faahko_se, "raw")
+knn_scaled <- as.data.frame(
+    imputeIntensity(scale(m), method = "knn") # Can accept matrix as an input
+)
+
+knn_unscaled <- as.data.frame(assay(se, "knn"))
+
+idx <- which(is.na(m[, 1]) | is.na(m[, 2])) # indices for missing values
+p1 <- ggplot(knn_unscaled[idx, ], aes(x = ko15.CDF, y = ko16.CDF)) + 
+    geom_point() + theme_bw()
+p2 <- ggplot(knn_scaled[idx, ], aes(x = ko15.CDF, y = ko16.CDF)) + 
+    geom_point() + theme_bw()
+p1 + p2 + plot_annotation(title = "Imputed values: unscaled vs scaled")
+```
+
+# Normalization
+
+In metabolomics, normalization is an important part of data processing to reduce 
+unwanted non-biological variations 
+(e.g., variation due to sample preparation and handling). 
+The `normalizeIntensity` function provides several data-driven normalization 
+methods such as Probabilistic Quotient Normalization (PQN), 
+Variance-Stabilizing Normalization (VSN), Cyclic LOESS normalization, and other 
+methods available in `r Biocpkg("MsCoreUtils")`. 
+Here, we will apply the VSN to the imputed intensities. Note that the VSN 
+produces glog-transformed (generalized log transform) feature intensities.
+The consequence of normalization can be visualized with the `plotBox` function.
+
+```{r vsn, fig.wide = TRUE, fig.height = 5}
+se <- normalizeIntensity(se, i = "knn", name = "knn_vsn", method = "vsn")
+se # The result was stored in assays slot: "knn_vsn"
+
+p1 <- plotBox(se, i = "knn", group = g, log2 = TRUE) # before normalization
+p2 <- plotBox(se, i = "knn_vsn", group = g) # after normalization
+p1 + p2 + plot_annotation(title = "Before vs After normalization")
+```
+
+# Dimension-reduction
+
+The metabolomics data generally consist of a large number of features, and 
+dimension-reduction techniques are often used for modeling and visualization to 
+uncover latent structure underlying many features. The `reduceFeatures` can be 
+used to perform dimension-reduction of the data. Currently, Principal Component 
+Analysis (PCA), Partial Least Square-Discriminant Analysis (PLS-DA) and
+t-distributed stochastic neighbor (t-SNE) are supported. The function returns 
+a matrix containing dimension-reduced data with several attributes that can be 
+summarized with the `summary` function. 
+
+```{r PCA}
+## PCA
+m_pca <- reduceFeatures(se, i = "knn_vsn", method = "pca", ncomp = 2)
+summary(m_pca)
+```
+```{r PLSDA}
+## PLS-DA (requires information about each sample's group)
+m_plsda <- reduceFeatures(se, i = "knn_vsn", method = "plsda", ncomp = 2, y = g)
+summary(m_plsda)
+```
+
+The dimension-reduction results can be plotted with the `plotReduced` function. 
+Each point (label) represents a sample and data ellipses can be visualized. 
+
+```{r plotReduced, fig.wide = TRUE, fig.height = 5}
+p_pca <- plotReduced(m_pca, group = g)
+p_plsda <- plotReduced(m_plsda, label = TRUE, ellipse = TRUE)
+p_pca + p_plsda + plot_annotation(title = "PCA and PLS-DA")
+```
+
+# Feature clustering
+
+For soft ionization methods such as LC/ESI-MS, a bulk of ions can be generated 
+from an individual compound upon ionization. Because we typically interested in 
+compounds rather than different ion species, identifying features from the same 
+compound is necessary. The `clusterFeatures` function attempts to cluster 
+with the following steps:
+
+1. Clusters features according to their retention times
+
+2. Based on the initial grouping, clusters features according to the 
+intensity correlations
+
+After the clustering procedures, the function adds the `rtime_group` and 
+`feature_group` columns to the rowData of `SummarizedExperiment` input.
+
+```{r clusterFeatures}
+se <- clusterFeatures(se, i = "knn_vsn", rtime_var = "rtmed", 
+                      rt_cut = 10, cor_cut = 0.7)
+rowData(se)[, c("rtmed", "rtime_group", "feature_group")]
+```
+
+By default, the retention time-based grouping is performed with a hierarchical 
+clustering based on the Manhattan distance (i.e., differences in retention 
+times). The equivalent steps are
+
+```{r rtime hclust, fig.wide = TRUE, fig.height = 5}
+rts <- rowData(se)$rtmed
+rt_cut <- 10
+fit <- hclust(dist(rts, "manhattan"))
+plot(as.dendrogram(fit), leaflab = "none")
+rect.hclust(fit, h = rt_cut)
+
+```
+The retention-time based grouping can also be conducted with the algorithms 
+(`groupClosest` and `groupConsecutive`) available in the 
+`r Biocpkg("MsFeatures")` package.
+
+Upon the initial grouping, each retention-based time group is further clustered 
+according to the intensity correlations since features may be originated from 
+different co-eluting compounds, not from a single entity. By default, the 
+function creates a graph where correlations serve as edge weights 
+while low correlations defined by a user-specified cut-off ignored. 
+`cor_grouping = "connected"` simply assigns connected features into the same
+features group whereas `cor_grouping = louvain` further applies the Louvain 
+algorithm to the graph to identify densely connected features. 
+The `groupSimiarityMatrix` approach from the `r Biocpkg("MsFeatures")` 
+package is also supported. 
+
+The feature clustering results can be visualized with the `plotRTgroup` 
+function. A group of features in the same feature group will be plotted with
+the same color. Each vertex represents a feature and each weight represent a 
+correlation between features.
+
+```{r connected, fig.small = TRUE}
+se_connected <- clusterFeatures(se, i = "knn_vsn", rtime_var = "rtmed", 
+                                rt_cut = 10, cor_cut = 0.7, 
+                                cor_grouping = "connected")
+plotRTgroup(se_connected, i = "knn_vsn", group = "FG.22")
+```
+
+```{r louvain, fig.small = TRUE}
+se_louvain <- clusterFeatures(se, i = "knn_vsn", rtime_var = "rtmed", 
+                              rt_cut = 10, cor_cut = 0.7,
+                              cor_grouping = "louvain")
+plotRTgroup(se_louvain, i = "knn_vsn", group = "FG.22")
+```
+
+
+More details could be plotted by specifying `type = "pairs"`.
+
+```{r pairs, fig.wide = FALSE}
+plotRTgroup(se_louvain, i = "knn_vsn", group = "FG.22", type = "pairs")
+```
+
+The clustering results can be used to deal with the redundancy of the data with
+other packages such as `r Biocpkg("QFeatures")` (aggregation of intensities) and
+`r CRANpkg("InterpretMSSpectrum")` (adduct annotation).
+
+# References
+
+Colin A. Smith (2021). faahKO: Saghatelian et al. (2004) FAAH knockout 
+LC/MS data. R package version 1.32.0. http://dx.doi.org/10.1021/bi0480335
+
+Laurent Gatto, Johannes Rainer and Sebastian Gibb (2021). MsCoreUtils: Core
+Utils for Mass Spectrometry Data. R package version 1.4.0. 
+https://github.com/RforMassSpectrometry/MsCoreUtils
+
+Johannes Rainer (2022). MsFeatures: Functionality for Mass Spectrometry 
+Features. R package version 1.3.0.
+https://github.com/RforMassSpectrometry/MsFeatures
+
+Laurent Gatto and Christophe Vanderaa (2021). QFeatures: Quantitative features 
+for mass spectrometry data. R package version 1.2.0.
+https://github.com/RforMassSpectrometry/QFeatures
+
+Jan Lisec (2018). InterpretMSSpectrum: Interpreting High Resolution Mass 
+Spectra. R package version 1.2. 
+https://CRAN.R-project.org/package=InterpretMSSpectrum
+
+# Session info {-}
+
+```{r session info}
+sessionInfo()
+```

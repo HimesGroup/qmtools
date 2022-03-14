@@ -45,6 +45,8 @@
 ##'
 ##' @examples
 ##'
+##' data(faahko_se)
+##'
 ##' m <- assay(faahko_se, "raw")
 ##' imputeKNN(m)
 ##'

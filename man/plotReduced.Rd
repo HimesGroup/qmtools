@@ -101,6 +101,8 @@ Function to visualize dimension-reduced data matrices mainly produced by
 }
 \examples{
 
+data(faahko_se)
+
 ## Sample group
 g <- colData(faahko_se)$sample_group
 

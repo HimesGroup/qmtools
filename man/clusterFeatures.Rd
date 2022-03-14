@@ -105,6 +105,8 @@ algorithm.
 }
 \examples{
 
+data(faahko_se)
+
 se <- clusterFeatures(faahko_se, i = "knn_vsn", rtime_var = "rtmed")
 rowData(se)[, c("rtmed", "rtime_group", "feature_group")]
 

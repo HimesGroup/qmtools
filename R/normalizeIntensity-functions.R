@@ -33,9 +33,11 @@
 ##'
 ##' @examples
 ##'
+##' data(faahko_se)
+##'
 ##' m <- assay(faahko_se, "knn")
 ##' normalizePQN(m)
-##' 
+##'
 ##' @export
 normalizePQN <- function(x, ref_samples = NULL, min_frac = 0.5,
                          type = c("median", "mean")) {
@@ -101,9 +103,11 @@ normalizePQN <- function(x, ref_samples = NULL, min_frac = 0.5,
 ##'
 ##' @examples
 ##'
+##' data(faahko_se)
+##'
 ##' m <- assay(faahko_se, "knn")
 ##' scaleCols(m)
-##' 
+##'
 ##' @export
 scaleCols <- function(x,
                       type = c("div.sum", "div.mean", "div.median", "div.mad"),
@@ -168,7 +172,9 @@ scaleCols <- function(x,
 ##'   \linkS4class{SummarizedExperiment}-friendly wrapper for this function.
 ##'
 ##' @examples
-##' 
+##'
+##' data(faahko_se)
+##'
 ##' m <- assay(faahko_se, "knn")
 ##' scaleRows(m, type = "pareto")
 ##'

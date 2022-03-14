@@ -61,6 +61,8 @@ Features with the same color indicate that they are in the same group.
 }
 \examples{
 
+data(faahko_se)
+
 ## Clustering
 se <- clusterFeatures(faahko_se, i = "knn_vsn", rtime_var = "rtmed")
 

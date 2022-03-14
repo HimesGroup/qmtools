@@ -62,8 +62,10 @@
 ##'   [MsCoreUtils::impute_matrix] for the underlying functions that do work.
 ##'
 ##' @name imputeIntensity
-##' 
+##'
 ##' @examples
+##'
+##' data(faahko_se)
 ##'
 ##' ## SummarizedExperiment object
 ##' se <- imputeIntensity(faahko_se, i = "raw", name = "imp1", method = "knn")
@@ -78,7 +80,10 @@ NULL
 ##' @rdname imputeIntensity
 setMethod(
     "imputeIntensity", "ANY",
-    function(x, method, ...) {
+    function(x, method = c("knn", "rf", "bpca", "QRILC", "MLE",
+                           "MinDet", "MinProb", "min", "zero",
+                           "mixed", "nbavg", "with", "none"),
+             ...) {
         .imputeIntensity(x, method = method, ...)
     }
 )
@@ -86,7 +91,10 @@ setMethod(
 ##' @rdname imputeIntensity
 setMethod(
     "imputeIntensity", "SummarizedExperiment",
-    function(x, method, i, name, ...) {
+    function(x, method = c("knn", "rf", "bpca", "QRILC", "MLE",
+                           "MinDet", "MinProb", "min", "zero",
+                           "mixed", "nbavg", "with", "none"),
+             i, name, ...) {
         if (missing(name)) {
             .imputeIntensity(assay(x, i), method = method, ...)
         } else {

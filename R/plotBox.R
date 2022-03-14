@@ -17,6 +17,8 @@
 ##'
 ##' @examples
 ##'
+##' data(faahko_se)
+##'
 ##' ## Sample group
 ##' g <- colData(faahko_se)$sample_group
 ##'
@@ -26,7 +28,7 @@
 ##' ## Matrix
 ##' m <- assay(faahko_se, "knn_vsn")
 ##' plotBox(m, group = g) # after normalization
-##' 
+##'
 ##' @export
 plotBox <- function(x, i, group, log2 = FALSE, violin = FALSE,
                     ylab = "Intensity") {

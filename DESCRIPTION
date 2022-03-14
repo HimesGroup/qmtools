@@ -11,15 +11,18 @@ Authors@R: c(
            role = c("aut"),
            email = "bhimes@pennmedicine.upenn.edu")
            )
-Description: Defines a S4 class for storing LC/MS metabolomics data processing
-             results and provides utility functions for performing
-             imputation, normalization, dimension reduction, and common
-             visualizations.
+Description: The poplin package provides basic tools for processing quantitative
+             metabolomics features with the standard SummarizedExperiment class.
+             This includes functions for imputation, normalization,
+             dimension-reduction, and visualization to help users prepare data
+             for statistical analysis. Feature clustering can be performed
+             according to retention-times and feature correlations to deal with
+             the redundancy of metabolomics features.
 License: GPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
-biocViews: Metabolomics, MassSpectrometry, DataRepresentation, Preprocessing, Normalization
+biocViews: Metabolomics, Preprocessing, Normalization
 Imports: 
     rlang,
     ggplot2,

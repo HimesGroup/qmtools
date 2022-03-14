@@ -58,6 +58,8 @@
 ##'
 ##' @examples
 ##'
+##' data(faahko_se)
+##'
 ##' ## SummarizedExperiment object
 ##' res_pca <- reduceFeatures(faahko_se, i = "knn_vsn", method = "pca")
 ##' summary(res_pca)

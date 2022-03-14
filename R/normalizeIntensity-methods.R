@@ -26,14 +26,14 @@
 ##'
 ##' * "feature.scale" performs feature-based scaling (applied along the rows) as
 ##' described in van den Berg et al. (2006). See [scaleRows] for details.
-##' 
+##'
 ##' * For "div.sum", "div.mean", "div.median", and "div.mad", the respective
 ##' sample intensities are divided by the column sums, means, medians, or median
 ##' absolute deviations. See [scaleCols] for details.
 ##'
 ##' * "center.mean" and "center.median" center the intensities by subtracting
 ##' the column means or medians, respectively.
-##' 
+##'
 ##' * "diff.median" centers all samples so that they all match the grand median
 ##' by subtracting the respective columns medians differences to the grand
 ##' median.
@@ -97,36 +97,53 @@
 ##'
 ##' @examples
 ##'
+##' data(faahko_se)
+##'
 ##' ## SummarizedExperiment object
 ##' se <- normalizeIntensity(faahko_se, i = "knn", name = "knn_pqn",
 ##'                          method = "pqn")
 ##' assayNames(se)
-##'                    
-##' ## Matrix
+##'
+##'##' ## Matrix
 ##' m <- assay(faahko_se, "knn")
 ##' normalizeIntensity(m, method = "feature.scale", type = "pareto")
-##' 
+##'
 NULL
 
 ##' @rdname normalizeIntensity
 setMethod(
-  "normalizeIntensity", "ANY",
-  function(x, method, ...) {
-    .normalizeIntensity(x, method = method, ...)
-  }
+    "normalizeIntensity", "ANY",
+    function(x, method = c("pqn", "div.sum", "div.mean",
+                           "div.median", "div.mad",
+                           "center.mean", "center.median",
+                           "diff.median",
+                           "cyclicloess", "vsn",
+                           "quantiles", "quantiles.robust",
+                           "feature.scale"),
+             ...) {
+        .normalizeIntensity(x, method = method, ...)
+    }
 )
 
 ##' @rdname normalizeIntensity
 setMethod(
-  "normalizeIntensity", "SummarizedExperiment",
-  function(x, method, i, name, ...) {
-    if (missing(name)) {
-      .normalizeIntensity(assay(x, i), method = method, ...)
-    } else {
-      assay(x, name) <- .normalizeIntensity(assay(x, i), method = method, ...)
-      x
+    "normalizeIntensity", "SummarizedExperiment",
+    function(x, method = c("pqn", "div.sum", "div.mean",
+                           "div.median", "div.mad",
+                           "center.mean", "center.median",
+                           "diff.median",
+                           "cyclicloess", "vsn",
+                           "quantiles", "quantiles.robust",
+                           "feature.scale"),
+             i, name, ...) {
+        if (missing(name)) {
+            .normalizeIntensity(assay(x, i), method = method, ...)
+        } else {
+            assay(x, name) <- .normalizeIntensity(assay(x, i),
+                                                  method = method, ...)
+            x
+        }
     }
-  }
 )
 
 .normalizeIntensity <- function(x,
@@ -137,37 +154,39 @@ setMethod(
                                            "cyclicloess", "vsn",
                                            "quantiles", "quantiles.robust",
                                            "feature.scale"),
-                              ...) {
-  method <- match.arg(method)
-  if (!is.matrix(x)) {
-    x <- as.matrix(x)
-  }
-  switch(
-    method,
-    pqn = normalizePQN(x = x, ...),
-    div.sum = scaleCols(x = x, type = "div.sum", ...),
-    div.mean = scaleCols(x = x, type = "div.mean", ...),
-    div.median = scaleCols(x = x, type = "div.median", ...),
-    div.mad = scaleCols(x = x, type = "div.mad", ...),
-    center.mean = MsCoreUtils::normalize_matrix(x = x, method = "center.mean"),
-    center.median = MsCoreUtils::normalize_matrix(x = x,
-                                                  method = "center.median"),
-    diff.median = MsCoreUtils::normalize_matrix(x = x, method = "diff.median"),
-    feature.scale = scaleRows(x = x, ...),
-    cyclicloess = .normalize_cyclicloess(x = x, ...),
-    vsn = {
-      .verify_package("vsn")
-      MsCoreUtils::normalize_matrix(x, method = "vsn", ...)
-    },
-    quantiles = {
-      .verify_package("preprocessCore")
-      MsCoreUtils::normalize_matrix(x, method = "quantiles", ...)
-    },
-    quantiles.robust = {
-      .verify_package("preprocessCore")
-      MsCoreUtils::normalize_matrix(x, method = "quantiles.robust", ...)
+                                ...) {
+    method <- match.arg(method)
+    if (!is.matrix(x)) {
+        x <- as.matrix(x)
     }
+    switch(
+        method,
+        pqn = normalizePQN(x = x, ...),
+        div.sum = scaleCols(x = x, type = "div.sum", ...),
+        div.mean = scaleCols(x = x, type = "div.mean", ...),
+        div.median = scaleCols(x = x, type = "div.median", ...),
+        div.mad = scaleCols(x = x, type = "div.mad", ...),
+        center.mean = MsCoreUtils::normalize_matrix(x = x,
+                                                    method = "center.mean"),
+        center.median = MsCoreUtils::normalize_matrix(x = x,
+                                                      method = "center.median"),
+        diff.median = MsCoreUtils::normalize_matrix(x = x,
+                                                    method = "diff.median"),
+        feature.scale = scaleRows(x = x, ...),
+        cyclicloess = .normalize_cyclicloess(x = x, ...),
+        vsn = {
+            .verify_package("vsn")
+            MsCoreUtils::normalize_matrix(x, method = "vsn", ...)
+        },
+        quantiles = {
+            .verify_package("preprocessCore")
+            MsCoreUtils::normalize_matrix(x, method = "quantiles", ...)
+        },
+        quantiles.robust = {
+            .verify_package("preprocessCore")
+            MsCoreUtils::normalize_matrix(x, method = "quantiles.robust", ...)
+        }
 
-  )
+    )
 }
 

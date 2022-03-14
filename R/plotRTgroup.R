@@ -32,16 +32,18 @@
 ##'
 ##' @examples
 ##'
+##' data(faahko_se)
+##'
 ##' ## Clustering
 ##' se <- clusterFeatures(faahko_se, i = "knn_vsn", rtime_var = "rtmed")
-##' 
+##'
 ##' ## Graph
 ##' plotRTgroup(se, i = "knn_vsn", group = "FG.22")
-##' 
+##'
 ##' ## Pairwise scatter
 ##' plotRTgroup(se, i = 3, group = "FG.01", cor_method = "spearman",
 ##'             log2 = TRUE, type = "pairs")
-##' 
+##'
 ##' @export
 plotRTgroup <- function(x, i, group, type = c("graph", "pairs"),
                         rtime_group_var = "rtime_group",

@@ -26,7 +26,7 @@
 ##' @param log2 A logical specifying whether feature intensities needs to be
 ##'   log2-transformed before calculating a correlation matrix. Ignored if type
 ##'   is "pairs". Choose the same value used in the feature grouping.
-##' @return A pair plot or graph.
+##' @return A graph or pair plot.
 ##'
 ##' @seealso See [clusterFeatures] for feature grouping.
 ##'
@@ -41,7 +41,7 @@
 ##' plotRTgroup(se, i = "knn_vsn", group = "FG.22")
 ##'
 ##' ## Pairwise scatter
-##' plotRTgroup(se, i = 3, group = "FG.01", cor_method = "spearman",
+##' plotRTgroup(se, i = 3, group = "FG.22", cor_method = "spearman",
 ##'             log2 = TRUE, type = "pairs")
 ##'
 ##' @export

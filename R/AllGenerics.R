@@ -14,3 +14,8 @@ setGeneric("reduceFeatures", function(x, ...)
     standardGeneric("reduceFeatures")
     )
 
+##' @export
+setGeneric("removeFeatures", function(x, ...)
+    standardGeneric("removeFeatures")
+    )
+

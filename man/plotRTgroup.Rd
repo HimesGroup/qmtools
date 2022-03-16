@@ -51,7 +51,7 @@ log2-transformed before calculating a correlation matrix. Ignored if type
 is "pairs". Choose the same value used in the feature grouping.}
 }
 \value{
-A pair plot or graph.
+A graph or pair plot.
 }
 \description{
 Visualizes feature grouping results produced by \link{clusterFeatures}. A
@@ -70,7 +70,7 @@ se <- clusterFeatures(faahko_se, i = "knn_vsn", rtime_var = "rtmed")
 plotRTgroup(se, i = "knn_vsn", group = "FG.22")
 
 ## Pairwise scatter
-plotRTgroup(se, i = 3, group = "FG.01", cor_method = "spearman",
+plotRTgroup(se, i = 3, group = "FG.22", cor_method = "spearman",
             log2 = TRUE, type = "pairs")
 
 }

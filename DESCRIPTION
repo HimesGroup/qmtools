@@ -54,6 +54,8 @@ Suggests:
 Depends: 
     R (>= 4.1),
     SummarizedExperiment
+BugReports: https://github.com/HimesGroup/qmtools/issues
+URL: https://github.com/HimesGroup/qmtools
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 LazyData: false

@@ -13,6 +13,6 @@ metabolomics data processing, including
 To install this package,
 
 ``` r
-remotes::install_github("jaehyunjoo/qmtools")
+remotes::install_github("HimesGroup/qmtools")
 ```
     

@@ -1,18 +1,18 @@
+# qmtools
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
-# poplin
-
-The goal of poplin package is to provide simple tools for processing
-LC/MS metabolomics data processing, including
+The goal of qmtools is to provide simple tools for quantitative
+metabolomics data processing, including
 
   - Missing value imputation
   - Data normalization
   - Dimension reduction
+  - Feature filtering
+  - Feature clustering
   - Visualization
 
 To install this package,
 
 ``` r
-remotes::install_github("jaehyunjoo/poplin")
+remotes::install_github("jaehyunjoo/qmtools")
 ```
+    

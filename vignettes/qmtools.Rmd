@@ -1,5 +1,5 @@
 ---
-title: "Processing quantitative metabolomics data with the poplin package"
+title: "Processing quantitative metabolomics data with the qmtools package"
 author:
   - name: Jaehyun Joo
     affiliation: University of Pennsylvania
@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-The `poplin` package provides basic tools for imputation, normalization, and
+The `qmtools` package provides basic tools for imputation, normalization, and
 dimension-reduction of metabolomics data with the standard
 `SummarizedExperiment` class. It also provides several helper functions to
 assist visualization of data. This vignette is intended to brief descriptions of
@@ -33,18 +33,18 @@ these tools with toy examples.
 
 # Installation
 
-The package can be installed with `r CRANpkg("BiocManager")` by 
-issuing `BiocManager::install("poplin")`.
+The package can be installed using `r CRANpkg("BiocManager")`. In R session,
+please type `BiocManager::install("qmtools")`.
 
 # Data preparation
 
-To demonstrate the use of the `poplin` functions, we will use the 
+To demonstrate the use of the `qmtools` functions, we will use the 
 [FAAH knockout LC/MS](https://pubs.acs.org/doi/10.1021/bi0480335) data, 
 containing quantified LC/MS peaks from the spinal cords of 6 wild-type and 
 6 FAAH (fatty acid amide hydrolase) knockout mice.
 
 ```{r setup}
-library(poplin)
+library(qmtools)
 library(SummarizedExperiment)
 library(vsn)
 library(pls)
@@ -58,6 +58,53 @@ data(faahko_se)
 assays(faahko_se)[2:4] <- NULL
 faahko_se
 ```
+
+# Feature filtering
+
+Metabolomics data often contains a large number of uninformative features that
+can hinder downstream analysis. The `removeFeatures` function attempts to
+identify such features and remove them from the data based on missing values,
+quality control (QC) replicates, and blank samples with the following methods:
+
+- Proportions of missing values: retain features if there is at least one group
+  with a proportion of non-missing values above a cut-off.
+
+- Relative standard deviation: remove features if QC replicates show low
+  reproducibility.
+  
+- Intraclass correlation coefficient (ICC): retain features if a feature has
+  relatively high variability across biological samples compared to QC
+  replicates.
+  
+- QC/blank ratio: remove features with low abundance that may have
+  non-biological origin.
+  
+The FAAH knockout data does not include QC and blank samples. Here, we just
+illustrate missing value-based filtering.
+  
+```{r filtering}
+dim(faahko_se) # 206 features
+table(colData(faahko_se)$sample_group)
+
+## Missing value filter based on 2 groups.
+dim(removeFeatures(faahko_se, i = "raw", 
+                   group = colData(faahko_se)$sample_group, 
+                   cut = 0.80)) # nothing removed
+
+dim(removeFeatures(faahko_se, i = "raw", 
+                   group = colData(faahko_se)$sample_group, 
+                   cut = 0.85)) # removed 65 features
+
+## based on "WT" only 
+dim(removeFeatures(faahko_se, i = "raw", 
+                   group = colData(faahko_se)$sample_group, 
+                   levels = "WT", cut = 0.85))
+
+```
+  
+In this vignette, we kept all features according to proportions of missing
+values as at least one group (WT or KO) contains >= 80% of non-missing values.
+
 # Imputation
 
 Missing values are common in metabolomics data. For example, ions may have 
@@ -158,7 +205,7 @@ summary(m_plsda)
 ```
 
 The dimension-reduction results can be plotted with the `plotReduced` function. 
-Each point (label) represents a sample and data ellipses can be visualized. 
+Each point (label) represents a sample. Data ellipses can be visualized. 
 
 ```{r plotReduced, fig.wide = TRUE, fig.height = 5}
 p_pca <- plotReduced(m_pca, group = g)
@@ -215,9 +262,9 @@ algorithm to the graph to identify densely connected features.
 The `groupSimiarityMatrix` approach from the `r Biocpkg("MsFeatures")` 
 package is also supported. 
 
-The feature clustering results can be visualized with the `plotRTgroup` 
-function. A group of features in the same feature group will be plotted with
-the same color. Each vertex represents a feature and each weight represent a 
+The feature clustering results can be visualized with the `plotRTgroup`
+function. A group of features in the same feature group will be displayed with
+the same color. Each vertex represents a feature and each weight represent a
 correlation between features.
 
 ```{r connected, fig.small = TRUE}

@@ -74,7 +74,7 @@
 ##' ## Matrix
 ##' m <- assay(faahko_se, i = "raw")
 ##' imputeIntensity(m, method = "min")
-##' 
+##'
 NULL
 
 ##' @rdname imputeIntensity

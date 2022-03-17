@@ -1,4 +1,4 @@
 library(testthat)
-library(poplin)
+library(qmtools)
 
-test_check("poplin")
+test_check("qmtools")

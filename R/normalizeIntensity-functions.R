@@ -9,17 +9,17 @@
 ##' See Dieterle et al. (2006) for details.
 ##'
 ##' @param x A matrix-like object.
-##' @param ref_samples A vector of sample names or indices specifying reference
-##'   samples for the calculation of quotients. Must be a subset of
-##'   \code{colnames(x)} if it is a character vector. If \code{NULL}, all
-##'   samples are used.
+##' @param ref_samples A vector of sample names or column indices specifying
+##'     reference samples for the calculation of quotients. Must be a subset of
+##'     \code{colnames(x)} if it is a character vector. If \code{NULL}, all
+##'     samples are used.
 ##' @param min_frac A numeric value between 0 and 1 specifying a minimum
-##'   proportion of reference samples for features to be included in the
-##'   calculation of a reference spectrum.
+##'     proportion of reference samples for features to be included in the
+##'     calculation of a reference spectrum.
 ##' @param type A method to compute a reference spectrum. Either "median" or
-##'   "mean".
+##'     "mean".
 ##' @return A matrix of the same dimension as \code{x} containing the normalized
-##'   intensities.
+##'     intensities.
 ##'
 ##' @references
 ##'

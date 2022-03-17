@@ -9,8 +9,8 @@ normalizePQN(x, ref_samples = NULL, min_frac = 0.5, type = c("median", "mean"))
 \arguments{
 \item{x}{A matrix-like object.}
 
-\item{ref_samples}{A vector of sample names or indices specifying reference
-samples for the calculation of quotients. Must be a subset of
+\item{ref_samples}{A vector of sample names or column indices specifying
+reference samples for the calculation of quotients. Must be a subset of
 \code{colnames(x)} if it is a character vector. If \code{NULL}, all
 samples are used.}
 

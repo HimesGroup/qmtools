@@ -1,5 +1,5 @@
 ##' k-nearest neighbor imputation
-##' 
+##'
 ##' Performs k-nearest neighbor (kNN) imputation on a matrix-like object where
 ##' rows represent features and columns represent samples. This function finds
 ##' k-nearest neighbors using either Gower distance or Euclidean distance.
@@ -25,7 +25,7 @@
 ##'   [impute::impute.knn] (Euclidean distance).
 ##' @return A matrix of the same dimension as \code{x} containing the imputed
 ##'   intensities.
-##' 
+##'
 ##' @references
 ##'
 ##' Trevor Hastie, Robert Tibshirani, Balasubramanian Narasimhan and Gilbert Chu

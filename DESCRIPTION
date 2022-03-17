@@ -1,5 +1,5 @@
-Package: poplin
-Title: LC/MS Metabolomics Data Processing Utilities
+Package: qmtools
+Title: Quantitative Metabolomics Data Processing Tools
 Version: 0.99.0
 Authors@R: c(
     person(given = "Jaehyun",
@@ -11,13 +11,13 @@ Authors@R: c(
            role = c("aut"),
            email = "bhimes@pennmedicine.upenn.edu")
            )
-Description: The poplin package provides basic tools for processing quantitative
-             metabolomics features with the standard SummarizedExperiment class.
-             This includes functions for imputation, normalization,
+Description: The qmtools (quantitative metabolomics tools) package provides
+             basic tools for processing quantitative metabolomics data with the
+             standard SummarizedExperiment class. This includes functions for
+             imputation, normalization, feature filtering, feature clustering,
              dimension-reduction, and visualization to help users prepare data
-             for statistical analysis. Feature clustering can be performed
-             according to retention-times and feature correlations to deal with
-             the redundancy of metabolomics features.
+             for statistical analysis. Several functions in this package could
+             also be used in other types of omics data.
 License: GPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -46,6 +46,7 @@ Suggests:
     MsFeatures,
     impute,
     imputeLCMD,
+    nlme,
     testthat (>= 3.0.0),
     BiocStyle,
     knitr,

@@ -78,15 +78,15 @@ reducePCA <- function(x, ncomp = 2, center = TRUE, scale = FALSE, ...) {
         out <- .pca_svd(xt, ncomp = ncomp)
     } else {
         miss_pct <- 100 * sum(is.na(x)) / prod(dim(x))
-        cat("Missing value(s) in 'x'.\n")
-        cat(format(miss_pct, digits = 2), "% of values are missing. ")
-        cat("Please consider missing value imputation.\n")
+        message("Missing value(s) in 'x'.\n")
+        message(format(miss_pct, digits = 2), "% of values are missing. ")
+        message("Please consider missing value imputation.\n")
         if (!requireNamespace("pcaMethods", quietly = TRUE)) {
             stop("Package 'pcaMethods' is required to perform ",
                  "PCA with missing values. ",
                  "Please install and try again or impute missing values.")
         } else {
-            cat("Performing NIPALS PCA...\n")
+            message("Performing NIPALS PCA...\n")
             out <- .pca_nipals(xt, ncomp = ncomp)
         }
     }

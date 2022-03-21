@@ -169,7 +169,7 @@ removeICC <- function(x, qc_samples,
         icc <- tryCatch({
             fit <- nlme::lme(y ~ 1,  random = ~ 1 | f, data = d,
                              na.action = na.omit)
-            vv <- as.numeric(nlme::VarCorr(fit)[c(1, 2)])
+            vv <- as.numeric(nlme::VarCorr(fit)[, "Variance"])
             vv[1] / sum(vv)
         },
         error = function(e) NA_real_
@@ -235,7 +235,7 @@ removeBlankRatio <- function(x, blank_samples, qc_samples, cut = 2,
         stop("Please specify QC samples.")
     }
     if (missing(blank_samples)) {
-        stop("Please specify Blank samples.")
+        stop("Please specify blank samples.")
     }
     m_qc <- x[, qc_samples, drop = FALSE]
     m_blank <- x[, blank_samples, drop = FALSE]

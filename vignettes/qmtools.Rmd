@@ -102,8 +102,8 @@ dim(removeFeatures(faahko_se, i = "raw",
 
 ```
   
-In this vignette, we kept all features according to proportions of missing
-values as at least one group (WT or KO) contains >= 80% of non-missing values.
+In this vignette, we kept all features based on the cut-off: at least one group
+contains >= 80% of non-missing values.
 
 # Imputation
 
@@ -257,7 +257,7 @@ different co-eluting compounds, not from a single entity. By default, the
 function creates a graph where correlations serve as edge weights 
 while low correlations defined by a user-specified cut-off ignored. 
 `cor_grouping = "connected"` simply assigns connected features into the same
-features group whereas `cor_grouping = louvain` further applies the Louvain 
+feature group whereas `cor_grouping = louvain` further applies the Louvain 
 algorithm to the graph to identify densely connected features. 
 The `groupSimiarityMatrix` approach from the `r Biocpkg("MsFeatures")` 
 package is also supported. 

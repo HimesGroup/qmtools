@@ -93,7 +93,6 @@ reducePCA <- function(x, ncomp = 2, center = TRUE, scale = FALSE, ...) {
     attr(out, "centered") <- center
     attr(out, "scaled") <- scale
     class(out) <- c("reduced.pca", class(out))
-    ## class(out) <- "reduced.pca"
     out
 }
 

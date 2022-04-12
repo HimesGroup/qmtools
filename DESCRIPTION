@@ -1,6 +1,6 @@
 Package: qmtools
 Title: Quantitative Metabolomics Data Processing Tools
-Version: 0.99.1
+Version: 0.99.2
 Authors@R: c(
     person(given = "Jaehyun",
            family = "Joo",
@@ -22,7 +22,8 @@ License: GPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
-biocViews: Metabolomics, Preprocessing, Normalization
+biocViews: Metabolomics, Preprocessing, Normalization, DimensionReduction,
+           MassSpectrometry
 Imports: 
     rlang,
     ggplot2,
@@ -52,7 +53,7 @@ Suggests:
     knitr,
     rmarkdown
 Depends: 
-    R (>= 4.1),
+    R (>= 4.2.0),
     SummarizedExperiment
 BugReports: https://github.com/HimesGroup/qmtools/issues
 URL: https://github.com/HimesGroup/qmtools

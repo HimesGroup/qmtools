@@ -87,5 +87,5 @@ Partial Least Squares and Principal Component Regression. R package version
 }
 \seealso{
 See \link{reducePCA}, \link{reduceTSNE}, and \link{reducePLSDA} for the underlying
-functions that do the work for the underlying functions that do the work.
+functions that do the work.
 }

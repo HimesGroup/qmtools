@@ -1,0 +1,16 @@
+Changes in version 0.99.2 (2022-04-11)
+
+- Updated the package documents to respond to the 2nd round of Bioconductor
+  review
+
+Changes in version 0.99.1 (2022-03-17)
+
+- Renamed the package as "qmtools"
+- Made the significant changes overall according to the Bioconductor review
+- Added the `removeFeatures` function to filter uninformative features from the
+  data
+- Added the `clusterFeatures` function to identify a group of features from the
+  same originating compound
+
+Changes in version 0.99.0 (2022-01-03)
+- Submitted to Bioconductor (The package was previously named as "poplin")

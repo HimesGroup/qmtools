@@ -52,7 +52,7 @@
 ##' 2.8-0. https://CRAN.R-project.org/package=pls
 ##'
 ##' @seealso See [reducePCA], [reduceTSNE], and [reducePLSDA] for the underlying
-##'   functions that do the work for the underlying functions that do the work.
+##'   functions that do the work.
 ##'
 ##' @name reduceFeatures
 ##'

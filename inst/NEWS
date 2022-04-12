@@ -1,3 +1,8 @@
+Changes in version 0.99.3 (2022-04-12)
+
+- The package has been accepted
+- Updated the installation instruction in the README.md
+
 Changes in version 0.99.2 (2022-04-11)
 
 - Updated the package documents to respond to the 2nd round of Bioconductor

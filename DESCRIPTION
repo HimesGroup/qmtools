@@ -1,6 +1,6 @@
 Package: qmtools
 Title: Quantitative Metabolomics Data Processing Tools
-Version: 0.99.2
+Version: 0.99.3
 Authors@R: c(
     person(given = "Jaehyun",
            family = "Joo",

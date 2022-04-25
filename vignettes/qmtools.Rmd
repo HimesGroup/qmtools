@@ -27,8 +27,8 @@ knitr::opts_chunk$set(
 
 The `qmtools` package provides basic tools for imputation, normalization, and
 dimension-reduction of metabolomics data with the standard
-`SummarizedExperiment` class. It also provides several helper functions to
-assist visualization of data. This vignette is intended to brief descriptions of
+`SummarizedExperiment` class. It also offers several helper functions to assist
+visualization of data. This vignette gives brief descriptions of
 these tools with toy examples.
 
 # Installation

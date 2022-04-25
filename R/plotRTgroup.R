@@ -97,15 +97,17 @@ plotRTgroup <- function(x, i, group, type = c("graph", "pairs"),
     } else {
         ## Background colors by feature group
         .panel.diagcol <- function(x, i, ...) {   
+            ## From 4.2, resetting graphical parameters with queried values seem
+            ## to raise a warning
             usr <- par("usr")
-            on.exit(par(usr))
+            ## on.exit(par(usr))
             rect(usr[1],usr[3],usr[2],usr[4], col = cols[i])
         }
 
         ## From pairs function examples
         .panel.cor <- function(x, y, digits = 2, prefix = "", cex.cor, ...) {
-            usr <- par("usr")
-            on.exit(par(usr))
+            ## usr <- par("usr")
+            ## on.exit(par(usr))
             par(usr = c(0, 1, 0, 1))
             ## r <- abs(cor(x, y))
             r <- cor(x, y)

@@ -62,8 +62,8 @@ A patchwork object of aligned ggplots
 Visualizes missing values with a \link{SummarizedExperiment} object or
 matrix of intensity data where rows represent features and columns represent
 samples. All values in a data matrix are re-coded (1: missing; 0:
-non-missing). The right panel displays the amount of missing values in each
-samples. The left panel displays the pattern of missing values using a
+non-missing). The left panel displays the amount of missing values in each
+samples. The right panel displays the pattern of missing values using a
 heatmap with dendrograms.
 }
 \examples{

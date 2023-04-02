@@ -33,10 +33,8 @@ label of each sample in \code{colData(x)}.}
 
 \item{class1, class2}{A string specifying the class label of samples to be
 compared. Must be one of \code{group} levels. No need to be specified if
-\code{group} has only two levels. This function evaluates the contrast: class2
-\itemize{
-\item class1.
-}}
+\code{group} has only two levels. This function evaluates the contrast:
+\code{class2 - class1}.}
 
 \item{covariates}{A vector indicating the names of variables to be included
 in the model as covariates. The covariates must be found in \code{colData(x)}.}
@@ -68,9 +66,9 @@ Only metabolic features with lower p-values are listed.}
 If specified, the function output only includes metabolic features with
 absolute fold-change greater than \code{fc}.}
 
-\item{lfc}{A numeric value specifying a minimum log2-fold-change required,
-equal to log2(fc). \code{fc} and \code{lfc} are alternative ways to specify a
-fold-change cut-off and, if both are specified, then \code{fc} take precedence.}
+\item{lfc}{A numeric value specifying a minimum log-fold-change required.
+\code{fc} and \code{lfc} are alternative ways to specify a fold-change cut-off and,
+if both are specified, then \code{fc} take precedence.}
 
 \item{...}{Additional arguments passed to \link[limma:ebayes]{limma::eBayes}.}
 }

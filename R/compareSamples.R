@@ -16,8 +16,8 @@
 ##'   label of each sample in `colData(x)`.
 ##' @param class1,class2 A string specifying the class label of samples to be
 ##'   compared. Must be one of `group` levels. No need to be specified if
-##'   `group` has only two levels. This function evaluates the contrast: class2
-##'   - class1.
+##'   `group` has only two levels. This function evaluates the contrast:
+##'   `class2 - class1`.
 ##' @param covariates A vector indicating the names of variables to be included
 ##'   in the model as covariates. The covariates must be found in `colData(x)`.
 ##' @param confint A logical specifying whether 95% confidence intervals of
@@ -40,9 +40,9 @@
 ##' @param fc A numeric value specifying a minimum fold-change to be required.
 ##'   If specified, the function output only includes metabolic features with
 ##'   absolute fold-change greater than `fc`.
-##' @param lfc A numeric value specifying a minimum log2-fold-change required,
-##'   equal to log2(fc). `fc` and `lfc` are alternative ways to specify a
-##'   fold-change cut-off and, if both are specified, then `fc` take precedence.
+##' @param lfc A numeric value specifying a minimum log-fold-change required.
+##'   `fc` and `lfc` are alternative ways to specify a fold-change cut-off and,
+##'   if both are specified, then `fc` take precedence.
 ##' @param ... Additional arguments passed to [limma::eBayes].
 ##' @return A data.frame with a row for the metabolic features and the following
 ##'   columns:
@@ -113,7 +113,6 @@ compareSamples <- function(x, i, group,
     stop(setdiff(c(class1, class2), levels(cdat[[group]])),
          " is not the levels of '", group, "'")
   }
-  message(paste0("Contrast: ", class2, " - ", class1))
   ## Check covariates are found in cdat
   if (!all(covariates %in% colnames(cdat))) {
     stop("`colData(x)` does not have a column(s): ",
@@ -131,6 +130,7 @@ compareSamples <- function(x, i, group,
   fit <- contrasts.fit(fit, contrasts = contrast)
   fit <- eBayes(fit, ...)
   ## Output
+  message(paste0("Contrast: ", class2, " - ", class1))
   topTable(fit, number = number, adjust.method = adjust.method,
            sort.by = sort.by, resort.by = resort.by, p.value = p.value,
            fc = fc, lfc = lfc, confint = confint)

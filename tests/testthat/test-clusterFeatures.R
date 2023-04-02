@@ -2,7 +2,7 @@ test_that("clusterFeatures works.", {
 
     ## Incorrect rtime varname
     expect_error(
-        clusterFeatures(fahhko_se, i = "knn_vsn", rtime_var = "zzz")
+        clusterFeatures(faahko_sub, i = "knn_vsn", rtime_var = "zzz")
     )
 
     ## Function generates "rtime_group" and "feature_group" in rowData

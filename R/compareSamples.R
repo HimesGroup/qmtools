@@ -5,9 +5,9 @@
 ##'
 ##' This function provides a simplified interface of fitting a linear model to
 ##' make a comparison of interest using the [limma::lmFit], [limma::eBayes], and
-##' [limma::topTable] functions. For more flexible model specification (e.g.,
+##' [limma::topTable] functions. For more flexible model specifications (e.g.,
 ##' interaction model, multi-level model), please use a standard workflow
-##' outlined in the `limma` package manual.
+##' outlined in the `limma` package user's guide.
 ##'
 ##' @param x A \linkS4class{SummarizedExperiment} object.
 ##' @param i A string or integer value specifying which assay values to use. The

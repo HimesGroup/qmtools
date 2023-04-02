@@ -6,7 +6,7 @@
 \alias{qmtools-package}
 \title{qmtools: Quantitative Metabolomics Data Processing Tools}
 \description{
-The qmtools (quantitative metabolomics tools) package provides basic tools for processing quantitative metabolomics data with the standard SummarizedExperiment class. This includes functions for imputation, normalization, feature filtering, feature clustering, dimension-reduction, and visualization to help users prepare data for statistical analysis. Several functions in this package could also be used in other types of omics data.
+The qmtools (quantitative metabolomics tools) package provides basic tools for processing quantitative metabolomics data with the standard SummarizedExperiment class. This includes functions for imputation, normalization, feature filtering, feature clustering, dimension-reduction, and visualization to help users prepare data for statistical analysis. This package also offers a convenient way to compute empirical Bayes statistics for which metabolic features are different between two sets of study samples. Several functions in this package could also be used in other types of omics data.
 }
 \details{
 The qmtools package provides six categories of important functions:

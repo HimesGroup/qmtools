@@ -1,6 +1,6 @@
 ##' @importClassesFrom SummarizedExperiment SummarizedExperiment
 ##' @importMethodsFrom SummarizedExperiment assay assay<-
-##' @importMethodsFrom SummarizedExperiment rowData rowData<-
+##' @importMethodsFrom SummarizedExperiment rowData rowData<- colData colData<-
 ##' @importFrom grDevices dev.flush dev.hold
 ##' @importFrom graphics Axis box mtext par points rect strwidth text
 ##' @importFrom methods is
@@ -12,6 +12,7 @@
 ##' @importFrom ggplot2 geom_segment scale_x_continuous scale_y_continuous
 ##' @importFrom ggplot2 sec_axis geom_boxplot geom_violin element_text
 ##' @importFrom patchwork plot_layout
+##' @importFrom stats as.formula
 ##' @importFrom limma normalizeCyclicLoess lmFit eBayes topTable makeContrasts
 ##'   contrasts.fit
 

@@ -1,6 +1,6 @@
 Package: qmtools
 Title: Quantitative Metabolomics Data Processing Tools
-Version: 1.3.0
+Version: 1.3.1
 Authors@R: c(
     person(given = "Jaehyun",
            family = "Joo",
@@ -16,8 +16,10 @@ Description: The qmtools (quantitative metabolomics tools) package provides
              standard SummarizedExperiment class. This includes functions for
              imputation, normalization, feature filtering, feature clustering,
              dimension-reduction, and visualization to help users prepare data
-             for statistical analysis. Several functions in this package could
-             also be used in other types of omics data.
+             for statistical analysis. This package also offers a convenient way
+             to compute empirical Bayes statistics for which metabolic features
+             are different between two sets of study samples. Several functions
+             in this package could also be used in other types of omics data.
 License: GPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

@@ -95,9 +95,9 @@ Function to make a comparisons between two groups in study samples with a
 \details{
 This function provides a simplified interface of fitting a linear model to
 make a comparison of interest using the \link[limma:lmFit]{limma::lmFit}, \link[limma:ebayes]{limma::eBayes}, and
-\link[limma:toptable]{limma::topTable} functions. For more flexible model specification (e.g.,
+\link[limma:toptable]{limma::topTable} functions. For more flexible model specifications (e.g.,
 interaction model, multi-level model), please use a standard workflow
-outlined in the \code{limma} package manual.
+outlined in the \code{limma} package user's guide.
 }
 \examples{
 

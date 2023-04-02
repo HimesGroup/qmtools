@@ -11,7 +11,7 @@ compareSamples(
   class1,
   class2,
   covariates = NULL,
-  confint = FALSE,
+  confint = TRUE,
   number = nrow(x),
   adjust.method = "BH",
   sort.by = "B",

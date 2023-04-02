@@ -124,15 +124,14 @@ compareSamples <- function(x, i, group,
   ## Design matrix (group mean specification)
   dm <- model.matrix(fm, data = cdat)
   colnames(dm) <- sub(group, "", colnames(dm))
-  contrast <- limma::makeContrasts(contrasts = paste(class2, class1, sep = " - "), levels = dm)
+  contrast <- makeContrasts(contrasts = paste(class2, class1, sep = " - "),
+                            levels = dm)
   ## Fit model
-  fit <- limma::lmFit(assay(x, i), design = dm)
-  fit <- limma::contrasts.fit(fit, contrasts = contrast)
-  fit <- limma::eBayes(fit, ...)
+  fit <- lmFit(assay(x, i), design = dm)
+  fit <- contrasts.fit(fit, contrasts = contrast)
+  fit <- eBayes(fit, ...)
   ## Output
-  limma::topTable(
-           fit, number = number, adjust.method = adjust.method,
+  topTable(fit, number = number, adjust.method = adjust.method,
            sort.by = sort.by, resort.by = resort.by, p.value = p.value,
-           fc = fc, lfc = lfc, confint = confint
-         )
+           fc = fc, lfc = lfc, confint = confint)
 }

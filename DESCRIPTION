@@ -24,7 +24,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 biocViews: Metabolomics, Preprocessing, Normalization, DimensionReduction,
            MassSpectrometry
-Imports: 
+Imports:
     rlang,
     ggplot2,
     patchwork,
@@ -36,9 +36,9 @@ Imports:
     VIM,
     scales,
     grDevices,
-    graphics
+    graphics,
+    limma
 Suggests:
-    limma,
     Rtsne,
     missForest,
     vsn,
@@ -52,7 +52,7 @@ Suggests:
     BiocStyle,
     knitr,
     rmarkdown
-Depends: 
+Depends:
     R (>= 4.2.0),
     SummarizedExperiment
 BugReports: https://github.com/HimesGroup/qmtools/issues

@@ -12,6 +12,8 @@
 ##' @importFrom ggplot2 geom_segment scale_x_continuous scale_y_continuous
 ##' @importFrom ggplot2 sec_axis geom_boxplot geom_violin element_text
 ##' @importFrom patchwork plot_layout
+##' @importFrom limma normalizeCyclicLoess lmFit eBayes topTable makeContrasts
+##'   contrasts.fit
 
 .verify_package <- function(pkg) {
     if (!requireNamespace(pkg, quietly = TRUE)) {

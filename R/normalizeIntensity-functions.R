@@ -223,6 +223,5 @@ scaleRows <- function(x, type = c("auto", "range", "pareto",
 .normalize_cyclicloess <- function(x, type = c("fast", "affy", "pairs"),
                                    ...) {
   type <- match.arg(type)
-  .verify_package("limma")
-  limma::normalizeCyclicLoess(x, method = type, ...)
+  normalizeCyclicLoess(x, method = type, ...)
 }

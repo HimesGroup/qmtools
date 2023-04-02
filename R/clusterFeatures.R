@@ -47,7 +47,7 @@
 ##'
 ##' @param x A \linkS4class{SummarizedExperiment} object.
 ##' @param i A string or integer value specifying which assay values to use.
-##' @param rtime_var A string specifying the names of variable containing a
+##' @param rtime_var A string specifying the name of variable containing a
 ##'   numeric vector of retention times in `rowData(x)`.
 ##' @param rt_cut A numeric value specifying a cut-off for the retention-time
 ##'   based feature grouping.

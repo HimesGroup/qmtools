@@ -24,7 +24,7 @@ clusterFeatures(
 
 \item{i}{A string or integer value specifying which assay values to use.}
 
-\item{rtime_var}{A string specifying the names of variable containing a
+\item{rtime_var}{A string specifying the name of variable containing a
 numeric vector of retention times in \code{rowData(x)}.}
 
 \item{rt_cut}{A numeric value specifying a cut-off for the retention-time

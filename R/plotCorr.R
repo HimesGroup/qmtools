@@ -70,11 +70,7 @@ plotCorr <- function(x, i,
                              "pairwise.complete.obs"),
                      method = c("pearson", "kendall", "spearman"),
                      dendrogram = TRUE,
-                     colors = viridis::viridis(
-                                           n = 256, alpha = 1,
-                                           begin = 0, end = 1,
-                                           option = "viridis"
-                                       ),
+                     colors = scales::viridis_pal()(256),
                      label = FALSE, digits = 2,
                      widths = c(0.8, 0.2), heights = c(0.2, 0.8),
                      hide_colorbar = FALSE,

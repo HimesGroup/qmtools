@@ -10,7 +10,7 @@ plotMiss(
   group,
   dendrogram_row = TRUE,
   dendrogram_col = FALSE,
-  colors = viridis::viridis(2),
+  colors = (scales::viridis_pal())(2),
   hide_colorbar = TRUE,
   showticklabels = c(TRUE, FALSE),
   row_dend_left = FALSE,

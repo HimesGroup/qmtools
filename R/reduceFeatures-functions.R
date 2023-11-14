@@ -250,7 +250,7 @@ reduceTSNE <- function(x, ncomp = 2, normalize = TRUE, ...) {
 ##' to PLS-DA.
 ##' * `scaled`: A logical indicating whether the data was scaled prior to
 ##' PLS-DA.
-##'
+##' * `validation`: Results of the validation if requested.
 ##'
 ##' @param x A matrix-like object.
 ##' @param y A factor vector for the information about each sample's group.
@@ -259,6 +259,11 @@ reduceTSNE <- function(x, ncomp = 2, normalize = TRUE, ...) {
 ##'   mean-centered prior to PLS-DA.
 ##' @param scale A logical specifying whether the unit variance scaling needs to
 ##'   be performed on `x` prior to PLS-DA.
+##' @param validation A string specifying a validation method to use. See
+##'   [pls::plsr] for the details.
+##' @param return_mvr A logical indicating whether `mvr` object is returned.
+##'   It is recommended for a user to use utilities functions from the `pls`
+##'   package for the model fit.
 ##' @param ... Additional arguments passed to [pls::plsr].
 ##' @return A reduced.plsda object with the same number of rows as
 ##'   \code{ncol(x)} containing the dimension reduction result.
@@ -287,6 +292,7 @@ reduceTSNE <- function(x, ncomp = 2, normalize = TRUE, ...) {
 ##
 ##' @export
 reducePLSDA <- function(x, y, ncomp = 2, center = TRUE, scale = FALSE,
+                        validation = c("none", "CV", "LOO"), return_mvr = FALSE,
                         ...) {
     .verify_package("pls")
     if (!is.matrix(x)) {
@@ -307,8 +313,11 @@ reducePLSDA <- function(x, y, ncomp = 2, center = TRUE, scale = FALSE,
     colnames(y_dummy) <- gsub("^y", "", colnames(y_dummy))
 
     d <- data.frame(y = I(y_dummy), x = I(xt), row.names = colnames(x))
-    fit <- pls::plsr(y ~ x, data = d, ncomp = ncomp,
-                     center = center, scale = scale, ...)
+    fit <- pls::plsr(y ~ x, data = d, ncomp = ncomp, center = center,
+                     scale = scale, validation = validation, ...)
+    if (return_mvr) {
+      return(fit)
+    }
     out <- pls::scores(fit)
     pred_vals <- predict(fit, ncomp = fit$ncomp)
     y_predicted <- colnames(pred_vals)[apply(pred_vals, 1, which.max)]

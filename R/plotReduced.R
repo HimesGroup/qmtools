@@ -74,113 +74,116 @@ plotReduced <- function(x, comp = c(1, 2), biplot = FALSE,
                         arrow_label_size = 3.88,
                         arrow_label_col = "orange",
                         arrow_label_subset = NULL) {
-    comp <- sort(comp)
-    if (inherits(x, "reduced.pca")) {
-        if (is.null(xlab)) {
-            xlab <- paste0(
-                colnames(x)[comp[1]], " (",
-                prettyNum(attr(x, "R2")[comp[1]] * 100, digits = 4), "%)"
-            )
-        }
-        if (is.null(ylab)) {
-            ylab <- paste0(
-                colnames(x)[comp[2]], " (",
-                prettyNum(attr(x, "R2")[comp[2]] * 100, digits = 4), "%)"
-            )
-        }
-        if (!biplot) {
-            .scoreplot(x, comp = comp, group = group,
-                       group_col = group_col,
-                       point_shape_by_group = point_shape_by_group,
-                       point_size = point_size,
-                       label = label, label_size = label_size,
-                       label_subset = label_subset,
-                       ellipse = ellipse,
-                       xlab = xlab, ylab = ylab,
-                       title = title, legend = legend)
-        } else {
-            n <- nrow(x)
-            lam <- attr(x, "sdev")[comp] * sqrt(n)
-            ## Consider Scaling factor
-            ## if (scale < 0 || scale > 1)
-            ##   warning("'scale' is outside [0, 1]")
-            ## if (scale != 0)
-            ##   lam <- lam**scale
-            ## else lam <- 1
-            X <- t(t(x[, comp]) / lam)
-            Y <- t(t(attr(x, "loadings")[, comp]) * lam)
-            .biplot(x = X, y = Y, comp = c(1, 2), group = group,
-                    group_col = group_col,
-                    point_size = point_size,
-                    point_shape_by_group = point_shape_by_group,
-                    label = label, label_size = label_size,
-                    label_subset = label_subset,
-                    ellipse = ellipse,
-                    xlab = xlab, ylab = ylab,
-                    title = title, legend = legend,
-                    arrow_len = arrow_len, arrow_col = arrow_col,
-                    arrow_alpha = arrow_alpha,
-                    arrow_label = arrow_label,
-                    arrow_label_ext = arrow_label_ext,
-                    arrow_label_size = arrow_label_size,
-                    arrow_label_col = arrow_label_col,
-                    arrow_label_subset = arrow_label_subset)
-        }
-    } else if (inherits(x, "reduced.plsda")) {
-        if (missing(group)) {
-            group <- attr(x, "Y.observed")
-        }
-        if (is.null(xlab)) {
-            xlab <- paste0(
-                colnames(x)[comp[1]], " (",
-                prettyNum(attr(x, "explvar")[comp[1]], digits = 4), "%)")
-        }
-        if (is.null(ylab)) {
-            ylab <- paste0(
-                colnames(x)[comp[2]], " (",
-                prettyNum(attr(x, "explvar")[comp[2]], digits = 4), "%)")
-        }
-        if (!biplot) {
-            .scoreplot(x, comp = comp, group = group,
-                       group_col = group_col,
-                       point_shape_by_group = point_shape_by_group,
-                       point_size = point_size,
-                       label = label, label_size = label_size,
-                       label_subset = label_subset,
-                       ellipse = ellipse,
-                       xlab = xlab, ylab = ylab,
-                       title = title, legend = legend)
-        } else {
-            X <- x[, comp]
-            Y <- attr(x, "loadings")[, comp]
-            .biplot(x = X, y = Y, comp = c(1, 2), group = group,
-                    group_col = group_col,
-                    point_size = point_size,
-                    point_shape_by_group = point_shape_by_group,
-                    label = label, label_size = label_size,
-                    label_subset = label_subset,
-                    ellipse = ellipse,
-                    xlab = xlab, ylab = ylab,
-                    title = title, legend = legend,
-                    arrow_len = arrow_len, arrow_col = arrow_col,
-                    arrow_alpha = arrow_alpha,
-                    arrow_label = arrow_label,
-                    arrow_label_ext = arrow_label_ext,
-                    arrow_label_size = arrow_label_size,
-                    arrow_label_col = arrow_label_col,
-                    arrow_label_subset = arrow_label_subset)
-        }
-    } else {
-        .scoreplot(x, comp = comp, group = group,
-                   group_col = group_col,
-                   point_shape_by_group = point_shape_by_group,
-                   point_size = point_size,
-                   label = label, label_size = label_size,
-                   label_subset = label_subset,
-                   ellipse = ellipse,
-                   xlab = xlab, ylab = ylab,
-                   title = title, legend = legend)
+  if (!inherits(x, "matrix")) {
+    stop("`x` must be a matrix.")
+  }
+  comp <- sort(comp)
+  if (inherits(x, "reduced.pca")) {
+    if (is.null(xlab)) {
+      xlab <- paste0(
+        colnames(x)[comp[1]], " (",
+        prettyNum(attr(x, "R2")[comp[1]] * 100, digits = 4), "%)"
+      )
     }
+    if (is.null(ylab)) {
+      ylab <- paste0(
+        colnames(x)[comp[2]], " (",
+        prettyNum(attr(x, "R2")[comp[2]] * 100, digits = 4), "%)"
+      )
+    }
+    if (!biplot) {
+      .scoreplot(x, comp = comp, group = group,
+                 group_col = group_col,
+                 point_shape_by_group = point_shape_by_group,
+                 point_size = point_size,
+                 label = label, label_size = label_size,
+                 label_subset = label_subset,
+                 ellipse = ellipse,
+                 xlab = xlab, ylab = ylab,
+                 title = title, legend = legend)
+    } else {
+      n <- nrow(x)
+      lam <- attr(x, "sdev")[comp] * sqrt(n)
+      ## Consider Scaling factor
+      ## if (scale < 0 || scale > 1)
+      ##   warning("'scale' is outside [0, 1]")
+      ## if (scale != 0)
+      ##   lam <- lam**scale
+      ## else lam <- 1
+      X <- t(t(x[, comp]) / lam)
+      Y <- t(t(attr(x, "loadings")[, comp]) * lam)
+      .biplot(x = X, y = Y, comp = c(1, 2), group = group,
+              group_col = group_col,
+              point_size = point_size,
+              point_shape_by_group = point_shape_by_group,
+              label = label, label_size = label_size,
+              label_subset = label_subset,
+              ellipse = ellipse,
+              xlab = xlab, ylab = ylab,
+              title = title, legend = legend,
+              arrow_len = arrow_len, arrow_col = arrow_col,
+              arrow_alpha = arrow_alpha,
+              arrow_label = arrow_label,
+              arrow_label_ext = arrow_label_ext,
+              arrow_label_size = arrow_label_size,
+              arrow_label_col = arrow_label_col,
+              arrow_label_subset = arrow_label_subset)
+    }
+  } else if (inherits(x, "reduced.plsda")) {
+    if (missing(group)) {
+      group <- attr(x, "Y.observed")
+    }
+    if (is.null(xlab)) {
+      xlab <- paste0(
+        colnames(x)[comp[1]], " (",
+        prettyNum(attr(x, "explvar")[comp[1]], digits = 4), "%)")
+    }
+    if (is.null(ylab)) {
+      ylab <- paste0(
+        colnames(x)[comp[2]], " (",
+        prettyNum(attr(x, "explvar")[comp[2]], digits = 4), "%)")
+    }
+    if (!biplot) {
+      .scoreplot(x, comp = comp, group = group,
+                 group_col = group_col,
+                 point_shape_by_group = point_shape_by_group,
+                 point_size = point_size,
+                 label = label, label_size = label_size,
+                 label_subset = label_subset,
+                 ellipse = ellipse,
+                 xlab = xlab, ylab = ylab,
+                 title = title, legend = legend)
+    } else {
+      X <- x[, comp]
+      Y <- attr(x, "loadings")[, comp]
+      .biplot(x = X, y = Y, comp = c(1, 2), group = group,
+              group_col = group_col,
+              point_size = point_size,
+              point_shape_by_group = point_shape_by_group,
+              label = label, label_size = label_size,
+              label_subset = label_subset,
+              ellipse = ellipse,
+              xlab = xlab, ylab = ylab,
+              title = title, legend = legend,
+              arrow_len = arrow_len, arrow_col = arrow_col,
+              arrow_alpha = arrow_alpha,
+              arrow_label = arrow_label,
+              arrow_label_ext = arrow_label_ext,
+              arrow_label_size = arrow_label_size,
+              arrow_label_col = arrow_label_col,
+              arrow_label_subset = arrow_label_subset)
+    }
+  } else {
+    .scoreplot(x, comp = comp, group = group,
+               group_col = group_col,
+               point_shape_by_group = point_shape_by_group,
+               point_size = point_size,
+               label = label, label_size = label_size,
+               label_subset = label_subset,
+               ellipse = ellipse,
+               xlab = xlab, ylab = ylab,
+               title = title, legend = legend)
+  }
 }
 
 .scoreplot <- function(x, comp = c(1, 2), group,
@@ -192,85 +195,85 @@ plotReduced <- function(x, comp = c(1, 2), biplot = FALSE,
                        ellipse = FALSE,
                        xlab = NULL, ylab = NULL,
                        title = NULL, legend = TRUE) {
-    if (max(comp) > ncol(x) || length(comp) != 2) {
-        stop("Choose two components between 1 and ", ncol(x), ".")
+  if (max(comp) > ncol(x) || length(comp) != 2) {
+    stop("Choose two components between 1 and ", ncol(x), ".")
+  }
+  if (!is.null(group_col)) {
+    if (!missing(group) && length(group_col) != length(unique(group))) {
+      stop("'group_col' must have the same length of ",
+           "unique values in 'group'.")
+    }
+  }
+  comp <- sort(comp)
+  x <- as.data.frame(x)
+  if (is.null(colnames(x))) {
+    stop("colnames(x) must be non-NULL.")
+  } else {
+    comp_x <- rlang::sym(colnames(x)[comp[1]])
+    comp_y <- rlang::sym(colnames(x)[comp[2]])
+  }
+  if (missing(group)) {
+    p <- ggplot(x, aes(x = !!comp_x, y = !!comp_y))
+  } else {
+    x$group <- factor(group, levels = unique(group))
+    if (isFALSE(point_shape_by_group)) {
+      p <- ggplot(x, aes(x = !!comp_x, y = !!comp_y,
+                         group = group, col = group, fill = group))
+    } else {
+      p <- ggplot(x, aes(x = !!comp_x, y = !!comp_y,
+                         group = group, col = group, fill = group,
+                         shape = group))
+      if (!isTRUE(point_shape_by_group)) {
+        if (length(point_shape_by_group) == length(unique(group))) {
+          p <- p + scale_shape_manual(values = point_shape_by_group)
+        } else {
+          stop(
+            "non-logical values of 'point_shape_by_group' must ",
+            "have the same length of unique values in 'group'."
+          )
+        }
+      }
     }
     if (!is.null(group_col)) {
-        if (!missing(group) && length(group_col) != length(unique(group))) {
-            stop("'group_col' must have the same length of ",
-                 "unique values in 'group'.")
-        }
+      p <- p + scale_color_manual(values = group_col)
     }
-    comp <- sort(comp)
-    x <- as.data.frame(x)
-    if (is.null(colnames(x))) {
-        stop("colnames(x) must be non-NULL.")
+  }
+  if (ellipse) {
+    p <- p + stat_ellipse(geom = "polygon", alpha = 0.1)
+    if (!is.null(group_col)) {
+      p <- p + scale_fill_manual(values = group_col)
+    }
+  }
+  if (label) {
+    if (is.null(rownames(x))) {
+      stop("rownames(x) must be non-NULL if label = TRUE.")
     } else {
-        comp_x <- rlang::sym(colnames(x)[comp[1]])
-        comp_y <- rlang::sym(colnames(x)[comp[2]])
+      if (is.null(label_subset)) {
+        point_label <- rownames(x)
+      } else {
+        point_label <- ifelse(rownames(x) %in% label_subset,
+                              rownames(x), "")
+      }
+      p <- p + geom_text(aes(label = point_label), show.legend = FALSE,
+                         size = label_size)
     }
-    if (missing(group)) {
-        p <- ggplot(x, aes(x = !!comp_x, y = !!comp_y))
-    } else {
-        x$group <- factor(group, levels = unique(group))
-        if (isFALSE(point_shape_by_group)) {
-            p <- ggplot(x, aes(x = !!comp_x, y = !!comp_y,
-                               group = group, col = group, fill = group))
-        } else {
-            p <- ggplot(x, aes(x = !!comp_x, y = !!comp_y,
-                               group = group, col = group, fill = group,
-                               shape = group))
-            if (!isTRUE(point_shape_by_group)) {
-                if (length(point_shape_by_group) == length(unique(group))) {
-                    p <- p + scale_shape_manual(values = point_shape_by_group)
-                } else {
-                    stop(
-                        "non-logical values of 'point_shape_by_group' must ",
-                        "have the same length of unique values in 'group'."
-                    )
-                }
-            }
-        }
-        if (!is.null(group_col)) {
-            p <- p + scale_color_manual(values = group_col)
-        }
-    }
-    if (ellipse) {
-        p <- p + stat_ellipse(geom = "polygon", alpha = 0.1)
-        if (!is.null(group_col)) {
-            p <- p + scale_fill_manual(values = group_col)
-        }
-    }
-    if (label) {
-        if (is.null(rownames(x))) {
-            stop("rownames(x) must be non-NULL if label = TRUE.")
-        } else {
-            if (is.null(label_subset)) {
-                point_label <- rownames(x)
-            } else {
-                point_label <- ifelse(rownames(x) %in% label_subset,
-                                      rownames(x), "")
-            }
-            p <- p + geom_text(aes(label = point_label), show.legend = FALSE,
-                               size = label_size)
-        }
-    } else {
-        p <- p + geom_point(size = point_size)
-    }
-    if (!is.null(title)) {
-        p <- p + ggtitle(title)
-    }
-    if (!is.null(xlab)) {
-        p <- p + xlab(xlab)
-    }
-    if (!is.null(ylab)) {
-        p <- p + ylab(ylab)
-    }
-    if (legend) {
-        p + theme_bw() + theme(legend.title = element_blank())
-    } else {
-        p + theme_bw() + theme(legend.position = "none")
-    }
+  } else {
+    p <- p + geom_point(size = point_size)
+  }
+  if (!is.null(title)) {
+    p <- p + ggtitle(title)
+  }
+  if (!is.null(xlab)) {
+    p <- p + xlab(xlab)
+  }
+  if (!is.null(ylab)) {
+    p <- p + ylab(ylab)
+  }
+  if (legend) {
+    p + theme_bw() + theme(legend.title = element_blank())
+  } else {
+    p + theme_bw() + theme(legend.position = "none")
+  }
 }
 
 .biplot <- function(x, y, comp = c(1, 2), group,
@@ -288,56 +291,56 @@ plotReduced <- function(x, comp = c(1, 2), biplot = FALSE,
                     arrow_label_size = 3.88,
                     arrow_label_col = "red",
                     arrow_label_subset = NULL) {
-    p <- .scoreplot(x, comp = comp, group = group,
-                    group_col = group_col,
-                    point_shape_by_group = point_shape_by_group,
-                    point_size = point_size,
-                    label = label, label_size = label_size,
-                    label_subset = label_subset,
-                    ellipse = ellipse,
-                    xlab = xlab, ylab = ylab,
-                    title = title, legend = legend)
-    scalers <- .get_loading_scalers(x, y, comp)
-    y <- sweep(y[, comp], 2, scalers, FUN = "*")
-    y <- as.data.frame(y)
-    comp_xend <- rlang::sym(names(y)[1])
-    comp_yend <- rlang::sym(names(y)[2])
-    p <- p + geom_segment(
-                 inherit.aes = FALSE,
-                 data = y,
-                 aes(x = 0, y = 0, xend = !!comp_xend, yend = !!comp_yend),
-                 arrow = grid::arrow(length = grid::unit(arrow_len, "cm")),
-                 col = arrow_col,
-                 alpha = arrow_alpha
-             ) +
-        scale_x_continuous(sec.axis = sec_axis( ~ . / scalers[1])) +
-        scale_y_continuous(sec.axis = sec_axis( ~ . / scalers[2]))
-    if (arrow_label) {
-        y$label <- rownames(y)
-        if (!is.null(arrow_label_subset)) {
-            y$label <- with(y, ifelse(label %in% arrow_label_subset, label, ""))
-        }
-        y$x_adj <- y[, names(y)[1]] * arrow_label_ext
-        y$y_adj <- y[, names(y)[2]] * arrow_label_ext
-        p <- p + geom_text(
-                     inherit.aes = FALSE,
-                     data = y, aes(x = !!quote(x_adj), y = !!quote(y_adj),
-                                   label = label),
-                     col = arrow_label_col, size = arrow_label_size
-                 )
+  p <- .scoreplot(x, comp = comp, group = group,
+                  group_col = group_col,
+                  point_shape_by_group = point_shape_by_group,
+                  point_size = point_size,
+                  label = label, label_size = label_size,
+                  label_subset = label_subset,
+                  ellipse = ellipse,
+                  xlab = xlab, ylab = ylab,
+                  title = title, legend = legend)
+  scalers <- .get_loading_scalers(x, y, comp)
+  y <- sweep(y[, comp], 2, scalers, FUN = "*")
+  y <- as.data.frame(y)
+  comp_xend <- rlang::sym(names(y)[1])
+  comp_yend <- rlang::sym(names(y)[2])
+  p <- p + geom_segment(
+             inherit.aes = FALSE,
+             data = y,
+             aes(x = 0, y = 0, xend = !!comp_xend, yend = !!comp_yend),
+             arrow = grid::arrow(length = grid::unit(arrow_len, "cm")),
+             col = arrow_col,
+             alpha = arrow_alpha
+           ) +
+    scale_x_continuous(sec.axis = sec_axis( ~ . / scalers[1])) +
+    scale_y_continuous(sec.axis = sec_axis( ~ . / scalers[2]))
+  if (arrow_label) {
+    y$label <- rownames(y)
+    if (!is.null(arrow_label_subset)) {
+      y$label <- with(y, ifelse(label %in% arrow_label_subset, label, ""))
     }
-    p
+    y$x_adj <- y[, names(y)[1]] * arrow_label_ext
+    y$y_adj <- y[, names(y)[2]] * arrow_label_ext
+    p <- p + geom_text(
+               inherit.aes = FALSE,
+               data = y, aes(x = !!quote(x_adj), y = !!quote(y_adj),
+                             label = label),
+               col = arrow_label_col, size = arrow_label_size
+             )
+  }
+  p
 }
 
 .get_loading_scalers <- function(x, y, comp, scalefactor = 0.7) {
-    x_ranges <- c(
-    (max(x[, comp[1]]) - min(x[, comp[1]])),
-    (max(x[, comp[2]]) - min(x[, comp[2]]))
-    )
-    y_ranges <- c(
-    (max(y[, comp[1]]) - min(y[, comp[1]])),
-    (max(y[, comp[2]]) - min(y[, comp[2]]))
-    )
-    scalefactor * c(x_ranges[1] / y_ranges[1], x_ranges[2] / y_ranges[2])
+  x_ranges <- c(
+  (max(x[, comp[1]]) - min(x[, comp[1]])),
+  (max(x[, comp[2]]) - min(x[, comp[2]]))
+  )
+  y_ranges <- c(
+  (max(y[, comp[1]]) - min(y[, comp[1]])),
+  (max(y[, comp[2]]) - min(y[, comp[2]]))
+  )
+  scalefactor * c(x_ranges[1] / y_ranges[1], x_ranges[2] / y_ranges[2])
 }
 

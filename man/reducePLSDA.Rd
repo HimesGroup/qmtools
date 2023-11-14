@@ -4,7 +4,16 @@
 \alias{reducePLSDA}
 \title{Partial least squares-discriminant analysis (PLS-DA)}
 \usage{
-reducePLSDA(x, y, ncomp = 2, center = TRUE, scale = FALSE, ...)
+reducePLSDA(
+  x,
+  y,
+  ncomp = 2,
+  center = TRUE,
+  scale = FALSE,
+  validation = c("none", "CV", "LOO"),
+  return_mvr = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{A matrix-like object.}
@@ -18,6 +27,13 @@ mean-centered prior to PLS-DA.}
 
 \item{scale}{A logical specifying whether the unit variance scaling needs to
 be performed on \code{x} prior to PLS-DA.}
+
+\item{validation}{A string specifying a validation method to use. See
+\link[pls:mvr]{pls::plsr} for the details.}
+
+\item{return_mvr}{A logical indicating whether \code{mvr} object is returned.
+It is recommended for a user to use utilities functions from the \code{pls}
+package for the model fit.}
 
 \item{...}{Additional arguments passed to \link[pls:mvr]{pls::plsr}.}
 }
@@ -60,6 +76,7 @@ coefficients.
 to PLS-DA.
 \item \code{scaled}: A logical indicating whether the data was scaled prior to
 PLS-DA.
+\item \code{validation}: Results of the validation if requested.
 }
 }
 \examples{

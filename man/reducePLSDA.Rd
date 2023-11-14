@@ -54,6 +54,8 @@ each component.
 \item \code{projection}: The projection matrix.
 \item \code{fitted.values}: An array of fitted values.
 \item \code{residuals}: An array of regression residuals.
+\item \code{vip}: An array of VIP (Variable Importance in the Projection)
+coefficients.
 \item \code{centered}: A logical indicating whether the data was mean-centered prior
 to PLS-DA.
 \item \code{scaled}: A logical indicating whether the data was scaled prior to

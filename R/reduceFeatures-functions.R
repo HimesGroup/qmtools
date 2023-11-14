@@ -244,6 +244,8 @@ reduceTSNE <- function(x, ncomp = 2, normalize = TRUE, ...) {
 ##' * `projection`: The projection matrix.
 ##' * `fitted.values`: An array of fitted values.
 ##' * `residuals`: An array of regression residuals.
+##' * `vip`: An array of VIP (Variable Importance in the Projection)
+##' coefficients.
 ##' * `centered`: A logical indicating whether the data was mean-centered prior
 ##' to PLS-DA.
 ##' * `scaled`: A logical indicating whether the data was scaled prior to
@@ -316,7 +318,7 @@ reducePLSDA <- function(x, y, ncomp = 2, center = TRUE, scale = FALSE,
     attr(out, "predictors") <- pls::prednames(fit)
     attr(out, "coefficients") <- fit$coefficients
     attr(out, "loadings") <- fit$loadings
-    attr(out, "loadings.weights") <- fit$loadings.weights
+    attr(out, "loading.weights") <- fit$loading.weights
     attr(out, "Y.observed") <- y
     attr(out, "Y.predicted") <- y_predicted
     attr(out, "Y.scores") <- fit$Yscores
@@ -325,9 +327,24 @@ reducePLSDA <- function(x, y, ncomp = 2, center = TRUE, scale = FALSE,
     attr(out, "fitted.values") <- fitted(fit)
     attr(out, "residuals") <- residuals(fit)
     attr(out, "ncomp") <- fit$ncomp
+    attr(out, "vip") <- .vip_mat(fit)
     attr(out, "centered") <- center
     attr(out, "scaled") <- scale
     attr(out, "validation") <- fit$validation
     class(out) <- c("reduced.plsda", "matrix", class(out))
     out
+}
+
+.vip_mat <- function(fit) {
+  ncomp <- fit$ncomp
+  w <- fit$loading.weights
+  m <- cor(fit$model$y, fit$scores, use = "pairwise")**2
+  vip <- do.call(cbind, lapply(1:ncomp, function(x) .vip_vec(w, m, x)))
+  dimnames(vip) <- dimnames(w)
+  vip
+}
+
+.vip_vec <- function(w, m, comp) {
+  rd <- colSums(m[, 1:comp, drop = FALSE])
+  as.vector(sqrt(nrow(w) * rd %*% t(w[, 1:comp]^2) / sum(rd)))
 }
